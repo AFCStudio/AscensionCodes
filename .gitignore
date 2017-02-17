@@ -1,0 +1,11 @@
+# Compiled source #
+###################
+/Bin/
+/BinTemp/
+
+/Solutions/
+
+/CRYENGINE_v*.zip
+/Code/SDKs/
+
+desktop.ini
