@@ -23,4 +23,7 @@ public:
 	virtual void UpdateView(SViewParams &viewParams) override;
 	virtual void PostUpdateView(SViewParams &viewParams) override {}
 	// ~IGameObjectView
+
+protected:
+	CPlayer *m_pPlayer;
 };

@@ -4,41 +4,8 @@
 #include "Player/Player.h"
 #include "Player/Input/PlayerInput.h"
 
-#include "GamePlugin.h"
-
-class CPlayerMovementRegistrator
-	: public IEntityRegistrator
-{
-	virtual void Register() override
-	{
-		CGamePlugin::RegisterEntityComponent<CPlayerMovement>("PlayerMovement");
-
-		REGISTER_CVAR2("pl_movementSpeed", &m_movementSpeed, 20.0f, VF_NULL, "Player movement speed.");
-	}
-
-	virtual void Unregister() override
-	{
-		IConsole* pConsole = gEnv->pConsole;
-		if (pConsole)
-		{
-			pConsole->UnregisterVariable("pl_movementSpeed");
-		}
-	}
-
-public:
-	CPlayerMovementRegistrator() {}
-
-	~CPlayerMovementRegistrator()
-	{
-		gEnv->pConsole->UnregisterVariable("pl_movementSpeed", true);
-	}
-
-	float m_movementSpeed;
-};
-
-CPlayerMovementRegistrator g_playerMovementRegistrator;
-
 CPlayerMovement::CPlayerMovement()
+	: m_bOnGround(false)
 {
 }
 
@@ -50,31 +17,106 @@ void CPlayerMovement::PostInit(IGameObject *pGameObject)
 	pGameObject->EnableUpdateSlot(this, 0);
 }
 
+void CPlayerMovement::Physicalize()
+{
+	// Physicalize the player as type Living.
+	// This physical entity type is specifically implemented for players
+	SEntityPhysicalizeParams physParams;
+	physParams.type = PE_LIVING;
+
+	physParams.mass = m_pPlayer->GetCVars().m_mass;
+
+	pe_player_dimensions playerDimensions;
+
+	// Prefer usage of a cylinder instead of capsule
+	playerDimensions.bUseCapsule = 0;
+
+	// Specify the size of our cylinder
+	playerDimensions.sizeCollider = Vec3(0.45f, 0.45f, m_pPlayer->GetCVars().m_playerEyeHeight * 0.5f);
+
+	// Keep pivot at the player's feet (defined in player geometry) 
+	playerDimensions.heightPivot = 0.f;
+	// Offset collider upwards
+	playerDimensions.heightCollider = 1.f;
+	playerDimensions.groundContactEps = 0.004f;
+
+	physParams.pPlayerDimensions = &playerDimensions;
+	
+	pe_player_dynamics playerDynamics;
+	playerDynamics.kAirControl = 0.f;
+	playerDynamics.mass = physParams.mass;
+
+	physParams.pPlayerDynamics = &playerDynamics;
+
+	GetEntity()->Physicalize(physParams);
+}
+
 void CPlayerMovement::Update(SEntityUpdateContext &ctx, int updateSlot)
 {
-	Matrix34 playerTransform = GetEntity()->GetWorldTM();
+	IEntity &entity = *GetEntity();
+	IPhysicalEntity *pPhysicalEntity = entity.GetPhysics();
+	if(pPhysicalEntity == nullptr)
+		return;
 
-	// Start with calculating movement direction
-	Vec3 moveDirection = m_pPlayer->GetInput()->GetMovementDirection();
-	moveDirection *= g_playerMovementRegistrator.m_movementSpeed;
+	// Obtain stats from the living entity implementation
+	GetLatestPhysicsStats(*pPhysicalEntity);
 
-	// Add move direction to player position
-	playerTransform.AddTranslation(GetEntity()->GetWorldRotation() * moveDirection * ctx.fFrameTime);
+	// Send latest input data to physics indicating desired movement direction
+	UpdateMovementRequest(ctx.fFrameTime, *pPhysicalEntity);
+}
 
-	// Update view rotation based on input
-	auto mouseDeltaRotation = m_pPlayer->GetInput()->GetAndResetMouseDeltaRotation();
-	if (!mouseDeltaRotation.IsZero())
+void CPlayerMovement::GetLatestPhysicsStats(IPhysicalEntity &physicalEntity)
+{
+	pe_status_living livingStatus;
+	if(physicalEntity.GetStatus(&livingStatus) != 0)
 	{
-		Ang3 ypr = CCamera::CreateAnglesYPR(Matrix33(playerTransform));
+		m_bOnGround = !livingStatus.bFlying;
 
-		ypr.x += mouseDeltaRotation.x * ctx.fFrameTime * 0.05f;
-		ypr.y += mouseDeltaRotation.y * ctx.fFrameTime * 0.05f;
-		ypr.y = clamp_tpl(ypr.y, -(float)g_PI * 0.5f, (float)g_PI * 0.5f);
-		ypr.z = 0;
+		// Store the ground normal in case it is needed
+		// Note that users have to check if we're on ground before using, is considered invalid in air.
+		m_groundNormal = livingStatus.groundSlope;
+	}
+}
 
-		playerTransform.SetRotation33(CCamera::CreateOrientationYPR(ypr));
+void CPlayerMovement::UpdateMovementRequest(float frameTime, IPhysicalEntity &physicalEntity)
+{
+	if(m_bOnGround)
+	{
+		pe_action_move moveAction;
+
+		// Apply movement request directly to velocity
+		moveAction.iJump = 2;
+
+		const float moveSpeed = m_pPlayer->GetCVars().m_moveSpeed;
+		moveAction.dir = GetEntity()->GetWorldRotation() * GetLocalMoveDirection() * moveSpeed * frameTime;
+
+		// Dispatch the movement request
+		physicalEntity.Action(&moveAction);
+	}
+}
+
+Vec3 CPlayerMovement::GetLocalMoveDirection() const
+{
+	Vec3 moveDirection = ZERO;
+
+	uint32 inputFlags = m_pPlayer->GetInput()->GetInputFlags();
+
+	if (inputFlags & CPlayerInput::eInputFlag_MoveLeft)
+	{
+		moveDirection.x -= 1;
+	}
+	if (inputFlags & CPlayerInput::eInputFlag_MoveRight)
+	{
+		moveDirection.x += 1;
+	}
+	if (inputFlags & CPlayerInput::eInputFlag_MoveForward)
+	{
+		moveDirection.y += 1;
+	}
+	if (inputFlags & CPlayerInput::eInputFlag_MoveBack)
+	{
+		moveDirection.y -= 1;
 	}
 
-	// Now set the new player transform on the entity
-	GetEntity()->SetWorldTM(playerTransform);
+	return moveDirection;
 }

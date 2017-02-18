@@ -5,21 +5,6 @@
 
 #include <CryAnimation/ICryAnimation.h>
 
-#include "GamePlugin.h"
-
-class CPlayerInputRegistrator
-	: public IEntityRegistrator
-{
-	virtual void Register() override
-	{
-		CGamePlugin::RegisterEntityComponent<CPlayerInput>("PlayerInput");
-	}
-
-	virtual void Unregister() override {}
-};
-
-CPlayerInputRegistrator g_playerInputRegistrator;
-
 void CPlayerInput::PostInit(IGameObject *pGameObject)
 {
 	m_pPlayer = static_cast<CPlayer *>(pGameObject->QueryExtension("Player"));
@@ -37,16 +22,64 @@ void CPlayerInput::PostInit(IGameObject *pGameObject)
 
 	GetGameObject()->CaptureActions(this);
 
-	m_mouseDeltaRotation = ZERO;
+	// Make sure that this extension is updated regularly via the Update function below
+	GetGameObject()->EnableUpdateSlot(this, 0);
 
 	// Populate the action handler callbacks so that we get action map events
 	InitializeActionHandler();
 }
 
+void CPlayerInput::Update(SEntityUpdateContext &ctx, int updateSlot)
+{
+	// Start by updating look dir
+	Ang3 ypr = CCamera::CreateAnglesYPR(Matrix33(m_lookOrientation));
+	
+	ypr.x += m_mouseDeltaRotation.x * m_pPlayer->GetCVars().m_rotationSpeedYaw * ctx.fFrameTime;
+
+	// TODO: Perform soft clamp here instead of hard wall, should reduce rot speed in this direction when close to limit.
+	ypr.y = CLAMP(ypr.y + m_mouseDeltaRotation.y * m_pPlayer->GetCVars().m_rotationSpeedPitch * ctx.fFrameTime, m_pPlayer->GetCVars().m_rotationLimitsMinPitch, m_pPlayer->GetCVars().m_rotationLimitsMaxPitch);
+
+	ypr.z = 0;
+
+	m_lookOrientation = Quat(CCamera::CreateOrientationYPR(ypr));
+
+	// Reset every frame
+	m_mouseDeltaRotation = ZERO;
+}
+
 void CPlayerInput::OnPlayerRespawn()
 {
-	m_moveDirection = ZERO;
+	m_inputFlags = 0;
 	m_mouseDeltaRotation = ZERO;
+	m_lookOrientation = IDENTITY;
+}
+
+void CPlayerInput::HandleInputFlagChange(EInputFlags flags, int activationMode, EInputFlagType type)
+{
+	switch (type)
+	{
+		case eInputFlagType_Hold:
+		{
+			if (activationMode == eIS_Released)
+			{
+				m_inputFlags &= ~flags;
+			}
+			else
+			{
+				m_inputFlags |= flags;
+			}
+		}
+		break;
+		case eInputFlagType_Toggle:
+		{
+			if (activationMode == eIS_Released)
+			{
+				// Toggle the bit(s)
+				m_inputFlags ^= flags;
+			}
+		}
+		break;
+	}
 }
 
 void CPlayerInput::InitializeActionHandler()
@@ -69,25 +102,25 @@ void CPlayerInput::OnAction(const ActionId &action, int activationMode, float va
 
 bool CPlayerInput::OnActionMoveLeft(EntityId entityId, const ActionId& actionId, int activationMode, float value)
 {
-	m_moveDirection.x = -value;
+	HandleInputFlagChange(eInputFlag_MoveLeft, activationMode);
 	return true;
 }
 
 bool CPlayerInput::OnActionMoveRight(EntityId entityId, const ActionId& actionId, int activationMode, float value)
 {
-	m_moveDirection.x = value;
+	HandleInputFlagChange(eInputFlag_MoveRight, activationMode);
 	return true;
 }
 
 bool CPlayerInput::OnActionMoveForward(EntityId entityId, const ActionId& actionId, int activationMode, float value)
 {
-	m_moveDirection.y = value;
+	HandleInputFlagChange(eInputFlag_MoveForward, activationMode);
 	return true;
 }
 
 bool CPlayerInput::OnActionMoveBack(EntityId entityId, const ActionId& actionId, int activationMode, float value)
 {
-	m_moveDirection.y = -value;
+	HandleInputFlagChange(eInputFlag_MoveBack, activationMode);
 	return true;
 }
 

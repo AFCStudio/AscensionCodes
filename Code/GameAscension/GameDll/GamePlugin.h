@@ -12,12 +12,12 @@ class CGamePlugin
 {
 public:
 	CRYINTERFACE_SIMPLE(ICryPlugin)
-	CRYGENERATE_SINGLETONCLASS(CGamePlugin, "Game_Blank", 0xF01244B0A4E74DC6, 0x91E10ED18906FE7C)
+	CRYGENERATE_SINGLETONCLASS(CGamePlugin, "Game_TPS", 0xF01244B0A4E74DC6, 0x91E10ED18906FE7C)
 
 	virtual ~CGamePlugin();
 	
 	//! Retrieve name of plugin.
-	virtual const char* GetName() const override { return "BlankGamePlugin"; }
+	virtual const char* GetName() const override { return "TPSGamePlugin"; }
 
 	//! Retrieve category for the plugin.
 	virtual const char* GetCategory() const override { return "Game"; }
@@ -42,7 +42,8 @@ public:
 
 		void GetGameObjectExtensionRMIData(void** ppRMI, size_t* nCount)
 		{
-			T::GetGameObjectExtensionRMIData(ppRMI, nCount);
+			*ppRMI = nullptr;
+			*nCount = 0;
 		}
 	};
 
@@ -55,7 +56,6 @@ public:
 		static CObjectCreator<T> _creator;
 
 		gEnv->pGameFramework->GetIGameObjectSystem()->RegisterExtension(name, &_creator, &clsDesc);
-		T::SetExtensionId(gEnv->pGameFramework->GetIGameObjectSystem()->GetID(name));
 	}
 
 	template<class T>

@@ -31,7 +31,7 @@ void CGamePlugin::OnSystemEvent(ESystemEvent event, UINT_PTR wparam, UINT_PTR lp
 	switch (event)
 	{
 	case ESYSTEM_EVENT_GAME_POST_INIT:
-		{
+	{
 			// Register entities
 			IEntityRegistrator* pTemp = IEntityRegistrator::g_pFirst;
 			while (pTemp != nullptr)
@@ -40,9 +40,9 @@ void CGamePlugin::OnSystemEvent(ESystemEvent event, UINT_PTR wparam, UINT_PTR lp
 				pTemp = pTemp->m_pNext;
 			}
 
-			gEnv->pConsole->ExecuteString("map example", false, true);
-		}
-		break;
+		gEnv->pConsole->ExecuteString("map example", false, true);
+	}
+	break;
 	}
 }
 
