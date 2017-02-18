@@ -41,7 +41,7 @@ support_recode = False
 generate_vs_projects_automatically = True
 visual_studio_solution_name = CRYENGINE
 visual_studio_solution_folder = Solutions
-specs_to_include_in_project_generation = gamesdk,gamesdk_server
+specs_to_include_in_project_generation = GameAscension,gamesdk
 
 [Compiler Detection]
 auto_detect_compiler = False

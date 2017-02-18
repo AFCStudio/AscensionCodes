@@ -1,4 +1,38 @@
 {
+    "GameAscension" :
+	{
+		"code_folder"         : "Code/GameAscension",
+		"game_data_dir"       : "GameAscension",
+		"game_dll_filename"   : "CryGameAscension.dll",
+
+		"executable_name"     : "AscensionOfWarrior",
+
+		"product_name"        : "Ascension of Warrior",
+
+		"durango_settings" :
+		{
+			"app_id"            : "GameAscension.app",
+			"package_name"      : "GameAscension",
+			"display_name"      : "GameAscension Development",
+			"publisher"         : "AFC Studio",
+			"description"       : "Ascension of Warrior Game",
+			"foreground_text"   : "light",
+			"background_color"  : "#6495ED",
+			"version"           : "1.0.0.0",
+			"titleid"           : "06BFF3BF",
+			"scid"              : "84d70100-5e91-4cf0-bcc9-7b2f06bff3bf",
+			"appxmanifest"      : "AppxManifest.xml",
+			"logo"              : "DurangoLogo.png",
+			"small_logo"        : "DurangoSmallLogo.png",
+			"splash_screen"     : "DurangoSplashScreen.png",
+			"store_logo"        : "DurangoStoreLogo.png"
+		},
+
+		"orbis_settings" :
+		{
+			"data_folder"      : "/data/sdk/"
+		}
+	},
 	"GameSDK" :
 	{
 		"code_folder"         : "Code/GameSDK",
