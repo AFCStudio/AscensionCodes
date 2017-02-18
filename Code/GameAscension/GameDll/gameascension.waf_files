@@ -4,6 +4,8 @@
         "Root":
         [
             "StdAfx.cpp",
+            "GamePlugin.cpp",
+            "GamePlugin.h",
             "StdAfx.h"
         ]
     },
@@ -11,12 +13,46 @@
     {
         "Game" :
         [
+            "Game/GameRules.cpp",
+            "Game/GameRules.h"
         ]
     },
     "AFCGameAscension_uber_Player.cpp" :
     {
         "Player" :
         [
+            "Player/ISimpleActor.h",
+            "Player/Player.cpp",
+            "Player/Player.h"
+        ],
+        "Player/Movement" :
+        [
+            "Player/Movement/PlayerMovement.cpp",
+            "Player/Movement/PlayerMovement.h"
+        ],
+        "Player/Input" :
+        [
+            "Player/Input/PlayerInput.cpp",
+            "Player/Input/PlayerInput.h"
+        ],
+        "Player/Animations" :
+        [
+            "Player/Animations/PlayerAnimations.cpp",
+            "Player/Animations/PlayerAnimations.h"
+        ],
+        "Player/View" :
+        [
+            "Player/View/PlayerView.cpp",
+            "Player/View/PlayerView.h"
+        ]
+    },
+    "AFCGameAscension_uber_Entities.cpp" :
+    {
+        "Entiites" :
+        [
+            "Entities/Helpers/ISimpleExtension.h",
+            "Entities/Gameplay/SpawnPoint.cpp",
+            "Entities/Gameplay/SpawnPoint.h"
         ]
     }
 }
