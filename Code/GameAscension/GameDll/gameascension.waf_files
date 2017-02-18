@@ -1,0 +1,22 @@
+{
+    "NoUberFile":
+    {
+        "Root":
+        [
+            "StdAfx.cpp",
+            "StdAfx.h"
+        ]
+    },
+    "AFCGameAscension_uber_Game.cpp" :
+    {
+        "Game" :
+        [
+        ]
+    },
+    "AFCGameAscension_uber_Player.cpp" :
+    {
+        "Player" :
+        [
+        ]
+    }
+}
