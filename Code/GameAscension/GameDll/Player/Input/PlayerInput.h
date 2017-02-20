@@ -1,3 +1,6 @@
+#ifndef __PLAYER_INPUT_H__
+#define __PLAYER_INPUT_H__
+
 #pragma once
 
 #include "Entities/Helpers/ISimpleExtension.h"
@@ -76,3 +79,5 @@ protected:
 	// Handler for actionmap events that maps actions to callbacks
 	TActionHandler<CPlayerInput> m_actionHandler;
 };
+
+#endif

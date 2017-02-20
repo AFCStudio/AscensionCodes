@@ -1,3 +1,6 @@
+#ifndef __PLAYER_MOVEMENT_H__
+#define __PLAYER_MOVEMENT_H__
+
 #pragma once
 
 #include "Entities/Helpers/ISimpleExtension.h"
@@ -37,3 +40,5 @@ protected:
 	bool m_bOnGround;
 	Vec3 m_groundNormal;
 };
+
+#endif

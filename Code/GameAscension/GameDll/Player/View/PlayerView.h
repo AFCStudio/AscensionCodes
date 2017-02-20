@@ -1,3 +1,6 @@
+#ifndef __PLAYER_VIEW_H__
+#define __PLAYER_VIEW_H__
+
 #pragma once
 
 #include "Entities/Helpers/ISimpleExtension.h"
@@ -27,3 +30,5 @@ public:
 protected:
 	CPlayer *m_pPlayer;
 };
+
+#endif

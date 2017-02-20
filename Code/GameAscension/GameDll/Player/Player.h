@@ -1,3 +1,6 @@
+#ifndef __PLAYER_H__
+#define __PLAYER_H__
+
 #pragma once
 
 #include "Player/ISimpleActor.h"
@@ -78,3 +81,5 @@ protected:
 
 	bool m_bAlive;
 };
+
+#endif

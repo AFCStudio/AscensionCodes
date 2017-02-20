@@ -1,3 +1,6 @@
+#ifndef __ISIMPLE_ACTOR_H__
+#define __ISIMPLE_ACTOR_H__
+
 #pragma once
 
 #include <IActorSystem.h>
@@ -133,3 +136,5 @@ struct ISimpleActor : public IActor
 	ISimpleActor() {}
 	virtual ~ISimpleActor() {}
 };
+
+#endif

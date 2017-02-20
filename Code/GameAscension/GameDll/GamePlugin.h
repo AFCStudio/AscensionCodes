@@ -1,3 +1,6 @@
+#ifndef __GAME_PLUGIN_AFC_H__
+#define __GAME_PLUGIN_AFC_H__
+
 #pragma once
 
 #include <CrySystem/ICryPlugin.h>
@@ -93,3 +96,5 @@ public:
 	static IEntityRegistrator *g_pFirst;
 	static IEntityRegistrator *g_pLast;
 };
+
+#endif

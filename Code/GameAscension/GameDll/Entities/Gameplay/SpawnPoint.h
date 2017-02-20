@@ -1,3 +1,6 @@
+#ifndef __SPAWN_POINT_H__
+#define __SPAWN_POINT_H__
+
 #pragma once
 
 #include "Entities/Helpers/ISimpleExtension.h"
@@ -12,3 +15,5 @@ public:
 
 	void SpawnEntity(IEntity &otherEntity);
 };
+
+#endif

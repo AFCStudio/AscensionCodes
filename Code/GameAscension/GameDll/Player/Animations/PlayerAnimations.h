@@ -1,3 +1,6 @@
+#ifndef __PLAYER_ANIMATIONS_H__
+#define __PLAYER_ANIMATIONS_H__
+
 #pragma once
 
 #include "Entities/Helpers/ISimpleExtension.h"
@@ -40,3 +43,5 @@ protected:
 	TagID m_rotateTagId;
 	TagID m_walkTagId;
 };
+
+#endif

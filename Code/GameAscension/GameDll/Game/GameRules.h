@@ -1,3 +1,6 @@
+#ifndef __GAME_RULES_H__
+#define __GAME_RULES_H__
+
 #pragma once
 
 #include <IGameRulesSystem.h>
@@ -73,3 +76,5 @@ public:
 	virtual const char* GetTeamName(int teamId) const override { return nullptr; }
 	// ~IGameRules
 };
+
+#endif

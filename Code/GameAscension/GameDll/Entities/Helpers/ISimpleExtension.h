@@ -1,3 +1,6 @@
+#ifndef __ISIMPLE_EXTENSION_H__
+#define __ISIMPLE_EXTENSION_H__
+
 #pragma once
 
 #include <IGameObject.h>
@@ -45,3 +48,5 @@ struct ISimpleExtension : public IGameObjectExtension
 		}
 	}
 };
+
+#endif
