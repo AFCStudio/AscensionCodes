@@ -41,9 +41,6 @@ public:
 
 		float m_playerEyeHeight;
 
-		float m_viewOffsetY;
-		float m_viewOffsetZ;
-
 		ICVar *m_pThirdPersonGeometry;
 		
 		ICVar *m_pThirdPersonMannequinContext;

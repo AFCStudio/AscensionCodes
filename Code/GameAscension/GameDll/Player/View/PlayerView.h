@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Entities/Helpers/ISimpleExtension.h"
+#include "Game\GameCVars.h"
 
 class CPlayer;
 
@@ -28,6 +29,8 @@ public:
 	// ~IGameObjectView
 
 protected:
+	void SetCameraPosWithCollision(SViewParams& viewParams);
+
 	CPlayer *m_pPlayer;
 };
 

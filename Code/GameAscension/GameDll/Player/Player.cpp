@@ -47,9 +47,6 @@ class CPlayerRegistrator
 
 		REGISTER_CVAR2("pl_eyeHeight", &m_playerEyeHeight, 0.935f, VF_CHEAT, "Height of the player's eyes from ground");
 
-		REGISTER_CVAR2("pl_viewOffsetForward", &m_viewOffsetY, -1.5f, VF_CHEAT, "View offset along the forward axis from the player entity");
-		REGISTER_CVAR2("pl_viewOffsetUp", &m_viewOffsetZ, 2.f, VF_CHEAT, "View offset along the up axis from the player entity");
-
 		m_pThirdPersonGeometry = REGISTER_STRING("pl_thirdPersonGeometry", "Objects/Characters/SampleCharacter/thirdperson.cdf", VF_CHEAT, "Sets the third person geometry to load");
 		
 		m_pThirdPersonMannequinContext = REGISTER_STRING("pl_thirdPersonMannequinContext", "FirstPersonCharacter", VF_CHEAT, "The name of the third person context used in Mannequin");
@@ -69,8 +66,6 @@ class CPlayerRegistrator
 			pConsole->UnregisterVariable("pl_rotationLimitsMinPitch");
 			pConsole->UnregisterVariable("pl_rotationLimitsMaxPitch");
 			pConsole->UnregisterVariable("pl_eyeHeight");
-			pConsole->UnregisterVariable("pl_viewOffsetForward");
-			pConsole->UnregisterVariable("pl_viewOffsetUp");
 			pConsole->UnregisterVariable("pl_thirdPersonGeometry");
 			pConsole->UnregisterVariable("pl_thirdPersonMannequinContext");
 			pConsole->UnregisterVariable("pl_thirdPersonAnimationDatabase");
