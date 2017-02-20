@@ -51,7 +51,8 @@ void CPlayerAnimations::Update(SEntityUpdateContext& ctx, int updateSlot)
 		if (pPhysEnt->GetStatus(&playerDynamics) != 0 && pCharacter != nullptr)
 		{
 			// Set turn rate as the difference between previous and new entity rotation
-			float turnAngle = Ang3::CreateRadZ(GetEntity()->GetForwardDir(), correctedOrientation.GetColumn1()) / ctx.fFrameTime;
+			//float turnAngle = Ang3::CreateRadZ(GetEntity()->GetForwardDir(), correctedOrientation.GetColumn1()) / ctx.fFrameTime;
+			float turnAngle = 0.0f;
 			float travelAngle = Ang3::CreateRadZ(GetEntity()->GetForwardDir(), playerDynamics.v.GetNormalized());
 			float travelSpeed = playerDynamics.v.GetLength2D();
 
@@ -61,7 +62,7 @@ void CPlayerAnimations::Update(SEntityUpdateContext& ctx, int updateSlot)
 			pCharacter->GetISkeletonAnim()->SetDesiredMotionParam(eMotionParamID_TravelSpeed, travelSpeed, 0.f);
 
 			// Update the turn speed in CryAnimation, note that the maximum motion parameter (10) applies here too.
-			pCharacter->GetISkeletonAnim()->SetDesiredMotionParam(eMotionParamID_TurnAngle, turnAngle, 0.f);
+			//pCharacter->GetISkeletonAnim()->SetDesiredMotionParam(eMotionParamID_TurnAngle, turnAngle, 0.f);
 			pCharacter->GetISkeletonAnim()->SetDesiredMotionParam(eMotionParamID_TravelAngle, travelAngle, 0.f);
 
 			if (m_pPlayer->GetMovement()->IsOnGround())
@@ -78,12 +79,12 @@ void CPlayerAnimations::Update(SEntityUpdateContext& ctx, int updateSlot)
 			}
 
 			// Update the Mannequin tags
-			m_pAnimationContext->state.Set(m_rotateTagId, abs(turnAngle) > 0);
+			//m_pAnimationContext->state.Set(m_rotateTagId, abs(turnAngle) > 0);
 			m_pAnimationContext->state.Set(m_walkTagId, travelSpeed > 0.2f && m_pPlayer->GetMovement()->IsOnGround());
 		}
 
 		// Send updated transform to the entity, only orientation changes
-		GetEntity()->SetPosRotScale(GetEntity()->GetWorldPos(), correctedOrientation, Vec3(1, 1, 1));
+		//GetEntity()->SetPosRotScale(GetEntity()->GetWorldPos(), correctedOrientation, Vec3(1, 1, 1));
 	}
 
 	if (m_pActionController != nullptr)
