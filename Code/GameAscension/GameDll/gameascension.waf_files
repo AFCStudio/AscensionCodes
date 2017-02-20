@@ -14,7 +14,9 @@
         "Game" :
         [
             "Game/GameRules.cpp",
-            "Game/GameRules.h"
+            "Game/GameRules.h",
+            "Game/GameCVars.cpp",
+            "Game/GameCVars.h"
         ]
     },
     "AFCGameAscension_uber_Player.cpp" :

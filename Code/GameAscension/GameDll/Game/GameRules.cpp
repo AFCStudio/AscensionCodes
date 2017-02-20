@@ -12,6 +12,8 @@
 
 #include <IActorSystem.h>
 
+#include "GameCVars.h"
+
 class CRulesRegistrator
 	: public IEntityRegistrator
 {
@@ -26,6 +28,9 @@ class CRulesRegistrator
 
 		gEnv->pGameFramework->GetIGameRulesSystem()->RegisterGameRules(pDefaultGameRulesVar->GetString(), "GameRules");
 		gEnv->pGameFramework->GetIGameRulesSystem()->AddGameRulesAlias(pDefaultGameRulesVar->GetString(), pDefaultGameRulesVar->GetString());
+
+		g_pGameCVars = new SCVars();
+		g_pGameCVars->InitCVars();
 	}
 
 	virtual void Unregister() override {}
