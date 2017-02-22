@@ -7,6 +7,7 @@
 
 #include <ICryMannequin.h>
 
+enum EPlayerActionPriority;
 class CPlayer;
 
 ////////////////////////////////////////////////////////
@@ -29,19 +30,29 @@ public:
 
 	void OnPlayerModelChanged();
 
+	void SetTagGroup(TagGroupID groupId, TagID tagId);
+	void ClearTagGroup(TagGroupID groupId);
+
+	void PlayFragment(FragmentID fragmentID, EPlayerActionPriority priority, TagState tagState);
+	void PlayFragment(char * fragmentName, EPlayerActionPriority priority, TagState tagState);
+
+	void ForceFinishLastAction();
+
 protected:
 	void ActivateMannequinContext(const char *contextName, ICharacterInstance &character, const SControllerDef &controllerDefinition, const IAnimationDatabase &animationDatabase);
 
 protected:
-	CPlayer *m_pPlayer;
+	CPlayer * m_pPlayer;
 
-	IActionController *m_pActionController;
-	SAnimationContext *m_pAnimationContext;
+	IActionController * m_pActionController;
+	SAnimationContext * m_pAnimationContext;
 
 	_smart_ptr<IAction> m_pIdleFragment;
 
 	TagID m_rotateTagId;
 	TagID m_walkTagId;
+
+	IActionPtr	m_pLastAction;
 };
 
 #endif

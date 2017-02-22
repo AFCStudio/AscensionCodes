@@ -5,6 +5,8 @@
 #include "Player/Input/PlayerInput.h"
 #include "Player/Movement/PlayerMovement.h"
 
+#include "Actions/MoveForceAction.h"
+
 #include <CryAnimation/ICryAnimation.h>
 #include <ICryMannequin.h>
 
@@ -77,10 +79,6 @@ void CPlayerAnimations::Update(SEntityUpdateContext& ctx, int updateSlot)
 
 				pCharacter->GetISkeletonAnim()->SetDesiredMotionParam(eMotionParamID_TravelSlope, travelSlope, 0.f);
 			}
-
-			// Update the Mannequin tags
-			//m_pAnimationContext->state.Set(m_rotateTagId, abs(turnAngle) > 0);
-			m_pAnimationContext->state.Set(m_walkTagId, travelSpeed > 0.2f && m_pPlayer->GetMovement()->IsOnGround());
 		}
 
 		// Send updated transform to the entity, only orientation changes
@@ -156,7 +154,7 @@ void CPlayerAnimations::OnPlayerModelChanged()
 	// Create this idle fragment
 	// This implementation handles switching to various sub-fragments by itself, based on input and physics data
 	int priority = 0;
-	auto idleFragmentId = pControllerDefinition->m_fragmentIDs.Find("Idle");
+	auto idleFragmentId = pControllerDefinition->m_fragmentIDs.Find("MotionIdle");
 
 	m_pIdleFragment = new TAction<SAnimationContext>(priority, idleFragmentId, TAG_STATE_EMPTY, 0);
 
@@ -164,8 +162,8 @@ void CPlayerAnimations::OnPlayerModelChanged()
 	m_pActionController->Queue(*m_pIdleFragment.get());
 
 	// Acquire tag identifiers to avoid doing so each update
-	m_rotateTagId = m_pAnimationContext->state.GetDef().Find("Rotate");
-	m_walkTagId = m_pAnimationContext->state.GetDef().Find("Walk");
+	m_rotateTagId = m_pAnimationContext->state.GetDef().Find("MotionTurn");
+	m_walkTagId = m_pAnimationContext->state.GetDef().Find("MotionMovement");
 
 	// Disable movement coming from the animation (root joint offset), we control this entirely via physics
 	pCharacterInstance->GetISkeletonAnim()->SetAnimationDrivenMotion(1);
@@ -185,4 +183,50 @@ void CPlayerAnimations::ActivateMannequinContext(const char *contextName, IChara
 	// Setting Scope contexts can happen at any time, and what entity or character instance we have bound to a particular scope context
 	// can change during the lifetime of an action controller.
 	m_pActionController->SetScopeContext(scopeContextId, entity, &character, &animationDatabase);
+}
+
+//------------------------------------------------------------------------
+void CPlayerAnimations::SetTagGroup(TagGroupID groupId, TagID tagId)
+{
+	if (m_pActionController)
+	{
+		SAnimationContext &animContext = m_pActionController->GetContext();
+
+		animContext.state.SetGroup(groupId, tagId);
+	}
+}
+void CPlayerAnimations::ClearTagGroup(TagGroupID groupId)
+{
+	if (m_pActionController)
+	{
+		SAnimationContext &animContext = m_pActionController->GetContext();
+
+		animContext.state.ClearGroup(groupId);
+	}
+}
+
+//------------------------------------------------------------------------
+void CPlayerAnimations::PlayFragment(FragmentID fragmentID, EPlayerActionPriority priority, TagState tagState)
+{
+	if (m_pActionController)
+	{
+		m_pLastAction = new TPlayerAction(priority, fragmentID, tagState);
+		m_pActionController->Queue(*m_pLastAction);
+	}
+}
+void CPlayerAnimations::PlayFragment(char * fragmentName, EPlayerActionPriority priority, TagState tagState)
+{
+	if (m_pActionController)
+	{
+		FragmentID fragID = m_pActionController->GetContext().controllerDef.m_fragmentIDs.Find(fragmentName);
+		m_pLastAction = new TPlayerAction(priority, fragID, tagState);
+		m_pActionController->Queue(*m_pLastAction);
+	}
+}
+
+//------------------------------------------------------------------------
+void CPlayerAnimations::ForceFinishLastAction()
+{
+	if (m_pLastAction)
+		m_pLastAction->ForceFinish();
 }
