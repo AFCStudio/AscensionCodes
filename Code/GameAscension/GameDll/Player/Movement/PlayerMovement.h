@@ -29,7 +29,7 @@ public:
 	bool IsOnGround() const { return m_bOnGround; }
 	Vec3 GetGroundNormal() const { return m_groundNormal; }
 
-protected:
+public:
 	// Get the stats from latest physics thread update
 	void GetLatestPhysicsStats(IPhysicalEntity &physicalEntity);
 	void UpdateMovementRequest(float frameTime, IPhysicalEntity &physicalEntity);

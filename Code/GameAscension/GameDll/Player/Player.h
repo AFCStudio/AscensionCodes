@@ -11,6 +11,7 @@ class CPlayerInput;
 class CPlayerMovement;
 class CPlayerView;
 class CPlayerAnimations;
+class CPlayerStateManager;
 
 class CPlayer;
 
@@ -61,8 +62,10 @@ public:
 	virtual float GetHealth() const override { return m_bAlive ? GetMaxHealth() : 0.f; }
 	// ~ISimpleActor
 
-	CPlayerInput *GetInput() const { return m_pInput; }
-	CPlayerMovement *GetMovement() const { return m_pMovement; }
+	CPlayerInput * GetInput() const { return m_pInput; }
+	CPlayerMovement * GetMovement() const { return m_pMovement; }
+	CPlayerStateManager * GetStateManager() const { return m_pStateManager; }
+	CPlayerAnimations * GetAnimationManager() const { return m_pAnimations; }
 
 	const SExternalCVars &GetCVars() const;
 
@@ -71,10 +74,11 @@ protected:
 	void SetPlayerModel();
 
 protected:
-	CPlayerInput *m_pInput;
-	CPlayerMovement *m_pMovement;
-	CPlayerView *m_pView;
-	CPlayerAnimations *m_pAnimations;
+	CPlayerInput		* m_pInput;
+	CPlayerMovement		* m_pMovement;
+	CPlayerView			* m_pView;
+	CPlayerAnimations	* m_pAnimations;
+	CPlayerStateManager * m_pStateManager;
 
 	bool m_bAlive;
 };

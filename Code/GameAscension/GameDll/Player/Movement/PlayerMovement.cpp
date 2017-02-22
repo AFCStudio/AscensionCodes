@@ -4,6 +4,8 @@
 #include "Player/Player.h"
 #include "Player/Input/PlayerInput.h"
 
+#include "Player/States/PlayerStateManager.h"
+
 CPlayerMovement::CPlayerMovement()
 	: m_bOnGround(false)
 {
@@ -53,16 +55,7 @@ void CPlayerMovement::Physicalize()
 
 void CPlayerMovement::Update(SEntityUpdateContext &ctx, int updateSlot)
 {
-	IEntity &entity = *GetEntity();
-	IPhysicalEntity *pPhysicalEntity = entity.GetPhysics();
-	if(pPhysicalEntity == nullptr)
-		return;
-
-	// Obtain stats from the living entity implementation
-	GetLatestPhysicsStats(*pPhysicalEntity);
-
-	// Send latest input data to physics indicating desired movement direction
-	UpdateMovementRequest(ctx.fFrameTime, *pPhysicalEntity);
+	
 }
 
 void CPlayerMovement::GetLatestPhysicsStats(IPhysicalEntity &physicalEntity)
@@ -88,7 +81,16 @@ void CPlayerMovement::UpdateMovementRequest(float frameTime, IPhysicalEntity &ph
 		moveAction.iJump = 2;
 
 		const float moveSpeed = m_pPlayer->GetCVars().m_moveSpeed;
-		moveAction.dir = m_pPlayer->GetInput()->GetLookOrientation() * GetLocalMoveDirection() * moveSpeed * frameTime;
+		Vec3 moveDirection = GetLocalMoveDirection();
+		if (moveDirection != ZERO)
+		{
+			m_pPlayer->GetStateManager()->ChangeState(epsMove);
+		}
+		else
+		{
+			m_pPlayer->GetStateManager()->ChangeState(epsIdle);
+		}
+		moveAction.dir = m_pPlayer->GetInput()->GetLookOrientation() * moveDirection * moveSpeed * frameTime;
 
 		// Dispatch the movement request
 		physicalEntity.Action(&moveAction);
