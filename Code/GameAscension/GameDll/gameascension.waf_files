@@ -46,6 +46,13 @@
         [
             "Player/View/PlayerView.cpp",
             "Player/View/PlayerView.h"
+        ],
+		"Player/States" :
+        [
+			"Player/States/PlayerStateManager.cpp",
+            "Player/States/PlayerStateManager.h",
+            "Player/States/PlayerStates.cpp",
+            "Player/States/PlayerStates.h"
         ]
     },
     "AFCGameAscension_uber_Entities.cpp" :
