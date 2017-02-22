@@ -206,6 +206,24 @@ void CPlayerAnimations::ClearTagGroup(TagGroupID groupId)
 }
 
 //------------------------------------------------------------------------
+void CPlayerAnimations::PlayMoveAction(FragmentID fragmentID, EPlayerActionPriority priority, TagState fragTags)
+{
+	if (m_pActionController)
+	{
+		m_pLastAction = new CMoveAction(m_pPlayer->GetEntity(), priority, fragmentID, fragTags);
+		m_pActionController->Queue(*m_pLastAction);
+	}
+}
+void CPlayerAnimations::PlayMoveForceAction(FragmentID fragmentID, EPlayerActionPriority priority, TagState fragTags)
+{
+	if (m_pActionController)
+	{
+		m_pLastAction = new CMoveForceAction(m_pPlayer->GetEntity(), priority, fragmentID, fragTags);
+		m_pActionController->Queue(*m_pLastAction);
+	}
+}
+
+//------------------------------------------------------------------------
 void CPlayerAnimations::PlayFragment(FragmentID fragmentID, EPlayerActionPriority priority, TagState tagState)
 {
 	if (m_pActionController)

@@ -33,6 +33,9 @@ public:
 	void SetTagGroup(TagGroupID groupId, TagID tagId);
 	void ClearTagGroup(TagGroupID groupId);
 
+	void PlayMoveAction(FragmentID fragmentID, EPlayerActionPriority priority, TagState fragTags);
+	void PlayMoveForceAction(FragmentID fragmentID, EPlayerActionPriority priority, TagState fragTags);
+
 	void PlayFragment(FragmentID fragmentID, EPlayerActionPriority priority, TagState tagState);
 	void PlayFragment(char * fragmentName, EPlayerActionPriority priority, TagState tagState);
 

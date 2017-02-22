@@ -56,5 +56,16 @@
             "Entities/Gameplay/SpawnPoint.cpp",
             "Entities/Gameplay/SpawnPoint.h"
         ]
+    },
+	"AFCGameAscension_uber_Actions.cpp" :
+    {
+        "Actions" :
+        [
+            "Actions/ActionBase.h",
+            "Actions/MoveAction.h",
+            "Actions/MoveAction.cpp",
+			"Actions/MoveForceAction.h",
+            "Actions/MoveForceAction.cpp"
+        ]
     }
 }
