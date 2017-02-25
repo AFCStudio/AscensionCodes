@@ -4,7 +4,10 @@
 #include "Player/Player.h"
 #include "Player/Input/PlayerInput.h"
 
-#include "Actions/MoveForceAction.h"
+#include "Actions/MoveAction.h"
+#include "Actions/MovementAction.h"
+
+#include "Math/AFC_Math.h"
 
 #include <CryAnimation/ICryAnimation.h>
 #include <ICryMannequin.h>
@@ -31,63 +34,23 @@ void CPlayerAnimations::PostInit(IGameObject *pGameObject)
 
 void CPlayerAnimations::Update(SEntityUpdateContext& ctx, int updateSlot)
 {
-	// Start updating the motion parameters used for blend spaces
-	if (auto *pPhysEnt = m_pPlayer->GetEntity()->GetPhysics())
-	{
-		// Update entity rotation as the player turns
-		// Start with getting the look orientation's yaw, pitch and roll
-		Ang3 ypr = CCamera::CreateAnglesYPR(Matrix33(m_pPlayer->GetInput()->GetLookOrientation()));
-
-		// We only want to affect Z-axis rotation, zero pitch and roll
-		ypr.y = 0;
-		ypr.z = 0;
-
-		// Re-calculate the quaternion based on the corrected look orientation
-		Quat correctedOrientation = Quat(CCamera::CreateOrientationYPR(ypr));
-
-		auto *pCharacter = m_pPlayer->GetEntity()->GetCharacter(CPlayer::eGeometry_ThirdPerson);
-
-		// Get the player's velocity from physics
-		pe_status_dynamics playerDynamics;
-		if (pPhysEnt->GetStatus(&playerDynamics) != 0 && pCharacter != nullptr)
-		{
-			// Set turn rate as the difference between previous and new entity rotation
-			//float turnAngle = Ang3::CreateRadZ(GetEntity()->GetForwardDir(), correctedOrientation.GetColumn1()) / ctx.fFrameTime;
-			float turnAngle = 0.0f;
-			float travelAngle = Ang3::CreateRadZ(GetEntity()->GetForwardDir(), playerDynamics.v.GetNormalized());
-			float travelSpeed = playerDynamics.v.GetLength2D();
-
-			// Set the travel speed based on the physics velocity magnitude
-			// Keep in mind that the maximum number for motion parameters is 10.
-			// If your velocity can reach a magnitude higher than this, divide by the maximum theoretical account and work with a 0 - 1 ratio.
-			pCharacter->GetISkeletonAnim()->SetDesiredMotionParam(eMotionParamID_TravelSpeed, travelSpeed, 0.f);
-
-			// Update the turn speed in CryAnimation, note that the maximum motion parameter (10) applies here too.
-			//pCharacter->GetISkeletonAnim()->SetDesiredMotionParam(eMotionParamID_TurnAngle, turnAngle, 0.f);
-			pCharacter->GetISkeletonAnim()->SetDesiredMotionParam(eMotionParamID_TravelAngle, travelAngle, 0.f);
-
-			if (m_pPlayer->GetMovement()->IsOnGround())
-			{
-				// Calculate slope value
-				Vec3 groundNormal = m_pPlayer->GetMovement()->GetGroundNormal() * correctedOrientation;
-				groundNormal.x = 0.0f;
-				float cosine = Vec3Constants<float>::fVec3_OneZ | groundNormal;
-				Vec3 sine = Vec3Constants<float>::fVec3_OneZ % groundNormal;
-
-				float travelSlope = atan2f(sgn(sine.x) * sine.GetLength(), cosine);
-
-				pCharacter->GetISkeletonAnim()->SetDesiredMotionParam(eMotionParamID_TravelSlope, travelSlope, 0.f);
-			}
-		}
-
-		// Send updated transform to the entity, only orientation changes
-		//GetEntity()->SetPosRotScale(GetEntity()->GetWorldPos(), correctedOrientation, Vec3(1, 1, 1));
-	}
+	UpdatePlayerTurnAngle();
 
 	if (m_pActionController != nullptr)
 	{
 		m_pActionController->Update(ctx.fFrameTime);
 	}
+}
+
+void CPlayerAnimations::UpdatePlayerTurnAngle()
+{
+	Vec3 moveDir = m_pPlayer->GetInput()->GetMoveDirection();
+
+	float turnAngle = GetVectorsAngleN(moveDir, GetEntity()->GetForwardDir());
+
+	auto *pCharacter = m_pPlayer->GetEntity()->GetCharacter(CPlayer::eGeometry_ThirdPerson);
+
+	pCharacter->GetISkeletonAnim()->SetDesiredMotionParam(eMotionParamID_TurnAngle, turnAngle, 0.f);
 }
 
 void CPlayerAnimations::ProcessEvent(SEntityEvent& event)
@@ -205,19 +168,22 @@ void CPlayerAnimations::ClearTagGroup(TagGroupID groupId)
 }
 
 //------------------------------------------------------------------------
-void CPlayerAnimations::PlayMoveAction(FragmentID fragmentID, EPlayerActionPriority priority, TagState fragTags)
+void CPlayerAnimations::PlayMoveAction(char * fragmentName, bool isRotationForce, EPlayerActionPriority priority, TagState fragTags)
 {
 	if (m_pActionController)
 	{
-		m_pLastAction = new CMoveAction(m_pPlayer->GetEntity(), priority, fragmentID, fragTags);
+		FragmentID fragID = m_pActionController->GetContext().controllerDef.m_fragmentIDs.Find(fragmentName);
+		m_pLastAction = new CMoveAction(m_pPlayer, isRotationForce, priority, fragID, fragTags);
 		m_pActionController->Queue(*m_pLastAction);
 	}
 }
-void CPlayerAnimations::PlayMoveForceAction(FragmentID fragmentID, EPlayerActionPriority priority, TagState fragTags)
+
+void CPlayerAnimations::PlayMovementAction(char * fragmentName, EPlayerActionPriority priority, TagState fragTags)
 {
 	if (m_pActionController)
 	{
-		m_pLastAction = new CMoveForceAction(m_pPlayer->GetEntity(), priority, fragmentID, fragTags);
+		FragmentID fragID = m_pActionController->GetContext().controllerDef.m_fragmentIDs.Find(fragmentName);
+		m_pLastAction = new CMovementAction(m_pPlayer, priority, fragID, fragTags);
 		m_pActionController->Queue(*m_pLastAction);
 	}
 }

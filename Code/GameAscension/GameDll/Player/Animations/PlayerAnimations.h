@@ -33,13 +33,15 @@ public:
 	void SetTagGroup(TagGroupID groupId, TagID tagId);
 	void ClearTagGroup(TagGroupID groupId);
 
-	void PlayMoveAction(FragmentID fragmentID, EPlayerActionPriority priority, TagState fragTags);
-	void PlayMoveForceAction(FragmentID fragmentID, EPlayerActionPriority priority, TagState fragTags);
+	void PlayMoveAction(char * fragmentName, bool isRotationForce, EPlayerActionPriority priority, TagState fragTags = TAG_STATE_EMPTY);
+	void PlayMovementAction(char * fragmentName, EPlayerActionPriority priority, TagState fragTags = TAG_STATE_EMPTY);
 
-	void PlayFragment(FragmentID fragmentID, EPlayerActionPriority priority, TagState tagState);
-	void PlayFragment(char * fragmentName, EPlayerActionPriority priority, TagState tagState);
+	void PlayFragment(FragmentID fragmentID, EPlayerActionPriority priority, TagState tagState = TAG_STATE_EMPTY);
+	void PlayFragment(char * fragmentName, EPlayerActionPriority priority, TagState tagState = TAG_STATE_EMPTY);
 
 	void ForceFinishLastAction();
+
+	void UpdatePlayerTurnAngle();
 
 protected:
 	void ActivateMannequinContext(const char *contextName, ICharacterInstance &character, const SControllerDef &controllerDefinition, const IAnimationDatabase &animationDatabase);
