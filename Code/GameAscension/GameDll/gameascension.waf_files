@@ -27,11 +27,6 @@
             "Player/Player.cpp",
             "Player/Player.h"
         ],
-        "Player/Movement" :
-        [
-            "Player/Movement/PlayerMovement.cpp",
-            "Player/Movement/PlayerMovement.h"
-        ],
         "Player/Input" :
         [
             "Player/Input/PlayerInput.cpp",

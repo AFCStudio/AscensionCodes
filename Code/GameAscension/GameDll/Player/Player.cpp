@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 #include "Player.h"
 
-#include "Movement/PlayerMovement.h"
 #include "Input/PlayerInput.h"
 #include "View/PlayerView.h"
 #include "Animations/PlayerAnimations.h"
@@ -22,7 +21,6 @@ class CPlayerRegistrator
 	{
 		CGamePlugin::RegisterEntityWithDefaultComponent<CPlayer>("Player");
 
-		CGamePlugin::RegisterEntityComponent<CPlayerMovement>("PlayerMovement");
 		CGamePlugin::RegisterEntityComponent<CPlayerInput>("PlayerInput");
 		CGamePlugin::RegisterEntityComponent<CPlayerView>("PlayerView");
 		CGamePlugin::RegisterEntityComponent<CPlayerAnimations>("PlayerAnimations");
@@ -82,7 +80,6 @@ CPlayerRegistrator g_playerRegistrator;
 
 CPlayer::CPlayer()
 	: m_pInput(nullptr)
-	, m_pMovement(nullptr)
 	, m_pView(nullptr)
 	, m_bAlive(false)
 	, m_bIsSpaceKey(false)
@@ -108,7 +105,6 @@ bool CPlayer::Init(IGameObject *pGameObject)
 
 void CPlayer::PostInit(IGameObject *pGameObject)
 {
-	m_pMovement = static_cast<CPlayerMovement *>(GetGameObject()->AcquireExtension("PlayerMovement"));
 	m_pAnimations = static_cast<CPlayerAnimations *>(GetGameObject()->AcquireExtension("PlayerAnimations"));
 	m_pInput = static_cast<CPlayerInput *>(GetGameObject()->AcquireExtension("PlayerInput"));
 	m_pStateManager = static_cast<CPlayerStateManager *>(GetGameObject()->AcquireExtension("PlayerStateManager"));
@@ -209,6 +205,41 @@ void CPlayer::SelectSpawnPoint()
 	}
 }
 
+void CPlayer::Physicalize()
+{
+	// Physicalize the player as type Living.
+	// This physical entity type is specifically implemented for players
+	SEntityPhysicalizeParams physParams;
+	physParams.type = PE_LIVING;
+
+	physParams.mass = GetCVars().m_mass;
+
+	pe_player_dimensions playerDimensions;
+
+	// Prefer usage of a cylinder instead of capsule
+	playerDimensions.bUseCapsule = 0;
+
+	// Specify the size of our cylinder
+	playerDimensions.sizeCollider = Vec3(0.45f, 0.45f, GetCVars().m_playerEyeHeight * 0.5f);
+
+	// Keep pivot at the player's feet (defined in player geometry) 
+	playerDimensions.heightPivot = 0.f;
+	// Offset collider upwards
+	playerDimensions.heightCollider = 1.f;
+	playerDimensions.groundContactEps = 0.004f;
+
+	physParams.pPlayerDimensions = &playerDimensions;
+
+	pe_player_dynamics playerDynamics;
+	playerDynamics.kAirControl = 0.f;
+	playerDynamics.mass = physParams.mass;
+
+	physParams.pPlayerDynamics = &playerDynamics;
+
+	GetEntity()->Physicalize(physParams);
+}
+
+
 void CPlayer::SetPlayerModel()
 {
 	// Load the third person model
@@ -218,5 +249,5 @@ void CPlayer::SetPlayerModel()
 	m_pAnimations->OnPlayerModelChanged();
 
 	// Now create the physical representation of the entity
-	m_pMovement->Physicalize();
+	Physicalize();
 }

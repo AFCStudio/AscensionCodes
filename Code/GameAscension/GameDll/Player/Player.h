@@ -8,7 +8,6 @@
 #include <CryMath/Cry_Camera.h>
 
 class CPlayerInput;
-class CPlayerMovement;
 class CPlayerView;
 class CPlayerAnimations;
 class CPlayerStateManager;
@@ -64,7 +63,6 @@ public:
 	// ~ISimpleActor
 
 	CPlayerInput * GetInput() const { return m_pInput; }
-	CPlayerMovement * GetMovement() const { return m_pMovement; }
 	CPlayerStateManager * GetStateManager() const { return m_pStateManager; }
 	CPlayerAnimations * GetAnimationManager() const { return m_pAnimations; }
 
@@ -80,9 +78,10 @@ protected:
 	void SelectSpawnPoint();
 	void SetPlayerModel();
 
+	void Physicalize();
+
 protected:
 	CPlayerInput		* m_pInput;
-	CPlayerMovement		* m_pMovement;
 	CPlayerView			* m_pView;
 	CPlayerAnimations	* m_pAnimations;
 	CPlayerStateManager * m_pStateManager;
