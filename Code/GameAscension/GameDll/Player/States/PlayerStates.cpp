@@ -27,16 +27,6 @@ void CPlayerStateIdle::Enter()
 }
 void CPlayerStateIdle::Update(SEntityUpdateContext& ctx, int updateSlot)
 {
-	IEntity &entity = *(m_pPlayer->GetEntity());
-	IPhysicalEntity *pPhysicalEntity = entity.GetPhysics();
-	if (pPhysicalEntity == nullptr)
-		return;
-
-	// Obtain stats from the living entity implementation
-	m_pPlayer->GetMovement()->GetLatestPhysicsStats(*pPhysicalEntity);
-
-	// Send latest input data to physics indicating desired movement direction
-	m_pPlayer->GetMovement()->UpdateMovementRequest(ctx.fFrameTime, *pPhysicalEntity);
 }
 void CPlayerStateIdle::Exit()
 {}
@@ -45,20 +35,12 @@ void CPlayerStateIdle::Exit()
 // Move State
 void CPlayerStateMove::Enter()
 {
-	m_pPlayer->GetAnimationManager()->PlayFragment("MotionMovement", PP_Movement, TAG_STATE_EMPTY);
+	m_pPlayer->GetAnimationManager()->PlayMoveAction("MotionTurn", true, PP_Movement, TAG_STATE_EMPTY);
+	m_pPlayer->GetAnimationManager()->PlayMoveAction("MotionIdle2Move", false, PP_Movement, TAG_STATE_EMPTY);
+	m_pPlayer->GetAnimationManager()->PlayMovementAction("MotionMovement", PP_Movement, TAG_STATE_EMPTY);
 }
 void CPlayerStateMove::Update(SEntityUpdateContext& ctx, int updateSlot)
 {
-	IEntity &entity = *(m_pPlayer->GetEntity());
-	IPhysicalEntity *pPhysicalEntity = entity.GetPhysics();
-	if (pPhysicalEntity == nullptr)
-		return;
-
-	// Obtain stats from the living entity implementation
-	m_pPlayer->GetMovement()->GetLatestPhysicsStats(*pPhysicalEntity);
-
-	// Send latest input data to physics indicating desired movement direction
-	m_pPlayer->GetMovement()->UpdateMovementRequest(ctx.fFrameTime, *pPhysicalEntity);
 }
 void CPlayerStateMove::Exit()
 {
