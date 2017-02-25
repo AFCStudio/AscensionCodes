@@ -32,7 +32,8 @@ public:
 	struct SExternalCVars
 	{
 		float m_mass;
-		float m_moveSpeed;
+		float m_walkSpeed;
+		float m_runSpeed;
 
 		float m_rotationSpeedYaw;
 		float m_rotationSpeedPitch;
@@ -69,6 +70,12 @@ public:
 
 	const SExternalCVars &GetCVars() const;
 
+
+	void SetSpaceKeyStatus(bool isPressed) { m_bIsSpaceKey = isPressed; }
+	bool IsSpaceKeyPressed() const { return m_bIsSpaceKey; }
+
+	float GetMoveSpeed() const;
+
 protected:
 	void SelectSpawnPoint();
 	void SetPlayerModel();
@@ -81,6 +88,8 @@ protected:
 	CPlayerStateManager * m_pStateManager;
 
 	bool m_bAlive;
+	bool m_bIsSpaceKey;
+
 };
 
 #endif

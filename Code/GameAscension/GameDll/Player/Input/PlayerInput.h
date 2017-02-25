@@ -74,6 +74,8 @@ protected:
 	bool OnActionMouseRotateYaw(EntityId entityId, const ActionId& actionId, int activationMode, float value);
 	bool OnActionMouseRotatePitch(EntityId entityId, const ActionId& actionId, int activationMode, float value);
 
+	bool OnActionSpace(EntityId entityId, const ActionId& actionId, int activationMode, float value);
+
 protected:
 	CPlayer * m_pPlayer;
 

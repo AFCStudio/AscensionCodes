@@ -141,6 +141,8 @@ void CPlayerInput::InitializeActionHandler()
 
 	m_actionHandler.AddHandler(ActionId("mouse_rotateyaw"), &CPlayerInput::OnActionMouseRotateYaw);
 	m_actionHandler.AddHandler(ActionId("mouse_rotatepitch"), &CPlayerInput::OnActionMouseRotatePitch);
+
+	m_actionHandler.AddHandler(ActionId("space"), &CPlayerInput::OnActionSpace);
 }
 
 void CPlayerInput::OnAction(const ActionId &action, int activationMode, float value)
@@ -183,5 +185,11 @@ bool CPlayerInput::OnActionMouseRotateYaw(EntityId entityId, const ActionId& act
 bool CPlayerInput::OnActionMouseRotatePitch(EntityId entityId, const ActionId& actionId, int activationMode, float value)
 {
 	m_mouseDeltaRotation.y -= value;
+	return true;
+}
+
+bool CPlayerInput::OnActionSpace(EntityId entityId, const ActionId & actionId, int activationMode, float value)
+{
+	m_pPlayer->SetSpaceKeyStatus(activationMode != eIS_Released);
 	return true;
 }
