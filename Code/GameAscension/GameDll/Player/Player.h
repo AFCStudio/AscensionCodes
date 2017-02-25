@@ -33,6 +33,7 @@ public:
 		float m_mass;
 		float m_walkSpeed;
 		float m_runSpeed;
+		float m_rotationSpeed;
 
 		float m_rotationSpeedYaw;
 		float m_rotationSpeedPitch;

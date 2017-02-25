@@ -39,6 +39,7 @@ class CPlayerRegistrator
 		REGISTER_CVAR2("pl_mass", &m_mass, 90.f, VF_CHEAT, "Mass of the player entity in kg");
 		REGISTER_CVAR2("pl_walkSpeed", &m_walkSpeed, 1.8f, VF_CHEAT, "Player walking speed");
 		REGISTER_CVAR2("pl_runSpeed", &m_runSpeed, 3.7f, VF_CHEAT, "Player running speed");
+		REGISTER_CVAR2("pl_rotationSpeed", &m_rotationSpeed, 7.0f, VF_CHEAT, "Player rotation speed while moving");
 
 		REGISTER_CVAR2("pl_rotationSpeedYaw", &m_rotationSpeedYaw, 0.05f, VF_CHEAT, "Speed at which the player rotates entity yaw");
 		REGISTER_CVAR2("pl_rotationSpeedPitch", &m_rotationSpeedPitch, 0.05f, VF_CHEAT, "Speed at which the player rotates entity pitch");
@@ -63,6 +64,7 @@ class CPlayerRegistrator
 			pConsole->UnregisterVariable("pl_mass");
 			pConsole->UnregisterVariable("pl_walkSpeed");
 			pConsole->UnregisterVariable("pl_runSpeed");
+			pConsole->UnregisterVariable("pl_rotationSpeed");
 			pConsole->UnregisterVariable("pl_rotationSpeedYaw");
 			pConsole->UnregisterVariable("pl_rotationSpeedPitch");
 			pConsole->UnregisterVariable("pl_rotationLimitsMinPitch");
