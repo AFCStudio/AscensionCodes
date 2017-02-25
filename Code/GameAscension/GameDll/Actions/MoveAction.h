@@ -22,22 +22,32 @@
 
 #include "ActionBase.h"
 
+class CPlayer;
+
 class CMoveAction : public TPlayerAction
 {
 	typedef TPlayerAction BaseClass;
 
 public:
 	CMoveAction(
-		IEntity * pEntity,
+		CPlayer * pPlayer, bool isRotateForce = false,
 		int priority = PP_PlayerAction, FragmentID fragmentID = FRAGMENT_ID_INVALID,
 		const TagState &fragTags = TAG_STATE_EMPTY,
 		uint32 flags = 0, ActionScopes scopeMask = 0, uint32 userToken = 0);
 
 	virtual EStatus Update(float timePassed);
+	virtual void Enter();
 
 protected:
+	CPlayer * m_pPlayer;
 
-	IEntity		* m_pEntity;
+	bool	m_bIsRotateForce;
+
+	float m_fTotalRot;
+
+	Quat m_initialRot;
+
+	float m_initialZ;
 };
 
 #endif
