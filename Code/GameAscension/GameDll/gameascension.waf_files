@@ -73,6 +73,8 @@
             "Actions/MoveAction.cpp",
 			"Actions/MoveForceAction.h",
             "Actions/MoveForceAction.cpp"
+			"Actions/MovementAction.h",
+            "Actions/MovementAction.cpp"
         ]
     }
 }
