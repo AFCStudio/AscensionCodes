@@ -135,19 +135,7 @@ void CPlayerAnimations::OnPlayerModelChanged()
 	// Activate the Main context we'll be playing our animations in
 	ActivateMannequinContext(mannequinContextName, *pCharacterInstance, *pControllerDefinition, *pAnimationDatabase);
 
-	// Create this idle fragment
-	// This implementation handles switching to various sub-fragments by itself, based on input and physics data
-	int priority = 0;
-	auto idleFragmentId = pControllerDefinition->m_fragmentIDs.Find("MotionIdle");
-
-	m_pIdleFragment = new TAction<SAnimationContext>(priority, idleFragmentId, TAG_STATE_EMPTY, 0);
-
-	// Queue the idle fragment to start playing immediately on next update
-	m_pActionController->Queue(*m_pIdleFragment.get());
-
-	// Acquire tag identifiers to avoid doing so each update
-	m_rotateTagId = m_pAnimationContext->state.GetDef().Find("MotionTurn");
-	m_walkTagId = m_pAnimationContext->state.GetDef().Find("MotionMovement");
+	PlayFragment("MotionIdle", PP_Lowest, TAG_STATE_EMPTY);
 
 	// Disable movement coming from the animation (root joint offset), we control this entirely via physics
 	pCharacterInstance->GetISkeletonAnim()->SetAnimationDrivenMotion(1);

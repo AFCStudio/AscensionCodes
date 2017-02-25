@@ -55,11 +55,6 @@ protected:
 	IActionController * m_pActionController;
 	SAnimationContext * m_pAnimationContext;
 
-	_smart_ptr<IAction> m_pIdleFragment;
-
-	TagID m_rotateTagId;
-	TagID m_walkTagId;
-
 	IActionPtr	m_pLastAction;
 };
 
