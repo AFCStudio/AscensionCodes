@@ -69,5 +69,13 @@
 			"Actions/MovementAction.h",
             "Actions/MovementAction.cpp"
         ]
+    },
+	"AFCGameAscension_uber_math.cpp" :
+    {
+        "Math" :
+        [
+            "Math/AFC_Math.h",
+            "Math/AFC_Math.cpp"
+        ]
     }
 }
