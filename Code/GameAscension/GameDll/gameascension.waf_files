@@ -71,8 +71,6 @@
             "Actions/ActionBase.h",
             "Actions/MoveAction.h",
             "Actions/MoveAction.cpp",
-			"Actions/MoveForceAction.h",
-            "Actions/MoveForceAction.cpp"
 			"Actions/MovementAction.h",
             "Actions/MovementAction.cpp"
         ]
