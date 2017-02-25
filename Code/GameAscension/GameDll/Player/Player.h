@@ -16,6 +16,8 @@ class CPlayer;
 
 class CSpawnPoint;
 
+enum EWeaponType { ewt_magic, ewt_sword, ewt_knife };
+
 ////////////////////////////////////////////////////////
 // Represents a player participating in gameplay
 ////////////////////////////////////////////////////////
@@ -69,6 +71,11 @@ public:
 
 	const SExternalCVars &GetCVars() const;
 
+	EWeaponType GetWeaponType() { return m_weaponType; }
+
+	// Select weapon
+	// isForce can be used while initializing to ensure set weapon tag
+	void SelectWeapon(EWeaponType weaponType, bool isForce = false);
 
 	void SetSpaceKeyStatus(bool isPressed) { m_bIsSpaceKey = isPressed; }
 	bool IsSpaceKeyPressed() const { return m_bIsSpaceKey; }
@@ -90,6 +97,7 @@ protected:
 	bool m_bAlive;
 	bool m_bIsSpaceKey;
 
+	EWeaponType m_weaponType;
 };
 
 #endif

@@ -85,6 +85,7 @@ CPlayer::CPlayer()
 	, m_pView(nullptr)
 	, m_bAlive(false)
 	, m_bIsSpaceKey(false)
+	, m_weaponType(ewt_magic)
 {
 }
 
@@ -96,6 +97,12 @@ CPlayer::~CPlayer()
 const CPlayer::SExternalCVars &CPlayer::GetCVars() const
 {
 	return g_playerRegistrator;
+}
+
+void CPlayer::SelectWeapon(EWeaponType weaponType, bool isForce)
+{
+	if (isForce || (m_weaponType != weaponType))
+		m_pAnimations->SetWeaponTag(weaponType);
 }
 
 bool CPlayer::Init(IGameObject *pGameObject)

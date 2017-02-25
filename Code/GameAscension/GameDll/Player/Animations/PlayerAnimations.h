@@ -8,6 +8,7 @@
 #include <ICryMannequin.h>
 
 enum EPlayerActionPriority;
+enum EWeaponType;
 class CPlayer;
 
 ////////////////////////////////////////////////////////
@@ -42,6 +43,8 @@ public:
 	void ForceFinishLastAction();
 
 	void UpdatePlayerTurnAngle();
+
+	void SetWeaponTag(EWeaponType weaponType);
 
 protected:
 	void ActivateMannequinContext(const char *contextName, ICharacterInstance &character, const SControllerDef &controllerDefinition, const IAnimationDatabase &animationDatabase);

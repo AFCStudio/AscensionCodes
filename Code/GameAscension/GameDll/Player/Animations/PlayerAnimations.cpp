@@ -53,6 +53,28 @@ void CPlayerAnimations::UpdatePlayerTurnAngle()
 	pCharacter->GetISkeletonAnim()->SetDesiredMotionParam(eMotionParamID_TurnAngle, turnAngle, 0.f);
 }
 
+void CPlayerAnimations::SetWeaponTag(EWeaponType weaponType)
+{
+	TagGroupID groupId = m_pAnimationContext->controllerDef.m_tags.FindGroup("weaponType");
+	TagID tagId = TAG_ID_INVALID;
+	if (groupId != TAG_ID_INVALID)
+	{
+		switch (weaponType)
+		{
+		case ewt_magic:	tagId = m_pAnimationContext->controllerDef.m_tags.Find("magic"); break;
+		case ewt_sword:	tagId = m_pAnimationContext->controllerDef.m_tags.Find("sword"); break;
+		case ewt_knife:	tagId = m_pAnimationContext->controllerDef.m_tags.Find("knife"); break;
+		}
+
+		if (tagId != TAG_ID_INVALID)
+			m_pAnimationContext->state.SetGroup(groupId, tagId);
+		else
+			CryLog("Weapon tag id could not found!");
+	}
+	else
+		CryLog("weaponType tag group id could not found!");
+}
+
 void CPlayerAnimations::ProcessEvent(SEntityEvent& event)
 {
 	switch (event.event)
@@ -129,6 +151,8 @@ void CPlayerAnimations::OnPlayerModelChanged()
 
 	// Disable movement coming from the animation (root joint offset), we control this entirely via physics
 	pCharacterInstance->GetISkeletonAnim()->SetAnimationDrivenMotion(1);
+
+	SetWeaponTag(ewt_magic);
 }
 
 void CPlayerAnimations::ActivateMannequinContext(const char *contextName, ICharacterInstance &character, const SControllerDef &controllerDefinition, const IAnimationDatabase &animationDatabase)
