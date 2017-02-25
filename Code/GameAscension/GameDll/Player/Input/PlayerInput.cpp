@@ -2,6 +2,7 @@
 #include "PlayerInput.h"
 
 #include "Player/Player.h"
+#include "Player/States/PlayerStateManager.h"
 
 #include <CryAnimation/ICryAnimation.h>
 
@@ -31,17 +32,10 @@ void CPlayerInput::PostInit(IGameObject *pGameObject)
 
 void CPlayerInput::Update(SEntityUpdateContext &ctx, int updateSlot)
 {
-	// Start by updating look dir
-	Ang3 ypr = CCamera::CreateAnglesYPR(Matrix33(m_lookOrientation));
-	
-	ypr.x += m_mouseDeltaRotation.x * m_pPlayer->GetCVars().m_rotationSpeedYaw * ctx.fFrameTime;
-
-	// TODO: Perform soft clamp here instead of hard wall, should reduce rot speed in this direction when close to limit.
-	ypr.y = CLAMP(ypr.y + m_mouseDeltaRotation.y * m_pPlayer->GetCVars().m_rotationSpeedPitch * ctx.fFrameTime, m_pPlayer->GetCVars().m_rotationLimitsMinPitch, m_pPlayer->GetCVars().m_rotationLimitsMaxPitch);
-
-	ypr.z = 0;
-
-	m_lookOrientation = Quat(CCamera::CreateOrientationYPR(ypr));
+	CalculateLookOrientation(ctx.fFrameTime);
+	CalculateLocalMoveDirection();
+	UpdatePlayerState();
+	CalculateMoveDirection();
 
 	// Reset every frame
 	m_mouseDeltaRotation = ZERO;
@@ -79,6 +73,62 @@ void CPlayerInput::HandleInputFlagChange(EInputFlags flags, int activationMode, 
 			}
 		}
 		break;
+	}
+}
+
+void CPlayerInput::CalculateLookOrientation(float frameTime)
+{
+	// Start by updating look dir
+	Ang3 ypr = CCamera::CreateAnglesYPR(Matrix33(m_lookOrientation));
+
+	ypr.x += m_mouseDeltaRotation.x * m_pPlayer->GetCVars().m_rotationSpeedYaw * frameTime;
+
+	// TODO: Perform soft clamp here instead of hard wall, should reduce rot speed in this direction when close to limit.
+	ypr.y = CLAMP(ypr.y + m_mouseDeltaRotation.y * m_pPlayer->GetCVars().m_rotationSpeedPitch * frameTime, m_pPlayer->GetCVars().m_rotationLimitsMinPitch, m_pPlayer->GetCVars().m_rotationLimitsMaxPitch);
+
+	ypr.z = 0;
+
+	m_lookOrientation = Quat(CCamera::CreateOrientationYPR(ypr));
+}
+void CPlayerInput::CalculateMoveDirection()
+{
+	m_moveDirection = m_lookOrientation * m_localMoveDirection;
+	m_moveDirection.z = 0.0f;
+	m_moveDirection.Normalize();
+}
+void CPlayerInput::CalculateLocalMoveDirection()
+{
+	m_localMoveDirection = ZERO;
+
+	if (m_inputFlags & CPlayerInput::eInputFlag_MoveLeft)
+	{
+		m_localMoveDirection.x -= 1;
+	}
+	if (m_inputFlags & CPlayerInput::eInputFlag_MoveRight)
+	{
+		m_localMoveDirection.x += 1;
+	}
+	if (m_inputFlags & CPlayerInput::eInputFlag_MoveForward)
+	{
+		m_localMoveDirection.y += 1;
+	}
+	if (m_inputFlags & CPlayerInput::eInputFlag_MoveBack)
+	{
+		m_localMoveDirection.y -= 1;
+	}
+
+	m_localMoveDirection.Normalize();
+}
+
+void CPlayerInput::UpdatePlayerState()
+{
+	if (m_localMoveDirection != ZERO)
+	{
+		m_pPlayer->GetStateManager()->ChangeState(epsMove);
+	}
+	else
+	{
+		m_pPlayer->GetStateManager()->ChangeState(epsIdle);
 	}
 }
 

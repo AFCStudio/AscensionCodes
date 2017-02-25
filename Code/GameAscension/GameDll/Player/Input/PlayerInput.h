@@ -10,7 +10,7 @@ class CPlayer;
 ////////////////////////////////////////////////////////
 // Player extension to manage input
 ////////////////////////////////////////////////////////
-class CPlayerInput 
+class CPlayerInput
 	: public CGameObjectExtensionHelper<CPlayerInput, ISimpleExtension>
 	, public IActionListener
 {
@@ -50,11 +50,19 @@ public:
 	const Vec2 GetMouseDeltaRotation() const { return m_mouseDeltaRotation; }
 
 	const Quat &GetLookOrientation() const { return m_lookOrientation; }
+	const Vec3 &GetLocalMoveDirection() const { return m_localMoveDirection; }
+	const Vec3 &GetMoveDirection() const { return m_moveDirection; }
 
 protected:
 	void InitializeActionHandler();
 
 	void HandleInputFlagChange(EInputFlags flags, int activationMode, EInputFlagType type = eInputFlagType_Hold);
+
+	void CalculateLookOrientation(float frameTime);
+	void CalculateMoveDirection();
+	void CalculateLocalMoveDirection();
+
+	void UpdatePlayerState();
 
 	// Start actions below
 protected:
@@ -67,11 +75,14 @@ protected:
 	bool OnActionMouseRotatePitch(EntityId entityId, const ActionId& actionId, int activationMode, float value);
 
 protected:
-	CPlayer *m_pPlayer;
+	CPlayer * m_pPlayer;
 
 	TInputFlags m_inputFlags;
 
 	Vec2 m_mouseDeltaRotation;
+
+	Vec3 m_moveDirection;
+	Vec3 m_localMoveDirection;
 
 	// Should translate to head orientation in the future
 	Quat m_lookOrientation;
