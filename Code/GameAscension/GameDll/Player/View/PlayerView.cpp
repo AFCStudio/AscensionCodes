@@ -82,8 +82,6 @@ void CPlayerView::SetCameraPosWithCollision(SViewParams& viewParams)
 
 	if (collideDistance > 0 && pContact)
 	{
-		CryLog("Collide distance is %f", collideDistance);
-
 		targetCameraPos = viewParams.position +
 			m_pPlayer->GetInput()->GetLookOrientation().GetColumn1() * -collideDistance;
 	}
