@@ -7,8 +7,6 @@
 #include "Actions/MoveAction.h"
 #include "Actions/MovementAction.h"
 
-#include "Math/AFC_Math.h"
-
 #include <CryAnimation/ICryAnimation.h>
 #include <ICryMannequin.h>
 
@@ -44,9 +42,7 @@ void CPlayerAnimations::Update(SEntityUpdateContext& ctx, int updateSlot)
 
 void CPlayerAnimations::UpdatePlayerTurnAngle()
 {
-	Vec3 moveDir = m_pPlayer->GetInput()->GetMoveDirection();
-
-	float turnAngle = GetVectorsAngleN(moveDir, GetEntity()->GetForwardDir());
+	float turnAngle = m_pPlayer->GetInput()->GetMoveAngle();
 
 	auto *pCharacter = m_pPlayer->GetEntity()->GetCharacter(CPlayer::eGeometry_ThirdPerson);
 
