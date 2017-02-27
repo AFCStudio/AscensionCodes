@@ -194,6 +194,12 @@ float CPlayer::GetMoveSpeed() const
 	return m_bIsSpaceKey ? GetCVars().m_runSpeed : GetCVars().m_walkSpeed;
 }
 
+void CPlayer::SwordAttack()
+{
+	if (m_weaponType == ewt_sword)
+		m_pSword->SwordAttack();
+}
+
 void CPlayer::SelectSpawnPoint()
 {
 	// We only handle default spawning below for the Launcher

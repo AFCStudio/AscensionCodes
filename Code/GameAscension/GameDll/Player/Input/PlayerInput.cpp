@@ -230,6 +230,7 @@ bool CPlayerInput::OnActionSpace(EntityId entityId, const ActionId & actionId, i
 
 bool CPlayerInput::OnActionMouseLeft(EntityId entityId, const ActionId& actionId, int activationMode, float value)
 {
+	m_pPlayer->SwordAttack();
 	return true;
 }
 

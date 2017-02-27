@@ -84,6 +84,8 @@ public:
 
 	float GetMoveSpeed() const;
 
+	void SwordAttack();
+
 protected:
 	void SelectSpawnPoint();
 	void SetPlayerModel();
