@@ -76,6 +76,8 @@ protected:
 
 	bool OnActionSpace(EntityId entityId, const ActionId& actionId, int activationMode, float value);
 
+	bool OnActionMouseLeft(EntityId entityId, const ActionId& actionId, int activationMode, float value);
+
 	bool OnActionSelectSword(EntityId entityId, const ActionId& actionId, int activationMode, float value);
 
 protected:
