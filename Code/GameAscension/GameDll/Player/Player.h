@@ -11,6 +11,7 @@ class CPlayerInput;
 class CPlayerView;
 class CPlayerAnimations;
 class CPlayerStateManager;
+class CPlayerSword;
 
 class CPlayer;
 
@@ -93,6 +94,7 @@ protected:
 	CPlayerView			* m_pView;
 	CPlayerAnimations	* m_pAnimations;
 	CPlayerStateManager * m_pStateManager;
+	CPlayerSword * m_pSword;
 
 	bool m_bAlive;
 	bool m_bIsSpaceKey;
