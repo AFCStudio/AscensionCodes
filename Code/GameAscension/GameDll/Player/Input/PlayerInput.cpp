@@ -34,8 +34,9 @@ void CPlayerInput::Update(SEntityUpdateContext &ctx, int updateSlot)
 {
 	CalculateLookOrientation(ctx.fFrameTime);
 	CalculateLocalMoveDirection();
-	UpdatePlayerState();
 	CalculateMoveDirection();
+	CalculateMoveAngle();
+	UpdatePlayerState();
 
 	// Reset every frame
 	m_mouseDeltaRotation = ZERO;
@@ -118,6 +119,26 @@ void CPlayerInput::CalculateLocalMoveDirection()
 	}
 
 	m_localMoveDirection.Normalize();
+}
+void CPlayerInput::CalculateMoveAngle()
+{
+	if (m_localMoveDirection != ZERO)
+	{
+		Vec3 playerDir = GetEntity()->GetForwardDir();
+
+		m_moveAngle = acosf(playerDir.dot(m_moveDirection));
+
+		m_moveAngle *= playerDir.cross(m_moveDirection).z >= 0 ? 1 : -1;
+	}
+	else
+	{
+		Vec3 cameraDir = m_lookOrientation.GetColumn1();
+		Vec3 playerDir = GetEntity()->GetForwardDir();
+
+		m_moveAngle = acosf(playerDir.dot(cameraDir));
+
+		m_moveAngle *= playerDir.cross(cameraDir).z >= 0 ? 1 : -1;
+	}
 }
 
 void CPlayerInput::UpdatePlayerState()

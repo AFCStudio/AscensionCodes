@@ -52,6 +52,7 @@ public:
 	const Quat &GetLookOrientation() const { return m_lookOrientation; }
 	const Vec3 &GetLocalMoveDirection() const { return m_localMoveDirection; }
 	const Vec3 &GetMoveDirection() const { return m_moveDirection; }
+	const float &GetMoveAngle() const { return m_moveAngle; }
 
 protected:
 	void InitializeActionHandler();
@@ -61,6 +62,7 @@ protected:
 	void CalculateLookOrientation(float frameTime);
 	void CalculateMoveDirection();
 	void CalculateLocalMoveDirection();
+	void CalculateMoveAngle();
 
 	void UpdatePlayerState();
 
@@ -89,6 +91,8 @@ protected:
 
 	Vec3 m_moveDirection;
 	Vec3 m_localMoveDirection;
+
+	float m_moveAngle;
 
 	// Should translate to head orientation in the future
 	Quat m_lookOrientation;
