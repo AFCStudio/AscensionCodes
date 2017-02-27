@@ -102,7 +102,19 @@ const CPlayer::SExternalCVars &CPlayer::GetCVars() const
 void CPlayer::SelectWeapon(EWeaponType weaponType, bool isForce)
 {
 	if (isForce || (m_weaponType != weaponType))
+	{
+		m_weaponType = weaponType;
 		m_pAnimations->SetWeaponTag(weaponType);
+
+		if (weaponType == ewt_sword)
+		{
+			m_pAnimations->PlayFragment("SelectSword", PP_Sword);
+		}
+		else
+		{
+			m_pAnimations->PlayFragment("DeSelectSword", PP_Sword);
+		}
+	}
 }
 
 bool CPlayer::Init(IGameObject *pGameObject)

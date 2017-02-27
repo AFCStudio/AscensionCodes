@@ -143,6 +143,8 @@ void CPlayerInput::InitializeActionHandler()
 	m_actionHandler.AddHandler(ActionId("mouse_rotatepitch"), &CPlayerInput::OnActionMouseRotatePitch);
 
 	m_actionHandler.AddHandler(ActionId("space"), &CPlayerInput::OnActionSpace);
+
+	m_actionHandler.AddHandler(ActionId("select_sword"), &CPlayerInput::OnActionSelectSword);
 }
 
 void CPlayerInput::OnAction(const ActionId &action, int activationMode, float value)
@@ -191,5 +193,14 @@ bool CPlayerInput::OnActionMouseRotatePitch(EntityId entityId, const ActionId& a
 bool CPlayerInput::OnActionSpace(EntityId entityId, const ActionId & actionId, int activationMode, float value)
 {
 	m_pPlayer->SetSpaceKeyStatus(activationMode != eIS_Released);
+	return true;
+}
+bool CPlayerInput::OnActionSelectSword(EntityId entityId, const ActionId & actionId, int activationMode, float value)
+{
+	if (m_pPlayer->GetWeaponType() == ewt_sword)
+		m_pPlayer->SelectWeapon(ewt_magic);
+	else
+		m_pPlayer->SelectWeapon(ewt_sword);
+
 	return true;
 }
