@@ -42,6 +42,11 @@
             "Player/View/PlayerView.cpp",
             "Player/View/PlayerView.h"
         ],
+		"Player/Weapons" :
+        [
+            "Player/Weapons/PlayerSword.cpp",
+            "Player/Weapons/PlayerSword.h"
+        ],
 		"Player/States" :
         [
 			"Player/States/PlayerStateManager.cpp",
