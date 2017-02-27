@@ -143,7 +143,7 @@ void CPlayerInput::CalculateMoveAngle()
 
 void CPlayerInput::UpdatePlayerState()
 {
-	if (m_localMoveDirection != ZERO)
+	if (!m_isMoveBlocked && m_localMoveDirection != ZERO)
 	{
 		m_pPlayer->GetStateManager()->ChangeState(epsMove);
 	}

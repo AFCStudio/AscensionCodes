@@ -54,6 +54,9 @@ public:
 	const Vec3 &GetMoveDirection() const { return m_moveDirection; }
 	const float &GetMoveAngle() const { return m_moveAngle; }
 
+	void BlockMove(bool block) { m_isMoveBlocked = block; }
+	const bool IsMoveBlocked() const { return m_isMoveBlocked; }
+
 protected:
 	void InitializeActionHandler();
 
@@ -84,6 +87,8 @@ protected:
 
 protected:
 	CPlayer * m_pPlayer;
+
+	bool m_isMoveBlocked;
 
 	TInputFlags m_inputFlags;
 
