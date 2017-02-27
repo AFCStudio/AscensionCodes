@@ -6,6 +6,15 @@
 
 #include <CryAnimation/ICryAnimation.h>
 
+CPlayerInput::CPlayerInput()
+	: m_moveAngle(0.0f)
+	, m_mouseDeltaRotation(ZERO)
+	, m_moveDirection(ZERO)
+	, m_localMoveDirection(ZERO)
+	, m_lookOrientation(ZERO)
+	, m_isMoveBlocked(false)
+{}
+
 void CPlayerInput::PostInit(IGameObject *pGameObject)
 {
 	m_pPlayer = static_cast<CPlayer *>(pGameObject->QueryExtension("Player"));
