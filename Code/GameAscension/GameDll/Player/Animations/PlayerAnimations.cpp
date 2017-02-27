@@ -3,6 +3,7 @@
 
 #include "Player/Player.h"
 #include "Player/Input/PlayerInput.h"
+#include "Player/Weapons/PlayerSword.h"
 
 #include "Actions/MoveAction.h"
 #include "Actions/MovementAction.h"
@@ -192,6 +193,44 @@ void CPlayerAnimations::PlayMovementAction(char * fragmentName, EPlayerActionPri
 	{
 		FragmentID fragID = m_pActionController->GetContext().controllerDef.m_fragmentIDs.Find(fragmentName);
 		m_pLastAction = new CMovementAction(m_pPlayer, priority, fragID, fragTags);
+		m_pActionController->Queue(*m_pLastAction);
+	}
+}
+
+void CPlayerAnimations::PlaySwordAction(EPlayerActionPriority priority)
+{
+	if (m_pActionController)
+	{
+		CPlayerSword * pSword = m_pPlayer->GetSword();
+
+		FragmentID fragID = m_pActionController->GetContext().controllerDef.m_fragmentIDs.Find("melee_weapon");
+
+		const CTagDefinition * const pTagDefinition = m_pActionController->GetTagDefinition(fragID);
+		TagState tagState = TAG_STATE_EMPTY;
+
+		TagGroupID tagGroupId = pTagDefinition->FindGroup("combatSequence");
+		TagID tagId = pTagDefinition->Find(pSword->GetTagIDNameFromCurrentSequence());
+
+		if (tagGroupId != TAG_ID_INVALID || tagId != TAG_ID_INVALID)
+		{
+			pTagDefinition->SetGroup(tagState, tagGroupId, tagId);
+		}
+		else
+		{
+			CryLog("Player sword tag group ID or group member ID could not be founded by sword PlaySwordAction!");
+		}
+
+		tagId = pTagDefinition->Find("inSequence");
+		if (tagId != TAG_ID_INVALID)
+		{
+			pTagDefinition->Set(tagState, tagId, pSword->IsInSequence());
+		}
+		else
+		{
+			CryLog("Player sword sequence tag ID could not be founded by sword PlaySwordAction!");
+		}
+
+		m_pLastAction = new CMoveAction(m_pPlayer, true, priority, fragID, tagState);
 		m_pActionController->Queue(*m_pLastAction);
 	}
 }

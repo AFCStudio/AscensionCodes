@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Entities/Helpers/ISimpleExtension.h"
+#include "Actions/ActionBase.h"
 
 #include <ICryMannequin.h>
 
@@ -39,6 +40,8 @@ public:
 
 	void PlayFragment(FragmentID fragmentID, EPlayerActionPriority priority, TagState tagState = TAG_STATE_EMPTY);
 	void PlayFragment(char * fragmentName, EPlayerActionPriority priority, TagState tagState = TAG_STATE_EMPTY);
+
+	void PlaySwordAction(EPlayerActionPriority priority = PP_Sword);
 
 	void ForceFinishLastAction();
 
