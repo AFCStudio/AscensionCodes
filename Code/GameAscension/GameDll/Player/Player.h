@@ -69,6 +69,7 @@ public:
 	CPlayerInput * GetInput() const { return m_pInput; }
 	CPlayerStateManager * GetStateManager() const { return m_pStateManager; }
 	CPlayerAnimations * GetAnimationManager() const { return m_pAnimations; }
+	CPlayerSword * GetSword() const { return m_pSword; }
 
 	const SExternalCVars &GetCVars() const;
 
