@@ -38,10 +38,10 @@ CPlayerRegistrator g_playerRegistrator;
 CPlayer::CPlayer()
 	: m_pInput(nullptr)
 	, m_pView(nullptr)
-	, m_bAlive(false)
-	, m_bIsSpaceKey(false)
 	, m_weaponType(ewt_magic)
 {
+	m_bIsPlayer = true;
+
 	RegisterCVars();
 }
 
@@ -150,31 +150,20 @@ void CPlayer::ProcessEvent(SEntityEvent& event)
 
 void CPlayer::SetHealth(float health)
 {
-	// Find a spawn point and move the entity there
-	SelectSpawnPoint();
-
-	// Note that this implementation does not handle the concept of death, SetHealth(0) will still revive the player.
-	if (m_bAlive)
-		return;
-
-	m_bAlive = true;
-
-	// Unhide the entity in case hidden by the Editor
-	GetEntity()->Hide(false);
-
-	// Make sure that the player spawns upright
-	GetEntity()->SetWorldTM(Matrix34::Create(Vec3(1, 1, 1), IDENTITY, GetEntity()->GetWorldPos()));
-
-	// Set the player geometry, this also triggers physics proxy creation
-	SetPlayerModel();
+	CActor::SetHealth(health);
 
 	// Notify input that the player respawned
 	m_pInput->OnPlayerRespawn();
 }
 
-float CPlayer::GetMoveSpeed() const
+const Vec3 CPlayer::GetMoveDirection() const
 {
-	return m_bIsSpaceKey ? GetCVars().m_runSpeed : GetCVars().m_walkSpeed;
+	return GetInput()->GetMoveDirection();
+}
+
+const float CPlayer::GetMoveAngle() const
+{ 
+	return GetInput()->GetMoveAngle();
 }
 
 void CPlayer::SwordAttack()
@@ -183,84 +172,20 @@ void CPlayer::SwordAttack()
 		m_pSword->SwordAttack();
 }
 
-void CPlayer::SelectSpawnPoint()
 {
-	// We only handle default spawning below for the Launcher
-	// Editor has special logic in CEditorGame
-	if (gEnv->IsEditor())
-		return;
-
-	// Spawn at first default spawner
-	auto *pEntityIterator = gEnv->pEntitySystem->GetEntityIterator();
-	pEntityIterator->MoveFirst();
-
-	auto *pSpawnerClass = gEnv->pEntitySystem->GetClassRegistry()->FindClass("SpawnPoint");
-	auto extensionId = gEnv->pGameFramework->GetIGameObjectSystem()->GetID("SpawnPoint");
-
-	while (!pEntityIterator->IsEnd())
 	{
-		IEntity *pEntity = pEntityIterator->Next();
 
-		if (pEntity->GetClass() != pSpawnerClass)
-			continue;
-
-		auto *pGameObject = gEnv->pGameFramework->GetGameObject(pEntity->GetId());
-		if (pGameObject == nullptr)
-			continue;
-
-		auto *pSpawner = static_cast<CSpawnPoint *>(pGameObject->QueryExtension(extensionId));
-		if (pSpawner == nullptr)
-			continue;
-
-		pSpawner->SpawnEntity(*GetEntity());
-
-		break;
 	}
 }
 
-void CPlayer::Physicalize()
 {
-	// Physicalize the player as type Living.
-	// This physical entity type is specifically implemented for players
-	SEntityPhysicalizeParams physParams;
-	physParams.type = PE_LIVING;
 
-	physParams.mass = GetCVars().m_mass;
 
-	pe_player_dimensions playerDimensions;
 
-	// Prefer usage of a cylinder instead of capsule
-	playerDimensions.bUseCapsule = 0;
 
-	// Specify the size of our cylinder
-	playerDimensions.sizeCollider = Vec3(0.45f, 0.45f, GetCVars().m_playerEyeHeight * 0.5f);
 
-	// Keep pivot at the player's feet (defined in player geometry) 
-	playerDimensions.heightPivot = 0.f;
-	// Offset collider upwards
-	playerDimensions.heightCollider = 1.f;
-	playerDimensions.groundContactEps = 0.004f;
 
-	physParams.pPlayerDimensions = &playerDimensions;
 
-	pe_player_dynamics playerDynamics;
-	playerDynamics.kAirControl = 0.f;
-	playerDynamics.mass = physParams.mass;
-
-	physParams.pPlayerDynamics = &playerDynamics;
-
-	GetEntity()->Physicalize(physParams);
 }
 
 
-void CPlayer::SetPlayerModel()
-{
-	// Load the third person model
-	GetEntity()->LoadCharacter(eGeometry_ThirdPerson, GetCVars().m_pThirdPersonGeometry->GetString());
-	
-	// Do the same for animations so that Mannequin data can be initialized
-	m_pAnimations->OnPlayerModelChanged();
-
-	// Now create the physical representation of the entity
-	Physicalize();
-}

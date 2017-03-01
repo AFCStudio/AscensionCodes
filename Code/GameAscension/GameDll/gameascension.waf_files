@@ -32,7 +32,6 @@
     {
         "Player" :
         [
-            "Player/ISimpleActor.h",
             "Player/Player.cpp",
             "Player/Player.h"
         ],

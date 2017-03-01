@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "Player/ISimpleActor.h"
+#include "Actor/Actor.h"
 
 #include <CryMath/Cry_Camera.h>
 
@@ -23,13 +23,9 @@ enum EWeaponType { ewt_magic, ewt_sword, ewt_knife };
 // Represents a player participating in gameplay
 ////////////////////////////////////////////////////////
 class CPlayer 
-	: public CGameObjectExtensionHelper<CPlayer, ISimpleActor>
+	: public CGameObjectExtensionHelper<CPlayer, CActor>
 {
 public:
-	enum EGeometrySlots
-	{
-		eGeometry_ThirdPerson = 0,
-	};
 
 	struct SPlayerViewParams
 	{
@@ -64,19 +60,17 @@ public:
 	// isForce can be used while initializing to ensure set weapon tag
 	void SelectWeapon(EWeaponType weaponType, bool isForce = false);
 
-	void SetSpaceKeyStatus(bool isPressed) { m_bIsSpaceKey = isPressed; }
-	bool IsSpaceKeyPressed() const { return m_bIsSpaceKey; }
+	void SetSpaceKeyStatus(bool isPressed) { m_bIsRun = isPressed; }
+	bool IsSpaceKeyPressed() const { return m_bIsRun; }
 
-	float GetMoveSpeed() const;
+	const virtual Vec3 GetMoveDirection() const override;
+	const virtual float GetMoveAngle() const override;
+
 	const SPlayerViewParams &GetPlayerViewParams() const { return m_playerViewParams; }
 
 	void SwordAttack();
 
 protected:
-	void SelectSpawnPoint();
-	void SetPlayerModel();
-
-	void Physicalize();
 
 	virtual void RegisterCVars();
 	virtual void UnregisterCVars();
@@ -87,9 +81,6 @@ protected:
 	CPlayerAnimations	* m_pAnimations;
 	CPlayerStateManager * m_pStateManager;
 	CPlayerSword * m_pSword;
-
-	bool m_bAlive;
-	bool m_bIsSpaceKey;
 
 	EWeaponType m_weaponType;
 
