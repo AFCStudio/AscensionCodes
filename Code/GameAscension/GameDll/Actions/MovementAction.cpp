@@ -23,34 +23,34 @@
 
 
 CMovementAction::CMovementAction(
-	CPlayer * pPlayer,
+	CActor * pActor,
 	int priority, FragmentID fragmentID, const TagState &fragTags,
 	uint32 flags, ActionScopes scopeMask, uint32 userToken)
 	:
 	BaseClass(priority, fragmentID, fragTags, flags, scopeMask, userToken)
-	, m_pPlayer(pPlayer)
+	, m_pActor(pActor)
 {
-	if (!m_pPlayer)
+	if (!m_pActor)
 		CryLog("Error: Actor is NULL!");
 }
 
 IAction::EStatus CMovementAction::Update(float timePassed)
 {
-	if (m_pPlayer)
+	if (m_pActor)
 	{
-		IEntity * pEntity = m_pPlayer->GetEntity();
+		IEntity * pEntity = m_pActor->GetEntity();
 
 		ICharacterInstance * pCharacter = pEntity->GetCharacter(0);
 
 		if (pCharacter)
 		{
-			float moveSpeed = m_pPlayer->GetMoveSpeed();
+			float moveSpeed = m_pActor->GetMoveSpeed();
 			pCharacter->GetISkeletonAnim()->SetDesiredMotionParam(eMotionParamID_TravelSpeed, moveSpeed, 0.f);
 
-			Vec3 moveDir = m_pPlayer->GetInput()->GetMoveDirection();
+			Vec3 moveDir = m_pActor->GetMoveDirection();
 
 			Vec3 currentDir = pEntity->GetForwardDir();
-			Interpolate(currentDir, moveDir, m_pPlayer->GetCVars().m_rotationSpeed, timePassed);
+			Interpolate(currentDir, moveDir, m_pActor->GetTurnSpeed(), timePassed);
 			currentDir.z = 0;
 			currentDir.Normalize();
 

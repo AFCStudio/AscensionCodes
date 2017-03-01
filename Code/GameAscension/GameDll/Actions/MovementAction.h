@@ -21,7 +21,7 @@
 
 #include "ActionBase.h"
 
-class CPlayer;
+class CActor;
 
 class CMovementAction : public TPlayerAction
 {
@@ -29,7 +29,7 @@ class CMovementAction : public TPlayerAction
 
 public:
 	CMovementAction(
-		CPlayer * pPlayer,
+		CActor * pActor,
 		int priority = PP_PlayerAction, FragmentID fragmentID = FRAGMENT_ID_INVALID,
 		const TagState &fragTags = TAG_STATE_EMPTY,
 		uint32 flags = 0, ActionScopes scopeMask = 0, uint32 userToken = 0);
@@ -38,7 +38,7 @@ public:
 
 protected:
 
-	CPlayer		* m_pPlayer;
+	CActor		* m_pActor;
 };
 
 #endif
