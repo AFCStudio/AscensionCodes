@@ -22,7 +22,7 @@
 
 #include "ActionBase.h"
 
-class CPlayer;
+class CActor;
 
 class CMoveAction : public TPlayerAction
 {
@@ -30,7 +30,7 @@ class CMoveAction : public TPlayerAction
 
 public:
 	CMoveAction(
-		CPlayer * pPlayer, bool isRotateForce = false,
+		CActor * pActor, bool isRotateForce = false,
 		int priority = PP_PlayerAction, FragmentID fragmentID = FRAGMENT_ID_INVALID,
 		const TagState &fragTags = TAG_STATE_EMPTY,
 		uint32 flags = 0, ActionScopes scopeMask = 0, uint32 userToken = 0);
@@ -39,7 +39,7 @@ public:
 	virtual void Enter();
 
 protected:
-	CPlayer * m_pPlayer;
+	CActor * m_pActor;
 
 	bool	m_bIsRotateForce;
 

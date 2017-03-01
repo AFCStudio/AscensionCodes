@@ -17,25 +17,25 @@
 
 #include "MoveAction.h"
 
-#include "Player/Player.h"
+#include "Actor/Actor.h"
 
 CMoveAction::CMoveAction(
-	CPlayer * pPlayer, bool isRotateForce,
+	CActor * pActor, bool isRotateForce,
 	int priority, FragmentID fragmentID, const TagState &fragTags,
 	uint32 flags, ActionScopes scopeMask, uint32 userToken)
 	:
 	BaseClass(priority, fragmentID, fragTags, flags, scopeMask, userToken)
-	, m_pPlayer(pPlayer)
+	, m_pActor(pActor)
 	, m_bIsRotateForce(isRotateForce)
 	, m_fTotalRot(0.0f)
 {
-	if (!m_pPlayer)
+	if (!m_pActor)
 		CryLog("Error: Actor is NULL!");
 }
 
 IAction::EStatus CMoveAction::Update(float timePassed)
 {
-	IEntity * m_pEntity = m_pPlayer->GetEntity();
+	IEntity * m_pEntity = m_pActor->GetEntity();
 
 	if (m_pEntity)
 	{
@@ -78,5 +78,5 @@ void CMoveAction::Enter()
 {
 	m_fTotalRot = 0.0f;
 
-	m_initialRot = m_pPlayer->GetEntity()->GetRotation();
+	m_initialRot = m_pActor->GetEntity()->GetRotation();
 }
