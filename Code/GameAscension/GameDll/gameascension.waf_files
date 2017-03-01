@@ -19,6 +19,15 @@
             "Game/GameCVars.h"
         ]
     },
+	"AFCGameAscension_uber_Actor.cpp" :
+    {
+        "Actor" :
+        [
+            "Actor/ISimpleActor.h",
+            "Actor/Actor.cpp",
+            "Actor/Actor.h"
+        ]
+    },
     "AFCGameAscension_uber_Player.cpp" :
     {
         "Player" :
