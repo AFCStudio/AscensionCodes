@@ -15,15 +15,14 @@
 #include "PlayerStates.h"
 
 #include "Player/Player.h"
-#include "Player/Animations/PlayerAnimations.h"
 
 #include "Actions/ActionBase.h"
 
 // Idle State
 void CPlayerStateIdle::Enter()
 {
-	m_pPlayer->GetAnimationManager()->ForceFinishLastAction();
-	m_pPlayer->GetAnimationManager()->PlayFragment("MotionIdle", PP_Lowest, TAG_STATE_EMPTY);
+	m_pPlayer->ForceFinishLastAction();
+	m_pPlayer->PlayFragment("MotionIdle", PP_Lowest, TAG_STATE_EMPTY);
 }
 void CPlayerStateIdle::Update(SEntityUpdateContext& ctx, int updateSlot)
 {
@@ -35,9 +34,9 @@ void CPlayerStateIdle::Exit()
 // Move State
 void CPlayerStateMove::Enter()
 {
-	m_pPlayer->GetAnimationManager()->PlayMoveAction("MotionTurn", true, PP_Movement, TAG_STATE_EMPTY);
-	m_pPlayer->GetAnimationManager()->PlayMoveAction("MotionIdle2Move", false, PP_Movement, TAG_STATE_EMPTY);
-	m_pPlayer->GetAnimationManager()->PlayMovementAction("MotionMovement", PP_Movement, TAG_STATE_EMPTY);
+	m_pPlayer->PlayMoveAction("MotionTurn", true, PP_Movement, TAG_STATE_EMPTY);
+	//m_pPlayer->GetAnimationManager()->PlayMoveAction("MotionIdle2Move", false, PP_Movement, TAG_STATE_EMPTY);
+	m_pPlayer->PlayMovementAction("MotionMovement", PP_Movement, TAG_STATE_EMPTY);
 }
 void CPlayerStateMove::Update(SEntityUpdateContext& ctx, int updateSlot)
 {

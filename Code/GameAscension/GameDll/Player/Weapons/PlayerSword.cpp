@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------
--	WeaponMagicianSword.cpp - Source file
+-	PlayerSword.cpp - Source file
 -  -------------------------------------------------------------
 -	Description:
 -
@@ -20,7 +20,6 @@
 
 #include "Player/Player.h"
 #include "Player/Input/PlayerInput.h"
-#include "Player/Animations/PlayerAnimations.h"
 
 CPlayerSword::CPlayerSword()
 	: m_bIsAttacking(false)
@@ -78,7 +77,7 @@ void CPlayerSword::SwordAttack()
 		m_fTimeSinceAction = 0.0f;
 		m_fBlockMoveTime = GetSwordAnimationBlockTime();
 
-		m_pPlayer->GetAnimationManager()->PlaySwordAction();
+		m_pPlayer->PlaySwordAction();
 
 		m_bIsAttacking = true;
 		m_bIsInSequence = true;

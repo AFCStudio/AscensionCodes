@@ -3,12 +3,13 @@
 
 #include "Input/PlayerInput.h"
 #include "View/PlayerView.h"
-#include "Animations/PlayerAnimations.h"
 #include "States/PlayerStateManager.h"
 #include "Weapons/PlayerSword.h"
 
 #include "GamePlugin.h"
 #include "Game/GameRules.h"
+
+#include "Actions/MoveAction.h"
 
 #include "Entities/Gameplay/SpawnPoint.h"
 
@@ -23,7 +24,6 @@ class CPlayerRegistrator
 
 		CGamePlugin::RegisterEntityComponent<CPlayerInput>("PlayerInput");
 		CGamePlugin::RegisterEntityComponent<CPlayerView>("PlayerView");
-		CGamePlugin::RegisterEntityComponent<CPlayerAnimations>("PlayerAnimations");
 		CGamePlugin::RegisterEntityComponent<CPlayerStateManager>("PlayerStateManager");
 		CGamePlugin::RegisterEntityComponent<CPlayerSword>("PlayerSword");
 	}
@@ -48,6 +48,10 @@ CPlayer::CPlayer()
 CPlayer::~CPlayer()
 {
 	UnregisterCVars();
+
+	SAFE_RELEASE(m_pActionController);
+	SAFE_DELETE(m_pAnimationContext);
+
 	gEnv->pGameFramework->GetIActorSystem()->RemoveActor(GetEntityId());
 }
 
@@ -89,15 +93,16 @@ void CPlayer::SelectWeapon(EWeaponType weaponType, bool isForce)
 	if (isForce || (m_weaponType != weaponType))
 	{
 		m_weaponType = weaponType;
-		m_pAnimations->SetWeaponTag(weaponType);
+		
+		SetWeaponTag(weaponType);
 
 		if (weaponType == ewt_sword)
 		{
-			m_pAnimations->PlayFragment("SelectSword", PP_Sword);
+			PlayFragment("SelectSword", PP_Sword);
 		}
 		else
 		{
-			m_pAnimations->PlayFragment("DeSelectSword", PP_Sword);
+			PlayFragment("DeSelectSword", PP_Sword);
 		}
 	}
 }
@@ -111,7 +116,6 @@ bool CPlayer::Init(IGameObject *pGameObject)
 
 void CPlayer::PostInit(IGameObject *pGameObject)
 {
-	m_pAnimations = static_cast<CPlayerAnimations *>(GetGameObject()->AcquireExtension("PlayerAnimations"));
 	m_pInput = static_cast<CPlayerInput *>(GetGameObject()->AcquireExtension("PlayerInput"));
 	m_pStateManager = static_cast<CPlayerStateManager *>(GetGameObject()->AcquireExtension("PlayerStateManager"));
 	m_pSword = static_cast<CPlayerSword *>(GetGameObject()->AcquireExtension("PlayerSword"));
@@ -120,6 +124,8 @@ void CPlayer::PostInit(IGameObject *pGameObject)
 
 	// Register with the actor system
 	gEnv->pGameFramework->GetIActorSystem()->AddActor(GetEntityId(), this);
+
+	pGameObject->EnableUpdateSlot(this, 0);
 }
 
 void CPlayer::ProcessEvent(SEntityEvent& event)
@@ -143,6 +149,13 @@ void CPlayer::ProcessEvent(SEntityEvent& event)
 		default:
 			break;
 		}
+	}
+	case ENTITY_EVENT_ANIM_EVENT:
+	{
+		const AnimEventInstance *pAnimEvent = reinterpret_cast<const AnimEventInstance *>(event.nParam[0]);
+		ICharacterInstance *pCharacter = reinterpret_cast<ICharacterInstance *>(event.nParam[1]);
+
+		m_pActionController->OnAnimationEvent(pCharacter, *pAnimEvent);
 	}
 	break;
 	}
@@ -172,20 +185,74 @@ void CPlayer::SwordAttack()
 		m_pSword->SwordAttack();
 }
 
+// Animation and Mannequin
+// ------------------------------------------------------------------------
+void CPlayer::SetWeaponTag(EWeaponType weaponType)
 {
+	TagGroupID groupId = m_pAnimationContext->controllerDef.m_tags.FindGroup("weaponType");
+	TagID tagId = TAG_ID_INVALID;
+	if (groupId != TAG_ID_INVALID)
 	{
+		switch (weaponType)
+		{
+		case ewt_magic:	tagId = m_pAnimationContext->controllerDef.m_tags.Find("magic"); break;
+		case ewt_sword:	tagId = m_pAnimationContext->controllerDef.m_tags.Find("sword"); break;
+		case ewt_knife:	tagId = m_pAnimationContext->controllerDef.m_tags.Find("knife"); break;
+		}
 
+		if (tagId != TAG_ID_INVALID)
+			m_pAnimationContext->state.SetGroup(groupId, tagId);
+		else
+			CryLog("Weapon tag id could not found!");
+	}
+	else
+		CryLog("weaponType tag group id could not found!");
+}
+
+void CPlayer::SetActorMannequin()
+{
+	CActor::SetActorMannequin();
+
+	SetWeaponTag(ewt_magic);
+}
+
+//------------------------------------------------------------------------
+void CPlayer::PlaySwordAction(EPlayerActionPriority priority)
+{
+	if (m_pActionController)
+	{
+		FragmentID fragID = m_pActionController->GetContext().controllerDef.m_fragmentIDs.Find("melee_weapon");
+
+		const CTagDefinition * const pTagDefinition = m_pActionController->GetTagDefinition(fragID);
+		TagState tagState = TAG_STATE_EMPTY;
+
+		TagGroupID tagGroupId = pTagDefinition->FindGroup("combatSequence");
+		TagID tagId = pTagDefinition->Find(m_pSword->GetTagIDNameFromCurrentSequence());
+
+		if (tagGroupId != TAG_ID_INVALID || tagId != TAG_ID_INVALID)
+		{
+			pTagDefinition->SetGroup(tagState, tagGroupId, tagId);
+		}
+		else
+		{
+			CryLog("Player sword tag group ID or group member ID could not be founded by sword PlaySwordAction!");
+		}
+
+		tagId = pTagDefinition->Find("inSequence");
+		if (tagId != TAG_ID_INVALID)
+		{
+			pTagDefinition->Set(tagState, tagId, m_pSword->IsInSequence());
+		}
+		else
+		{
+			CryLog("Player sword sequence tag ID could not be founded by sword PlaySwordAction!");
+		}
+
+		m_pLastAction = new CMoveAction(this, true, priority, fragID, tagState);
+		m_pActionController->Queue(*m_pLastAction);
 	}
 }
 
-{
-
-
-
-
-
-
-
-}
-
+// ------------------------------------------------------------------------
+// ~Animation and Mannequin
 

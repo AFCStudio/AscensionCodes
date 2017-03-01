@@ -40,11 +40,6 @@
             "Player/Input/PlayerInput.cpp",
             "Player/Input/PlayerInput.h"
         ],
-        "Player/Animations" :
-        [
-            "Player/Animations/PlayerAnimations.cpp",
-            "Player/Animations/PlayerAnimations.h"
-        ],
         "Player/View" :
         [
             "Player/View/PlayerView.cpp",

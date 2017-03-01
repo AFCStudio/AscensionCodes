@@ -51,7 +51,6 @@ public:
 
 	CPlayerInput * GetInput() const { return m_pInput; }
 	CPlayerStateManager * GetStateManager() const { return m_pStateManager; }
-	CPlayerAnimations * GetAnimationManager() const { return m_pAnimations; }
 	CPlayerSword * GetSword() const { return m_pSword; }
 
 	EWeaponType GetWeaponType() { return m_weaponType; }
@@ -70,6 +69,15 @@ public:
 
 	void SwordAttack();
 
+
+	// Animations and Mannequin
+	virtual void SetActorMannequin() override;
+
+	void PlaySwordAction(EPlayerActionPriority priority = PP_Sword);
+
+	void SetWeaponTag(EWeaponType weaponType);
+	// ~Animations and Mannequin
+
 protected:
 
 	virtual void RegisterCVars();
@@ -78,7 +86,6 @@ protected:
 protected:
 	CPlayerInput		* m_pInput;
 	CPlayerView			* m_pView;
-	CPlayerAnimations	* m_pAnimations;
 	CPlayerStateManager * m_pStateManager;
 	CPlayerSword * m_pSword;
 
