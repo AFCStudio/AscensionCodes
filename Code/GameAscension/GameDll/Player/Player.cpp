@@ -16,7 +16,6 @@
 
 class CPlayerRegistrator
 	: public IEntityRegistrator
-	, public CPlayer::SExternalCVars
 {
 	virtual void Register() override
 	{
@@ -27,56 +26,10 @@ class CPlayerRegistrator
 		CGamePlugin::RegisterEntityComponent<CPlayerAnimations>("PlayerAnimations");
 		CGamePlugin::RegisterEntityComponent<CPlayerStateManager>("PlayerStateManager");
 		CGamePlugin::RegisterEntityComponent<CPlayerSword>("PlayerSword");
-		
-		RegisterCVars();
 	}
 
 	virtual void Unregister() override
 	{
-		UnregisterCVars();
-	}
-
-	void RegisterCVars()
-	{
-		REGISTER_CVAR2("pl_mass", &m_mass, 90.f, VF_CHEAT, "Mass of the player entity in kg");
-		REGISTER_CVAR2("pl_walkSpeed", &m_walkSpeed, 1.8f, VF_CHEAT, "Player walking speed");
-		REGISTER_CVAR2("pl_runSpeed", &m_runSpeed, 3.7f, VF_CHEAT, "Player running speed");
-		REGISTER_CVAR2("pl_rotationSpeed", &m_rotationSpeed, 7.0f, VF_CHEAT, "Player rotation speed while moving");
-
-		REGISTER_CVAR2("pl_rotationSpeedYaw", &m_rotationSpeedYaw, 0.05f, VF_CHEAT, "Speed at which the player rotates entity yaw");
-		REGISTER_CVAR2("pl_rotationSpeedPitch", &m_rotationSpeedPitch, 0.05f, VF_CHEAT, "Speed at which the player rotates entity pitch");
-
-		REGISTER_CVAR2("pl_rotationLimitsMinPitch", &m_rotationLimitsMinPitch, -0.84f, VF_CHEAT, "Minimum entity pitch limit");
-		REGISTER_CVAR2("pl_rotationLimitsMaxPitch", &m_rotationLimitsMaxPitch, 1.5f, VF_CHEAT, "Maximum entity pitch limit");
-
-		REGISTER_CVAR2("pl_eyeHeight", &m_playerEyeHeight, 0.935f, VF_CHEAT, "Height of the player's eyes from ground");
-
-		m_pThirdPersonGeometry = REGISTER_STRING("pl_thirdPersonGeometry", "Objects/Characters/TheMagician/TheMagician.cdf", VF_CHEAT, "Sets the third person geometry to load");
-		
-		m_pThirdPersonMannequinContext = REGISTER_STRING("pl_thirdPersonMannequinContext", "Char3P", VF_CHEAT, "The name of the third person context used in Mannequin");
-		m_pThirdPersonAnimationDatabase = REGISTER_STRING("pl_thirdPersonAnimationDatabase", "Animations/Mannequin/ADB/MagicianDataBase.adb", VF_CHEAT, "Path to the animation database file to load");
-		m_pThirdPersonControllerDefinition = REGISTER_STRING("pl_thirdPersonControllerDefinition", "Animations/Mannequin/ADB/MagicianControllerDefs.xml", VF_CHEAT, "Path to the controller definition file to load");
-	}
-
-	void UnregisterCVars()
-	{
-		IConsole* pConsole = gEnv->pConsole;
-		if (pConsole)
-		{
-			pConsole->UnregisterVariable("pl_mass");
-			pConsole->UnregisterVariable("pl_walkSpeed");
-			pConsole->UnregisterVariable("pl_runSpeed");
-			pConsole->UnregisterVariable("pl_rotationSpeed");
-			pConsole->UnregisterVariable("pl_rotationSpeedYaw");
-			pConsole->UnregisterVariable("pl_rotationSpeedPitch");
-			pConsole->UnregisterVariable("pl_rotationLimitsMinPitch");
-			pConsole->UnregisterVariable("pl_rotationLimitsMaxPitch");
-			pConsole->UnregisterVariable("pl_eyeHeight");
-			pConsole->UnregisterVariable("pl_thirdPersonGeometry");
-			pConsole->UnregisterVariable("pl_thirdPersonMannequinContext");
-			pConsole->UnregisterVariable("pl_thirdPersonAnimationDatabase");
-			pConsole->UnregisterVariable("pl_thirdPersonControllerDefinition");
-		}
 	}
 };
 
@@ -89,16 +42,46 @@ CPlayer::CPlayer()
 	, m_bIsSpaceKey(false)
 	, m_weaponType(ewt_magic)
 {
+	RegisterCVars();
 }
 
 CPlayer::~CPlayer()
 {
+	UnregisterCVars();
 	gEnv->pGameFramework->GetIActorSystem()->RemoveActor(GetEntityId());
 }
 
-const CPlayer::SExternalCVars &CPlayer::GetCVars() const
+void CPlayer::RegisterCVars()
 {
-	return g_playerRegistrator;
+	REGISTER_CVAR2("pl_mass", &m_mass, 90.f, VF_CHEAT, "Mass of the player entity in kg");
+	REGISTER_CVAR2("pl_walkSpeed", &m_walkSpeed, 1.8f, VF_CHEAT, "Player walking speed");
+	REGISTER_CVAR2("pl_runSpeed", &m_runSpeed, 3.7f, VF_CHEAT, "Player running speed");
+	REGISTER_CVAR2("pl_rotationSpeed", &m_turnSpeed, 7.0f, VF_CHEAT, "Player rotation speed while moving");
+
+	REGISTER_CVAR2("pl_rotationSpeedYaw", &m_playerViewParams.m_rotationSpeedYaw, 0.05f, VF_CHEAT, "Speed at which the player rotates entity yaw");
+	REGISTER_CVAR2("pl_rotationSpeedPitch", &m_playerViewParams.m_rotationSpeedPitch, 0.05f, VF_CHEAT, "Speed at which the player rotates entity pitch");
+
+	REGISTER_CVAR2("pl_rotationLimitsMinPitch", &m_playerViewParams.m_rotationLimitsMinPitch, -0.84f, VF_CHEAT, "Minimum entity pitch limit");
+	REGISTER_CVAR2("pl_rotationLimitsMaxPitch", &m_playerViewParams.m_rotationLimitsMaxPitch, 1.5f, VF_CHEAT, "Maximum entity pitch limit");
+
+	REGISTER_CVAR2("pl_eyeHeight", &m_actorEyeHeight, 0.935f, VF_CHEAT, "Height of the player's eyes from ground");
+}
+
+void CPlayer::UnregisterCVars()
+{
+	IConsole* pConsole = gEnv->pConsole;
+	if (pConsole)
+	{
+		pConsole->UnregisterVariable("pl_mass");
+		pConsole->UnregisterVariable("pl_walkSpeed");
+		pConsole->UnregisterVariable("pl_runSpeed");
+		pConsole->UnregisterVariable("pl_rotationSpeed");
+		pConsole->UnregisterVariable("pl_rotationSpeedYaw");
+		pConsole->UnregisterVariable("pl_rotationSpeedPitch");
+		pConsole->UnregisterVariable("pl_rotationLimitsMinPitch");
+		pConsole->UnregisterVariable("pl_rotationLimitsMaxPitch");
+		pConsole->UnregisterVariable("pl_eyeHeight");
+	}
 }
 
 void CPlayer::SelectWeapon(EWeaponType weaponType, bool isForce)

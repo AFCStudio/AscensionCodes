@@ -91,10 +91,13 @@ void CPlayerInput::CalculateLookOrientation(float frameTime)
 	// Start by updating look dir
 	Ang3 ypr = CCamera::CreateAnglesYPR(Matrix33(m_lookOrientation));
 
-	ypr.x += m_mouseDeltaRotation.x * m_pPlayer->GetCVars().m_rotationSpeedYaw * frameTime;
+	CPlayer::SPlayerViewParams playerViewParams = m_pPlayer->GetPlayerViewParams();
+
+	ypr.x += m_mouseDeltaRotation.x * playerViewParams.m_rotationSpeedYaw * frameTime;
 
 	// TODO: Perform soft clamp here instead of hard wall, should reduce rot speed in this direction when close to limit.
-	ypr.y = CLAMP(ypr.y + m_mouseDeltaRotation.y * m_pPlayer->GetCVars().m_rotationSpeedPitch * frameTime, m_pPlayer->GetCVars().m_rotationLimitsMinPitch, m_pPlayer->GetCVars().m_rotationLimitsMaxPitch);
+	ypr.y = CLAMP(ypr.y + m_mouseDeltaRotation.y * playerViewParams.m_rotationSpeedPitch * frameTime,
+					playerViewParams.m_rotationLimitsMinPitch, playerViewParams.m_rotationLimitsMaxPitch);
 
 	ypr.z = 0;
 

@@ -31,26 +31,13 @@ public:
 		eGeometry_ThirdPerson = 0,
 	};
 
-	struct SExternalCVars
+	struct SPlayerViewParams
 	{
-		float m_mass;
-		float m_walkSpeed;
-		float m_runSpeed;
-		float m_rotationSpeed;
-
 		float m_rotationSpeedYaw;
 		float m_rotationSpeedPitch;
 
 		float m_rotationLimitsMinPitch;
 		float m_rotationLimitsMaxPitch;
-
-		float m_playerEyeHeight;
-
-		ICVar *m_pThirdPersonGeometry;
-		
-		ICVar *m_pThirdPersonMannequinContext;
-		ICVar *m_pThirdPersonAnimationDatabase;
-		ICVar *m_pThirdPersonControllerDefinition;
 	};
 
 public:
@@ -71,8 +58,6 @@ public:
 	CPlayerAnimations * GetAnimationManager() const { return m_pAnimations; }
 	CPlayerSword * GetSword() const { return m_pSword; }
 
-	const SExternalCVars &GetCVars() const;
-
 	EWeaponType GetWeaponType() { return m_weaponType; }
 
 	// Select weapon
@@ -83,6 +68,7 @@ public:
 	bool IsSpaceKeyPressed() const { return m_bIsSpaceKey; }
 
 	float GetMoveSpeed() const;
+	const SPlayerViewParams &GetPlayerViewParams() const { return m_playerViewParams; }
 
 	void SwordAttack();
 
@@ -91,6 +77,9 @@ protected:
 	void SetPlayerModel();
 
 	void Physicalize();
+
+	virtual void RegisterCVars();
+	virtual void UnregisterCVars();
 
 protected:
 	CPlayerInput		* m_pInput;
@@ -103,6 +92,8 @@ protected:
 	bool m_bIsSpaceKey;
 
 	EWeaponType m_weaponType;
+
+	SPlayerViewParams m_playerViewParams;
 };
 
 #endif
