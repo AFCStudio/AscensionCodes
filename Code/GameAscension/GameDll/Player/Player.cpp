@@ -217,7 +217,7 @@ void CPlayer::SetActorMannequin()
 }
 
 //------------------------------------------------------------------------
-void CPlayer::PlaySwordAction(EPlayerActionPriority priority)
+void CPlayer::PlaySwordAction(EActionPriority priority)
 {
 	if (m_pActionController)
 	{

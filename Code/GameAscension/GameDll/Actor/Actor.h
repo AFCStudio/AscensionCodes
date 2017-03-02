@@ -102,11 +102,11 @@ public:
 	void SetTagGroup(TagGroupID groupId, TagID tagId);
 	void ClearTagGroup(TagGroupID groupId);
 
-	void PlayMoveAction(char * fragmentName, bool isRotationForce, EPlayerActionPriority priority, TagState fragTags = TAG_STATE_EMPTY);
-	void PlayMovementAction(char * fragmentName, EPlayerActionPriority priority, TagState fragTags = TAG_STATE_EMPTY);
+	void PlayMoveAction(char * fragmentName, bool isRotationForce, EActionPriority priority, TagState fragTags = TAG_STATE_EMPTY);
+	void PlayMovementAction(char * fragmentName, EActionPriority priority, TagState fragTags = TAG_STATE_EMPTY);
 
-	void PlayFragment(FragmentID fragmentID, EPlayerActionPriority priority, TagState tagState = TAG_STATE_EMPTY);
-	void PlayFragment(char * fragmentName, EPlayerActionPriority priority, TagState tagState = TAG_STATE_EMPTY);
+	void PlayFragment(FragmentID fragmentID, EActionPriority priority, TagState tagState = TAG_STATE_EMPTY);
+	void PlayFragment(char * fragmentName, EActionPriority priority, TagState tagState = TAG_STATE_EMPTY);
 
 	void ForceFinishLastAction();
 

@@ -73,7 +73,7 @@ public:
 	// Animations and Mannequin
 	virtual void SetActorMannequin() override;
 
-	void PlaySwordAction(EPlayerActionPriority priority = PP_Sword);
+	void PlaySwordAction(EActionPriority priority = PP_Sword);
 
 	void SetWeaponTag(EWeaponType weaponType);
 	// ~Animations and Mannequin

@@ -321,7 +321,7 @@ void CActor::ClearTagGroup(TagGroupID groupId)
 }
 
 //------------------------------------------------------------------------
-void CActor::PlayMoveAction(char * fragmentName, bool isRotationForce, EPlayerActionPriority priority, TagState fragTags)
+void CActor::PlayMoveAction(char * fragmentName, bool isRotationForce, EActionPriority priority, TagState fragTags)
 {
 	if (m_pActionController)
 	{
@@ -330,7 +330,7 @@ void CActor::PlayMoveAction(char * fragmentName, bool isRotationForce, EPlayerAc
 		m_pActionController->Queue(*m_pLastAction);
 	}
 }
-void CActor::PlayMovementAction(char * fragmentName, EPlayerActionPriority priority, TagState fragTags)
+void CActor::PlayMovementAction(char * fragmentName, EActionPriority priority, TagState fragTags)
 {
 	if (m_pActionController)
 	{
@@ -341,7 +341,7 @@ void CActor::PlayMovementAction(char * fragmentName, EPlayerActionPriority prior
 }
 
 //------------------------------------------------------------------------
-void CActor::PlayFragment(FragmentID fragmentID, EPlayerActionPriority priority, TagState tagState)
+void CActor::PlayFragment(FragmentID fragmentID, EActionPriority priority, TagState tagState)
 {
 	if (m_pActionController)
 	{
@@ -349,7 +349,7 @@ void CActor::PlayFragment(FragmentID fragmentID, EPlayerActionPriority priority,
 		m_pActionController->Queue(*m_pLastAction);
 	}
 }
-void CActor::PlayFragment(char * fragmentName, EPlayerActionPriority priority, TagState tagState)
+void CActor::PlayFragment(char * fragmentName, EActionPriority priority, TagState tagState)
 {
 	if (m_pActionController)
 	{

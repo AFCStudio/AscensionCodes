@@ -20,7 +20,7 @@
 
 typedef TAction<SAnimationContext> TPlayerAction;
 
-enum EPlayerActionPriority
+enum EActionPriority
 {
 	PP_Lowest,
 	PP_Movement,
