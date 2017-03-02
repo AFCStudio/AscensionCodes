@@ -17,7 +17,7 @@ class CPlayer;
 
 class CSpawnPoint;
 
-enum EWeaponType { ewt_magic, ewt_sword, ewt_knife };
+enum class EWeaponType { Magic, Sword, Knife };
 
 ////////////////////////////////////////////////////////
 // Represents a player participating in gameplay

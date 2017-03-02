@@ -38,7 +38,7 @@ CPlayerRegistrator g_playerRegistrator;
 CPlayer::CPlayer()
 	: m_pInput(nullptr)
 	, m_pView(nullptr)
-	, m_weaponType(ewt_magic)
+	, m_weaponType(EWeaponType::Magic)
 {
 	m_bIsPlayer = true;
 
@@ -96,7 +96,7 @@ void CPlayer::SelectWeapon(EWeaponType weaponType, bool isForce)
 		
 		SetWeaponTag(weaponType);
 
-		if (weaponType == ewt_sword)
+		if (weaponType == EWeaponType::Sword)
 		{
 			PlayFragment("SelectSword", PP_Sword);
 		}
@@ -181,7 +181,7 @@ const float CPlayer::GetMoveAngle() const
 
 void CPlayer::SwordAttack()
 {
-	if (m_weaponType == ewt_sword)
+	if (m_weaponType == EWeaponType::Sword)
 		m_pSword->SwordAttack();
 }
 
@@ -195,9 +195,9 @@ void CPlayer::SetWeaponTag(EWeaponType weaponType)
 	{
 		switch (weaponType)
 		{
-		case ewt_magic:	tagId = m_pAnimationContext->controllerDef.m_tags.Find("magic"); break;
-		case ewt_sword:	tagId = m_pAnimationContext->controllerDef.m_tags.Find("sword"); break;
-		case ewt_knife:	tagId = m_pAnimationContext->controllerDef.m_tags.Find("knife"); break;
+		case EWeaponType::Magic:	tagId = m_pAnimationContext->controllerDef.m_tags.Find("magic"); break;
+		case EWeaponType::Sword:	tagId = m_pAnimationContext->controllerDef.m_tags.Find("sword"); break;
+		case EWeaponType::Knife:	tagId = m_pAnimationContext->controllerDef.m_tags.Find("knife"); break;
 		}
 
 		if (tagId != TAG_ID_INVALID)
@@ -213,7 +213,7 @@ void CPlayer::SetActorMannequin()
 {
 	CActor::SetActorMannequin();
 
-	SetWeaponTag(ewt_magic);
+	SetWeaponTag(EWeaponType::Magic);
 }
 
 //------------------------------------------------------------------------

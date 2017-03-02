@@ -239,10 +239,10 @@ bool CPlayerInput::OnActionMouseLeft(EntityId entityId, const ActionId& actionId
 
 bool CPlayerInput::OnActionSelectSword(EntityId entityId, const ActionId & actionId, int activationMode, float value)
 {
-	if (m_pPlayer->GetWeaponType() == ewt_sword)
-		m_pPlayer->SelectWeapon(ewt_magic);
+	if (m_pPlayer->GetWeaponType() == EWeaponType::Sword)
+		m_pPlayer->SelectWeapon(EWeaponType::Magic);
 	else
-		m_pPlayer->SelectWeapon(ewt_sword);
+		m_pPlayer->SelectWeapon(EWeaponType::Sword);
 
 	return true;
 }
