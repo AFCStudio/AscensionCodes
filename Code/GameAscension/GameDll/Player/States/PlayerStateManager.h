@@ -21,7 +21,7 @@
 
 class CPlayer;
 
-enum EPlayerStates { epsIdle, epsMove, epsAlnitak, epsCapture, epsFly, epsSwim };
+enum class EPlayerStates { Idle, Move, Alnitak, Capture, Fly, Swim };
 
 ////////////////////////////////////////////////////////
 // Player extension to manage player states

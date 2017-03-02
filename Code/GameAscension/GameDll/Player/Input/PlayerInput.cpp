@@ -157,11 +157,11 @@ void CPlayerInput::UpdatePlayerState()
 {
 	if (!m_isMoveBlocked && m_localMoveDirection != ZERO)
 	{
-		m_pPlayer->GetStateManager()->ChangeState(epsMove);
+		m_pPlayer->GetStateManager()->ChangeState(EPlayerStates::Move);
 	}
 	else
 	{
-		m_pPlayer->GetStateManager()->ChangeState(epsIdle);
+		m_pPlayer->GetStateManager()->ChangeState(EPlayerStates::Idle);
 	}
 }
 

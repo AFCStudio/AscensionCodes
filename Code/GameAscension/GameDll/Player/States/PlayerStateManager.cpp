@@ -17,8 +17,8 @@
 #include "Player/Player.h"
 
 CPlayerStateManager::CPlayerStateManager()
-	: m_epsCurrentState(epsIdle)
-	, m_epsPreviousState(epsIdle)
+	: m_epsCurrentState(EPlayerStates::Idle)
+	, m_epsPreviousState(EPlayerStates::Idle)
 	, m_pCurrentPlayerState(nullptr)
 	, m_pPreviousPlayerState(nullptr)
 	, m_pIdlePlayerState(nullptr)
@@ -52,7 +52,7 @@ void CPlayerStateManager::PostInit(IGameObject * pGameObject)
 
 	InitPlayerStates();
 
-	ChangeState(epsIdle);
+	ChangeState(EPlayerStates::Idle);
 }
 
 void CPlayerStateManager::Update(SEntityUpdateContext& ctx, int updateSlot)
@@ -77,12 +77,12 @@ void CPlayerStateManager::ChangeState(EPlayerStates eps)
 	
 	switch (eps)
 	{
-	case epsIdle:	m_pCurrentPlayerState = m_pIdlePlayerState;	break;
-	case epsMove:	m_pCurrentPlayerState = m_pMovePlayerState;	break;
-	case epsAlnitak:	m_pCurrentPlayerState = m_pAlnitakPlayerState;	break;
-	case epsCapture:	m_pCurrentPlayerState = m_pCapturePlayerState;	break;
-	case epsFly:	m_pCurrentPlayerState = m_pFlyPlayerState;	break;
-	case epsSwim:	m_pCurrentPlayerState = m_pSwimPlayerState;	break;
+	case EPlayerStates::Idle:	m_pCurrentPlayerState = m_pIdlePlayerState;	break;
+	case EPlayerStates::Move:	m_pCurrentPlayerState = m_pMovePlayerState;	break;
+	case EPlayerStates::Alnitak:	m_pCurrentPlayerState = m_pAlnitakPlayerState;	break;
+	case EPlayerStates::Capture:	m_pCurrentPlayerState = m_pCapturePlayerState;	break;
+	case EPlayerStates::Fly:	m_pCurrentPlayerState = m_pFlyPlayerState;	break;
+	case EPlayerStates::Swim:	m_pCurrentPlayerState = m_pSwimPlayerState;	break;
 	}
 
 	m_pCurrentPlayerState->Enter();
