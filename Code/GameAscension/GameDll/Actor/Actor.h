@@ -41,9 +41,9 @@ public:
 
 	struct SActorMannequinInfo
 	{
-		char *m_pActorMannequinContext;
-		char *m_pActorAnimationDatabase;
-		char *m_pActorControllerDefinition;
+		string m_pActorMannequinContext;
+		string m_pActorAnimationDatabase;
+		string m_pActorControllerDefinition;
 	};
 
 public:
@@ -94,7 +94,7 @@ protected:
 
 	float m_actorEyeHeight;
 
-	char *m_pCharacterGeometry;
+	string m_pCharacterGeometry;
 
 	SActorMannequinInfo m_actorMannequinInfo;
 
