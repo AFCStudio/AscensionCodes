@@ -84,10 +84,6 @@ void CActor::ProcessEvent(SEntityEvent& event)
 			break;
 		case 1: // Game starts
 				// Make sure to revive player when respawning in Editor
-
-				// Set camera X and Y rotation to 0 angle while initializing.
-			GetEntity()->SetRotation(Quat::CreateRotationZ(GetEntity()->GetRotation().GetRotZ()));
-
 			SetHealth(GetMaxHealth());
 			break;
 		default:
