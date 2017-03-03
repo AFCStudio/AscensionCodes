@@ -105,16 +105,16 @@ public:
 
 	virtual void UpdateActorTurnAngle();
 
-	void SetTagGroup(TagGroupID groupId, TagID tagId);
-	void ClearTagGroup(TagGroupID groupId);
+	virtual void SetTagGroup(TagGroupID groupId, TagID tagId);
+	virtual void ClearTagGroup(TagGroupID groupId);
 
-	void PlayMoveAction(char * fragmentName, bool isRotationForce, EActionPriority priority, TagState fragTags = TAG_STATE_EMPTY);
-	void PlayMovementAction(char * fragmentName, EActionPriority priority, TagState fragTags = TAG_STATE_EMPTY);
+	virtual void PlayMoveAction(char * fragmentName, bool isRotationForce, EActionPriority priority, TagState fragTags = TAG_STATE_EMPTY);
+	virtual void PlayMovementAction(char * fragmentName, EActionPriority priority, TagState fragTags = TAG_STATE_EMPTY);
 
-	void PlayFragment(FragmentID fragmentID, EActionPriority priority, TagState tagState = TAG_STATE_EMPTY);
-	void PlayFragment(char * fragmentName, EActionPriority priority, TagState tagState = TAG_STATE_EMPTY);
+	virtual void PlayFragment(FragmentID fragmentID, EActionPriority priority, TagState tagState = TAG_STATE_EMPTY);
+	virtual void PlayFragment(char * fragmentName, EActionPriority priority, TagState tagState = TAG_STATE_EMPTY);
 
-	void ForceFinishLastAction();
+	virtual void ForceFinishLastAction();
 
 protected:
 	void ActivateMannequinContext(const char *contextName, ICharacterInstance &character, const SControllerDef &controllerDefinition, const IAnimationDatabase &animationDatabase);
