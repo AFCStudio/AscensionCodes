@@ -66,6 +66,7 @@ public:
 	const virtual float &GetTurnSpeed() const { return m_turnSpeed; }
 	const virtual char* GetCharacterModelName() const { return m_pCharacterGeometry; }
 
+	virtual void SetRunning(bool running) { m_bIsRun = running; }
 	virtual bool IsRunning() const { return m_bIsRun; }
 
 	virtual const EWeaponType GetWeaponType() const { return m_weaponType; }
