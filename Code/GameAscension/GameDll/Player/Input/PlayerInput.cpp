@@ -227,7 +227,7 @@ bool CPlayerInput::OnActionMouseRotatePitch(EntityId entityId, const ActionId& a
 
 bool CPlayerInput::OnActionSpace(EntityId entityId, const ActionId & actionId, int activationMode, float value)
 {
-	m_pPlayer->SetSpaceKeyStatus(activationMode != eIS_Released);
+	m_pPlayer->SetRunning(activationMode != eIS_Released);
 	return true;
 }
 

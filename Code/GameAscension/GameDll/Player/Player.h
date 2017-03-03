@@ -51,16 +51,12 @@ public:
 	CPlayerStateManager * GetStateManager() const { return m_pStateManager; }
 	CPlayerSword * GetSword() const { return m_pSword; }
 
-	void SetSpaceKeyStatus(bool isPressed) { m_bIsRun = isPressed; }
-	bool IsSpaceKeyPressed() const { return m_bIsRun; }
-
 	const virtual Vec3 GetMoveDirection() const override;
 	const virtual float GetMoveAngle() const override;
 
 	const SPlayerViewParams &GetPlayerViewParams() const { return m_playerViewParams; }
 
 	void SwordAttack();
-
 
 	// Animations and Mannequin
 	virtual void SetActorMannequin() override;
