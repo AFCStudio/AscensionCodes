@@ -26,6 +26,7 @@
 ////////////////////////////////////////////////////////
 class CAIBase 
 	: public CGameObjectExtensionHelper<CAIBase, CActor>
+	, public IEntityPropertyGroup
 {
 public:
 	CAIBase();
@@ -34,6 +35,12 @@ public:
 	// ISimpleActor
 	virtual void PostInit(IGameObject* pGameObject) override;
 	// ~ISimpleActor
+
+	// IEntityPropertyGroup
+	virtual struct IEntityPropertyGroup* GetPropertyGroup() override { return this; }
+	virtual const char*         GetLabel() const override { return "AI Properties"; }
+	virtual void                SerializeProperties(Serialization::IArchive& archive) override;
+	// ~IEntityPropertyGroup
 
 	// Animations and Mannequin
 	virtual void SetActorMannequin() override;

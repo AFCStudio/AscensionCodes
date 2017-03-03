@@ -56,6 +56,26 @@ CAIBase::~CAIBase()
 	gEnv->pGameFramework->GetIActorSystem()->RemoveActor(GetEntityId());
 }
 
+void CAIBase::SerializeProperties(Serialization::IArchive & archive)
+{
+	archive(m_mass, "Mass", "Mass");
+	archive(m_actorEyeHeight, "Eye Height", "Eye Height");
+
+	archive(m_walkSpeed, "Walking Speed", "Walking Speed");
+	archive(m_runSpeed, "Running Speed", "Running Speed");
+	archive(m_turnSpeed, "Turning Speed", "Turning Speed");
+
+	archive(Serialization::CharacterPath<string>(m_pCharacterGeometry), "Character", "Character");
+	archive(Serialization::GeneralFilename<string>(m_actorMannequinInfo.m_pActorMannequinContext), "Mannequin Context", "Mannequin Context");
+	archive(Serialization::GeneralFilename<string>(m_actorMannequinInfo.m_pActorAnimationDatabase), "Animation Database", "Animation Database");
+	archive(Serialization::GeneralFilename<string>(m_actorMannequinInfo.m_pActorControllerDefinition), "Controller Definition", "Controller Definition");
+
+	if (archive.isInput())
+	{
+		SetHealth(GetMaxHealth());
+	}
+}
+
 void CAIBase::PostInit(IGameObject *pGameObject)
 {
 	// Register with the actor system
