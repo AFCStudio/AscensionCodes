@@ -35,6 +35,7 @@ CActor::CActor()
 	, m_actorEyeHeight(0.935f)
 	, m_pActionController(nullptr)
 	, m_pAnimationContext(nullptr)
+	, m_weaponType(EWeaponType::NoWeapon)
 {
 	m_pCharacterGeometry = "Objects/Characters/TheMagician/TheMagician.cdf";
 
@@ -149,6 +150,25 @@ const float &CActor::GetMoveSpeed() const
 	return m_bIsRun ? m_runSpeed : m_walkSpeed;
 }
 
+void CActor::SelectWeapon(EWeaponType weaponType)
+{
+	if (m_weaponType != weaponType)
+	{
+		m_weaponType = weaponType;
+
+		SetWeaponTag(weaponType);
+
+		if (weaponType == EWeaponType::Sword)
+		{
+			PlayFragment("SelectSword", PP_Sword);
+		}
+		else
+		{
+			PlayFragment("DeSelectSword", PP_Sword);
+		}
+	}
+}
+
 void CActor::SelectSpawnPoint()
 {
 	// We only handle default spawning below for the Launcher
@@ -220,6 +240,28 @@ void CActor::Physicalize()
 
 // Animations and Mannequin
 // ------------------------------------------------------------------
+void CActor::SetWeaponTag(EWeaponType weaponType)
+{
+	TagGroupID groupId = m_pAnimationContext->controllerDef.m_tags.FindGroup("weaponType");
+	TagID tagId = TAG_ID_INVALID;
+	if (groupId != TAG_ID_INVALID)
+	{
+		switch (weaponType)
+		{
+		case EWeaponType::Magic:	tagId = m_pAnimationContext->controllerDef.m_tags.Find("magic"); break;
+		case EWeaponType::Sword:	tagId = m_pAnimationContext->controllerDef.m_tags.Find("sword"); break;
+		case EWeaponType::Knife:	tagId = m_pAnimationContext->controllerDef.m_tags.Find("knife"); break;
+		}
+
+		if (tagId != TAG_ID_INVALID)
+			m_pAnimationContext->state.SetGroup(groupId, tagId);
+		else
+			CryLog("Weapon tag id could not found!");
+	}
+	else
+		CryLog("weaponType tag group id could not found!");
+}
+
 void CActor::UpdateActorTurnAngle()
 {
 	float turnAngle = GetMoveAngle();

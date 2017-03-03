@@ -17,8 +17,6 @@ class CPlayer;
 
 class CSpawnPoint;
 
-enum class EWeaponType { Magic, Sword, Knife };
-
 ////////////////////////////////////////////////////////
 // Represents a player participating in gameplay
 ////////////////////////////////////////////////////////
@@ -53,12 +51,6 @@ public:
 	CPlayerStateManager * GetStateManager() const { return m_pStateManager; }
 	CPlayerSword * GetSword() const { return m_pSword; }
 
-	EWeaponType GetWeaponType() { return m_weaponType; }
-
-	// Select weapon
-	// isForce can be used while initializing to ensure set weapon tag
-	void SelectWeapon(EWeaponType weaponType, bool isForce = false);
-
 	void SetSpaceKeyStatus(bool isPressed) { m_bIsRun = isPressed; }
 	bool IsSpaceKeyPressed() const { return m_bIsRun; }
 
@@ -74,8 +66,6 @@ public:
 	virtual void SetActorMannequin() override;
 
 	void PlaySwordAction(EActionPriority priority = PP_Sword);
-
-	void SetWeaponTag(EWeaponType weaponType);
 	// ~Animations and Mannequin
 
 protected:
@@ -88,8 +78,6 @@ protected:
 	CPlayerView			* m_pView;
 	CPlayerStateManager * m_pStateManager;
 	CPlayerSword * m_pSword;
-
-	EWeaponType m_weaponType;
 
 	SPlayerViewParams m_playerViewParams;
 };

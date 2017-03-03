@@ -25,6 +25,8 @@ class CActorAnimations;
 class CActor;
 class CSpawnPoint;
 
+enum class EWeaponType { NoWeapon, Magic, Sword, Knife };
+
 ////////////////////////////////////////////////////////
 // Represents a base of human participating in gameplay
 ////////////////////////////////////////////////////////
@@ -65,6 +67,9 @@ public:
 	const virtual char* GetCharacterModelName() const { return m_pCharacterGeometry; }
 
 	virtual bool IsRunning() const { return m_bIsRun; }
+
+	virtual const EWeaponType GetWeaponType() const { return m_weaponType; }
+	virtual void SelectWeapon(EWeaponType weaponType);
 
 	const virtual SActorMannequinInfo &GetActorMannequinInfo() const { return m_actorMannequinInfo; }
 
@@ -113,12 +118,16 @@ public:
 protected:
 	void ActivateMannequinContext(const char *contextName, ICharacterInstance &character, const SControllerDef &controllerDefinition, const IAnimationDatabase &animationDatabase);
 
+	virtual void SetWeaponTag(EWeaponType weaponType);
+
 protected:
 
 	IActionController * m_pActionController;
 	SAnimationContext * m_pAnimationContext;
 
 	IActionPtr	m_pLastAction;
+
+	EWeaponType m_weaponType;
 
 	// ~Animations and Mannequin
 };

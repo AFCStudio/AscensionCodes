@@ -38,9 +38,9 @@ CPlayerRegistrator g_playerRegistrator;
 CPlayer::CPlayer()
 	: m_pInput(nullptr)
 	, m_pView(nullptr)
-	, m_weaponType(EWeaponType::Magic)
 {
 	m_bIsPlayer = true;
+	m_weaponType = EWeaponType::Magic;
 
 	RegisterCVars();
 }
@@ -85,25 +85,6 @@ void CPlayer::UnregisterCVars()
 		pConsole->UnregisterVariable("pl_rotationLimitsMinPitch");
 		pConsole->UnregisterVariable("pl_rotationLimitsMaxPitch");
 		pConsole->UnregisterVariable("pl_eyeHeight");
-	}
-}
-
-void CPlayer::SelectWeapon(EWeaponType weaponType, bool isForce)
-{
-	if (isForce || (m_weaponType != weaponType))
-	{
-		m_weaponType = weaponType;
-		
-		SetWeaponTag(weaponType);
-
-		if (weaponType == EWeaponType::Sword)
-		{
-			PlayFragment("SelectSword", PP_Sword);
-		}
-		else
-		{
-			PlayFragment("DeSelectSword", PP_Sword);
-		}
 	}
 }
 
@@ -187,27 +168,6 @@ void CPlayer::SwordAttack()
 
 // Animation and Mannequin
 // ------------------------------------------------------------------------
-void CPlayer::SetWeaponTag(EWeaponType weaponType)
-{
-	TagGroupID groupId = m_pAnimationContext->controllerDef.m_tags.FindGroup("weaponType");
-	TagID tagId = TAG_ID_INVALID;
-	if (groupId != TAG_ID_INVALID)
-	{
-		switch (weaponType)
-		{
-		case EWeaponType::Magic:	tagId = m_pAnimationContext->controllerDef.m_tags.Find("magic"); break;
-		case EWeaponType::Sword:	tagId = m_pAnimationContext->controllerDef.m_tags.Find("sword"); break;
-		case EWeaponType::Knife:	tagId = m_pAnimationContext->controllerDef.m_tags.Find("knife"); break;
-		}
-
-		if (tagId != TAG_ID_INVALID)
-			m_pAnimationContext->state.SetGroup(groupId, tagId);
-		else
-			CryLog("Weapon tag id could not found!");
-	}
-	else
-		CryLog("weaponType tag group id could not found!");
-}
 
 void CPlayer::SetActorMannequin()
 {
