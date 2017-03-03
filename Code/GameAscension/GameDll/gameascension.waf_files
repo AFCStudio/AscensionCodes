@@ -58,6 +58,14 @@
             "Player/States/PlayerStates.h"
         ]
     },
+	"AFCGameAscension_uber_AIs.cpp" :
+    {
+        "AI" :
+        [
+            "AI/AIBase.h",
+            "AI/AIBase.cpp"
+        ]
+    },
     "AFCGameAscension_uber_Entities.cpp" :
     {
         "Entiites" :
