@@ -62,9 +62,11 @@
     {
         "AI" :
         [
+            "AI/AIBase.cpp",
             "AI/AIBase.h",
-            "AI/AIBase.cpp"
         ]
+			"AI/AIEnemy.cpp",
+            "AI/AIEnemy.h"
     },
     "AFCGameAscension_uber_Entities.cpp" :
     {
