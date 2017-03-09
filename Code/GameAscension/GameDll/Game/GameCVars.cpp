@@ -26,6 +26,10 @@ void SCVars::InitCVars()
 	REGISTER_CVAR(cam_colliderExtraLength, 0.02f, VF_CHEAT, "Primitive world intersection collider length.");
 	REGISTER_CVAR(cam_colliderTransitionSpeed, 7.0f, VF_CHEAT, "Primitive world intersection collider interpolation speed.");
 
+	// Fighting System
+	REGISTER_CVAR(ai_attackDistance, 1.0f, VF_CHEAT, "AI attack distance to target.");
+	REGISTER_CVAR(ai_tauntDistance, 4.0f, VF_CHEAT, "AI taunt distance to target.");
+	REGISTER_CVAR(ai_distanceThreshold, 0.2f, VF_CHEAT, "AI distance threshold to stop location.");
 	REGISTER_CVAR(ai_maxAttackTime, 5.0f, VF_CHEAT, "Maximum time between per attack for each enemy.");
 	REGISTER_CVAR(ai_minAttackTime, 3.0f, VF_CHEAT, "Minimum time between per attack for each enemy.");
 }
@@ -44,6 +48,10 @@ void SCVars::ReleaseCVars()
 		pConsole->UnregisterVariable("cam_colliderExtraLength ", true);
 		pConsole->UnregisterVariable("cam_colliderTransitionSpeed ", true);
 
+		// Fighting System
+		pConsole->UnregisterVariable("ai_attackDistance ", true);
+		pConsole->UnregisterVariable("ai_tauntDistance ", true);
+		pConsole->UnregisterVariable("ai_distanceThreshold ", true);
 		pConsole->UnregisterVariable("ai_maxAttackTime ", true);
 		pConsole->UnregisterVariable("ai_minAttackTime ", true);
 	}
