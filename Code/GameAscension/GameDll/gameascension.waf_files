@@ -64,9 +64,16 @@
         [
             "AI/AIBase.cpp",
             "AI/AIBase.h",
-        ]
 			"AI/AIEnemy.cpp",
             "AI/AIEnemy.h"
+        ],
+		"AI/States" :
+        [
+			"AI/States/AIStateManager.cpp",
+            "AI/States/AIStateManager.h",
+            "AI/States/AIStates.cpp",
+            "AI/States/AIStates.h"
+		]
     },
     "AFCGameAscension_uber_Entities.cpp" :
     {

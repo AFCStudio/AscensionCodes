@@ -43,6 +43,7 @@ CAIEnemyRegistrator g_AIEnemyRegistrator;
 
 CAIEnemy::CAIEnemy()
 	: m_teamId(0)
+	, m_pStateManager(nullptr)
 	, m_fightingGroup(EFightingGroup::NoFighting)
 {
 }
