@@ -20,8 +20,6 @@
 
 #include "Actions/MoveAction.h"
 
-#include "Entities/Gameplay/SpawnPoint.h"
-
 #include <CryRenderer/IRenderAuxGeom.h>
 
 #include <CrySerialization/Decorators/Resources.h>
@@ -39,9 +37,12 @@ class CAIBaseRegistrator
 	}
 };
 
-CAIBaseRegistrator g_AIRegistrator;
+CAIBaseRegistrator g_AIBaseRegistrator;
 
 CAIBase::CAIBase()
+	: m_pTargetEntity(nullptr)
+	, m_targetDistance(-1.0f)
+	, m_stopOffset(0.0f)
 {
 	m_bIsPlayer = false;
 
@@ -84,6 +85,44 @@ void CAIBase::PostInit(IGameObject *pGameObject)
 	pGameObject->EnableUpdateSlot(this, 0);
 
 	SetHealth(GetMaxHealth());
+}
+
+void CAIBase::Update(SEntityUpdateContext & ctx, int updateSlot)
+{
+	BaseClass::Update(ctx, updateSlot);
+
+	CalculateTargetDistance();
+}
+
+void CAIBase::CalculateTargetDistance()
+{
+	m_targetDistance = m_pTargetEntity ?
+			GetEntity()->GetPos().GetDistance(m_pTargetEntity->GetPos()) : -1.0f;
+}
+
+const float CAIBase::GetStopDistance() const
+{
+	return m_targetDistance - m_stopOffset;
+}
+
+const Vec3 CAIBase::GetMoveDirection() const
+{
+	if (m_pTargetEntity)
+	{
+		Vec3 targetLocation = m_pTargetEntity->GetPos() - GetEntity()->GetPos();
+		targetLocation.z = 0.0f;
+		targetLocation.Normalize();
+		return targetLocation;
+	}
+	else
+	{
+		return Vec3(ZERO);
+	}
+}
+
+const float CAIBase::GetMoveAngle() const
+{ 
+	return 0.0;
 }
 
 // Animation and Mannequin
