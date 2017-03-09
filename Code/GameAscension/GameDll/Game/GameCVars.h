@@ -30,6 +30,9 @@ struct SCVars
 	float cam_colliderExtraLength;
 	float cam_colliderTransitionSpeed;
 
+	float ai_maxAttackTime;
+	float ai_minAttackTime;
+
 	SCVars()
 	{
 		memset(this, 0, sizeof(SCVars));
