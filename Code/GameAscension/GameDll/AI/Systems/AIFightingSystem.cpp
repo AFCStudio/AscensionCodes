@@ -48,10 +48,8 @@ void CAIFightingSystem::RemoveFighter(CAIEnemy * pEnemy)
 {
 	if (pEnemy->IsAttackGroup())
 	{
-		//stl::member_find_and_erase(m_attackGroup, pEnemy);
 		m_attackGroup.erase(std::remove(m_attackGroup.begin(), m_attackGroup.end(), pEnemy), m_attackGroup.end());
 
-		//if (m_fighters.size() >= g_pGameCVars->ai_maxAttackerCount)
 		if (m_tauntGroup.size() > 0)
 		{
 			FindBestAttackGroupCandidate();
@@ -60,7 +58,6 @@ void CAIFightingSystem::RemoveFighter(CAIEnemy * pEnemy)
 	else
 	{
 		m_tauntGroup.erase(std::remove(m_tauntGroup.begin(), m_tauntGroup.end(), pEnemy), m_tauntGroup.end());
-		//stl::member_find_and_erase(m_tauntGroup, pEnemy);
 	}
 }
 
@@ -74,7 +71,6 @@ void CAIFightingSystem::AddAttackGroup(CAIEnemy * pEnemy)
 void CAIFightingSystem::ChangeToAttackGroup(CAIEnemy * pEnemy)
 {
 	m_tauntGroup.erase(std::remove(m_tauntGroup.begin(), m_tauntGroup.end(), pEnemy), m_tauntGroup.end());
-	//stl::member_find_and_erase(m_tauntGroup, pEnemy);
 	AddAttackGroup(pEnemy);
 }
 
@@ -87,7 +83,6 @@ void CAIFightingSystem::AddTauntGroup(CAIEnemy * pEnemy)
 
 void CAIFightingSystem::ChangeToTauntGroup(CAIEnemy * pEnemy)
 {
-	//stl::member_find_and_erase(m_attackGroup, pEnemy);
 	m_attackGroup.erase(std::remove(m_attackGroup.begin(), m_attackGroup.end(), pEnemy), m_attackGroup.end());
 	AddTauntGroup(pEnemy);
 }
