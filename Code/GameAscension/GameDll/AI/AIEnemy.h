@@ -52,9 +52,9 @@ public:
 	virtual const EFightingGroup GetFightingGroup() const { return m_fightingGroup; }
 	virtual void SetFightingGroup(EFightingGroup fightingGroup);
 
-	virtual void SetAsAttackGroup() { m_fightingGroup = EFightingGroup::Attack; }
-	virtual void SetAsTauntGroup() { m_fightingGroup = EFightingGroup::Taunt; }
-	virtual void ClearFightingGroup() { m_fightingGroup = EFightingGroup::NoFighting; }
+	virtual void SetAsAttackGroup() { SetFightingGroup(EFightingGroup::Attack); }
+	virtual void SetAsTauntGroup() { SetFightingGroup(EFightingGroup::Taunt); }
+	virtual void ClearFightingGroup() { SetFightingGroup(EFightingGroup::NoFighting); }
 
 	virtual void ResetAttackTime();
 	virtual const bool IsAttackTimeCompleted() const { return m_attackingTimer <= 0.0f; }
