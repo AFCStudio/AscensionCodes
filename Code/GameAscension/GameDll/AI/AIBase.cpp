@@ -70,6 +70,7 @@ void CAIBase::SerializeProperties(Serialization::IArchive & archive)
 	archive(Serialization::GeneralFilename<string>(m_actorMannequinInfo.m_pActorMannequinContext), "Mannequin Context", "Mannequin Context");
 	archive(Serialization::GeneralFilename<string>(m_actorMannequinInfo.m_pActorAnimationDatabase), "Animation Database", "Animation Database");
 	archive(Serialization::GeneralFilename<string>(m_actorMannequinInfo.m_pActorControllerDefinition), "Controller Definition", "Controller Definition");
+	archive(Serialization::GeneralFilename<string>(m_actorMannequinInfo.m_pSlaveAnimationDatabase), "Slave Animation Database", "Slave Animation Database");
 
 	if (archive.isInput())
 	{

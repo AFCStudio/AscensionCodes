@@ -45,6 +45,7 @@ public:
 		string m_pActorMannequinContext;
 		string m_pActorAnimationDatabase;
 		string m_pActorControllerDefinition;
+		string m_pSlaveAnimationDatabase;
 	};
 
 public:
@@ -143,6 +144,8 @@ protected:
 	virtual void SetWeaponTag(EWeaponType weaponType);
 
 protected:
+
+	const IAnimationDatabase * m_pSlaveADB;
 
 	IActionController * m_pActionController;
 	SAnimationContext * m_pAnimationContext;

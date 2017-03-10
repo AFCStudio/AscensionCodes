@@ -42,6 +42,7 @@ CActor::CActor()
 	m_actorMannequinInfo.m_pActorMannequinContext = "Char3P";
 	m_actorMannequinInfo.m_pActorAnimationDatabase = "Animations/Mannequin/ADB/MagicianDataBase.adb";
 	m_actorMannequinInfo.m_pActorControllerDefinition = "Animations/Mannequin/ADB/MagicianControllerDefs.xml";
+	m_actorMannequinInfo.m_pSlaveAnimationDatabase = "Animations/Mannequin/ADB/AISlave.adb";
 }
 
 CActor::~CActor()
@@ -310,12 +311,21 @@ void CActor::SetActorMannequin()
 
 	const char *mannequinContextName = m_actorMannequinInfo.m_pActorMannequinContext;
 	const char *animationDatabasePath = m_actorMannequinInfo.m_pActorAnimationDatabase;
+	const char *slaveAnimationDatabasePath = m_actorMannequinInfo.m_pSlaveAnimationDatabase;
 
 	// Load the animation database
 	auto *pAnimationDatabase = animationDatabaseManager.Load(animationDatabasePath);
 	if (pAnimationDatabase == nullptr)
 	{
 		CryWarning(VALIDATOR_MODULE_GAME, VALIDATOR_ERROR, "Failed to load animation database %s!", animationDatabasePath);
+		return;
+	}
+
+	//Load the slave animation database
+	m_pSlaveADB = animationDatabaseManager.Load(slaveAnimationDatabasePath);
+	if (m_pSlaveADB == nullptr)
+	{
+		CryWarning(VALIDATOR_MODULE_GAME, VALIDATOR_ERROR, "Failed to load slave animation database %s!", slaveAnimationDatabasePath);
 		return;
 	}
 
