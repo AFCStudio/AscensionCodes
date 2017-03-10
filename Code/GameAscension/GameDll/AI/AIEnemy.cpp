@@ -81,6 +81,13 @@ void CAIEnemy::PostInit(IGameObject *pGameObject)
 	pGameObject->EnableUpdateSlot(this, 0);
 
 	SetHealth(GetMaxHealth());
+
+	m_pTargetEntity = gEnv->pGameFramework->GetClientActor()->GetEntity();
+	m_pTargetActor = static_cast<CActor *>(gEnv->pGameFramework->GetClientActor());
+	if (m_pTargetEntity && m_pTargetActor)
+	{
+		CryLog("Client Actor has been found!");
+	}
 }
 
 void CAIEnemy::SetFightingGroup(EFightingGroup fightingGroup)
