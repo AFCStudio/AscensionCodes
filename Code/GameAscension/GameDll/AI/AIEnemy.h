@@ -62,11 +62,15 @@ public:
 
 	virtual const Vec3 GetMoveDirection() const override;
 
+	bool IsTargetAActor() { return m_pTargetActor != nullptr; }
+
 	// Animations and Mannequin
 	virtual void SetActorMannequin() override;
 	// ~Animations and Mannequin
 
 protected:
+
+	CActor * m_pTargetActor;
 
 	EFightingGroup m_fightingGroup;
 
