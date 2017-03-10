@@ -23,7 +23,7 @@ class CAIBase;
 class CAIEnemy;
 
 using EnemyVector = std::vector<CAIEnemy*>;
-using EnemyQueue = std::queue<CAIEnemy*>;
+using EnemyQueue = std::deque<CAIEnemy*>;
 
 ////////////////////////////////////////////////////////
 // Player extension to manage player states
@@ -62,7 +62,7 @@ private:
 	EnemyVector m_attackGroup;
 	EnemyVector m_tauntGroup;
 
-	EnemyQueue	m_attackers;
+	EnemyQueue	m_attacks;
 };
 
 #endif // !__AI_FIGHTING_SYSTEM_H__

@@ -89,17 +89,17 @@ void CAIFightingSystem::ChangeToTauntGroup(CAIEnemy * pEnemy)
 
 CAIEnemy * CAIFightingSystem::PopAttacking()
 {
-	CAIEnemy * pEnemy = m_attackers.empty() ? nullptr : m_attackers.front();
+	CAIEnemy * pEnemy = m_attacks.empty() ? nullptr : m_attacks.front();
 
 	if (pEnemy)
-		m_attackers.pop();
+		m_attacks.pop_front();
 
 	return pEnemy;
 }
 
 void CAIFightingSystem::PushAttacking(CAIEnemy * pEnemy)
 {
-	m_attackers.push(pEnemy);
+	m_attacks.push_back(pEnemy);
 }
 
 void CAIFightingSystem::FindBestAttackGroupCandidate()
