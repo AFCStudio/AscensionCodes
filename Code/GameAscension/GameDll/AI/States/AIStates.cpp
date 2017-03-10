@@ -18,6 +18,8 @@
 
 #include "AI/AIEnemy.h"
 
+#include "Actor/Actor.h"
+
 #include "Actions/ActionBase.h"
 
 #include "AIStateManager.h"
@@ -30,6 +32,17 @@ void CAIStateIdle::Enter()
 }
 void CAIStateIdle::Update(SEntityUpdateContext& ctx, int updateSlot)
 {
+	// Temporarly fighting enterence code to check AI behaviors.
+	// This section will be changed fihgting enterence behavior in the future.
+
+	float fLenght = m_pAIEnemy->GetTargetDistance();
+
+	if (fLenght < 8.0f && fLenght > 2.5f)
+	{
+		m_pAIEnemy->GetStateManager()->ChangeState(EAIStates::Chase);
+
+		m_pAIEnemy->AddToAIFightingSystem();
+	}
 }
 void CAIStateIdle::Exit()
 {}
@@ -72,11 +85,16 @@ void CAIStateChase::Exit()
 // Taunt Group State
 void CAIStateTaunt::Enter()
 {
-	m_pAIEnemy->PlayFragment("Taunt", PP_PlayerAction, TAG_STATE_EMPTY);
+	m_pAIEnemy->ForceFinishLastAction();
+	m_pAIEnemy->PlayFragment("AI_Taunt", PP_PlayerAction, TAG_STATE_EMPTY);
 }
 void CAIStateTaunt::Update(SEntityUpdateContext& ctx, int updateSlot)
 {
-
+	if (m_pAIEnemy->GetTargetDistance() >
+		(g_pGameCVars->ai_tauntDistance + g_pGameCVars->ai_distanceThreshold))
+	{
+		m_pAIEnemy->GetStateManager()->ChangeState(EAIStates::Chase);
+	}
 }
 void CAIStateTaunt::Exit()
 {}
@@ -85,17 +103,24 @@ void CAIStateTaunt::Exit()
 // Attack Group State
 void CAIStateAttack::Enter()
 {
+	m_pAIEnemy->ForceFinishLastAction();
 }
 void CAIStateAttack::Update(SEntityUpdateContext& ctx, int updateSlot)
 {
 	if (m_pAIEnemy->IsAttackTimeCompleted())
 	{
-		m_pAIEnemy->PlayFragment("Attack", PP_Sword, TAG_STATE_EMPTY);
+		m_pAIEnemy->PlayFragment("AI_Attack", PP_Sword, TAG_STATE_EMPTY);
 		m_pAIEnemy->ResetAttackTime();
 	}
 	else
 	{
 		m_pAIEnemy->RunOutAttackTime(ctx.fFrameTime);
+
+		if (m_pAIEnemy->GetTargetDistance() >
+			(g_pGameCVars->ai_attackDistance + g_pGameCVars->ai_distanceThreshold))
+		{
+			m_pAIEnemy->GetStateManager()->ChangeState(EAIStates::Chase);
+		}
 	}
 }
 void CAIStateAttack::Exit()
