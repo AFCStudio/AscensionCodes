@@ -56,12 +56,7 @@ public:
 
 	CAIFightingSystem * GetAIFightingSystem() { return m_pAIFightingSystem; }
 
-	// This function defined to add enemy to AI fighting system.
-	// Initially should be only used by Player.
 	virtual void AddEnemyFighter(CAIEnemy * pEnemy) override;
-
-	// This function defined to remove enemy from AI fighting system.
-	// Initially should be only used by Player.
 	virtual void RemoveEnemyFighter(CAIEnemy * pEnemy) override;
 
 	const virtual Vec3 GetMoveDirection() const override;
