@@ -64,6 +64,9 @@ public:
 
 	bool IsTargetAActor() { return m_pTargetActor != nullptr; }
 
+	void AddToAIFightingSystem();
+	void RemoveFromAIFightingSystem();
+
 	// Animations and Mannequin
 	virtual void SetActorMannequin() override;
 	// ~Animations and Mannequin

@@ -55,6 +55,8 @@ CAIEnemy::~CAIEnemy()
 	SAFE_DELETE(m_pAnimationContext);
 
 	gEnv->pGameFramework->GetIActorSystem()->RemoveActor(GetEntityId());
+
+	RemoveFromAIFightingSystem();
 }
 
 void CAIEnemy::SerializeProperties(Serialization::IArchive & archive)
@@ -111,6 +113,18 @@ const Vec3 CAIEnemy::GetMoveDirection() const
 	{
 		return Vec3(ZERO);
 	}
+}
+
+void CAIEnemy::AddToAIFightingSystem()
+{
+	if (m_pTargetActor)
+		m_pTargetActor->AddEnemyFighter(this);
+}
+
+void CAIEnemy::RemoveFromAIFightingSystem()
+{
+	if (m_pTargetActor)
+		m_pTargetActor->RemoveEnemyFighter(this);
 }
 
 // Animation and Mannequin
