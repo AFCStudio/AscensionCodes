@@ -52,6 +52,7 @@ public:
 
 	CAIEnemy * PopAttacking();
 	void PushAttacking(CAIEnemy * pEnemy);
+	void RemoveAttacking(CAIEnemy * pEnemy);
 
 private:
 

@@ -102,6 +102,11 @@ void CAIFightingSystem::PushAttacking(CAIEnemy * pEnemy)
 	m_attacks.push_back(pEnemy);
 }
 
+void CAIFightingSystem::RemoveAttacking(CAIEnemy * pEnemy)
+{
+	m_attacks.erase(std::remove(m_attacks.begin(), m_attacks.end(), pEnemy), m_attacks.end());
+}
+
 void CAIFightingSystem::FindBestAttackGroupCandidate()
 {
 	int index = cry_random(0, (int)m_tauntGroup.size());
