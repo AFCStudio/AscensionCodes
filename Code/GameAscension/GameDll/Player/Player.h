@@ -15,6 +15,8 @@ class CPlayerSword;
 
 class CPlayer;
 
+class CAIFightingSystem;
+
 class CSpawnPoint;
 
 ////////////////////////////////////////////////////////
@@ -51,6 +53,8 @@ public:
 	CPlayerStateManager * GetStateManager() const { return m_pStateManager; }
 	CPlayerSword * GetSword() const { return m_pSword; }
 
+	CAIFightingSystem * GetAIFightingSystem() { return m_pAIFightingSystem; }
+
 	const virtual Vec3 GetMoveDirection() const override;
 	const virtual float GetMoveAngle() const override;
 
@@ -76,6 +80,8 @@ protected:
 	CPlayerSword * m_pSword;
 
 	SPlayerViewParams m_playerViewParams;
+
+	CAIFightingSystem * m_pAIFightingSystem;
 };
 
 #endif

@@ -11,6 +11,8 @@
 
 #include "Actions/MoveAction.h"
 
+#include "AI/Systems/AIFightingSystem.h"
+
 #include "Entities/Gameplay/SpawnPoint.h"
 
 #include <CryRenderer/IRenderAuxGeom.h>
@@ -43,6 +45,8 @@ CPlayer::CPlayer()
 	m_weaponType = EWeaponType::Magic;
 
 	RegisterCVars();
+
+	m_pAIFightingSystem = new CAIFightingSystem();
 }
 
 CPlayer::~CPlayer()
