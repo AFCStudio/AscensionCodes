@@ -59,6 +59,9 @@ public:
 	virtual void AddEnemyFighter(CAIEnemy * pEnemy) override;
 	virtual void RemoveEnemyFighter(CAIEnemy * pEnemy) override;
 
+	virtual void AddAttackToQueue(CAIEnemy * pEnemy) override;
+	virtual void RemoveAttackFromQueue(CAIEnemy * pEnemy) override;
+
 	const virtual Vec3 GetMoveDirection() const override;
 	const virtual float GetMoveAngle() const override;
 

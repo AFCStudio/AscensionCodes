@@ -168,6 +168,18 @@ void CPlayer::RemoveEnemyFighter(CAIEnemy * pEnemy)
 		m_pAIFightingSystem->RemoveFighter(pEnemy);
 }
 
+void CPlayer::AddAttackToQueue(CAIEnemy * pEnemy)
+{
+	if (m_pAIFightingSystem)
+		m_pAIFightingSystem->PushAttacking(pEnemy);
+}
+
+void CPlayer::RemoveAttackFromQueue(CAIEnemy * pEnemy)
+{
+	if (m_pAIFightingSystem)
+		m_pAIFightingSystem->RemoveAttacking(pEnemy);
+}
+
 const Vec3 CPlayer::GetMoveDirection() const
 {
 	return GetInput()->GetMoveDirection();

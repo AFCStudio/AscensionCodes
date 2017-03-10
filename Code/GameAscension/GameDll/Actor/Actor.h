@@ -83,6 +83,14 @@ public:
 	// Initially should be only used by Player.
 	virtual void RemoveEnemyFighter(CAIEnemy * pEnemy) {}
 
+	// This function defined to add enemy to AI fighting system attacking queue.
+	// Initially should be only used by Player.
+	virtual void AddAttackToQueue(CAIEnemy * pEnemy) {}
+
+	// This function defined to remove enemy from AI fighting system attacking queue.
+	// Initially should be only used by Player.
+	virtual void RemoveAttackFromQueue(CAIEnemy * pEnemy) {}
+
 protected:
 	virtual void SelectSpawnPoint();
 
