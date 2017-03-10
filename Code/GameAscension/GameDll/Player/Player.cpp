@@ -154,6 +154,20 @@ void CPlayer::SetHealth(float health)
 	m_pInput->OnPlayerRespawn();
 }
 
+void CPlayer::AddEnemyFighter(CAIEnemy * pEnemy)
+{
+	if (m_pAIFightingSystem)
+		m_pAIFightingSystem->AddFighter(pEnemy);
+	else
+		CryLog("CPlayer::AIFighter Warning: Player has not a AIFighting system yet!");
+}
+
+void CPlayer::RemoveEnemyFighter(CAIEnemy * pEnemy)
+{
+	if (m_pAIFightingSystem)
+		m_pAIFightingSystem->RemoveFighter(pEnemy);
+}
+
 const Vec3 CPlayer::GetMoveDirection() const
 {
 	return GetInput()->GetMoveDirection();

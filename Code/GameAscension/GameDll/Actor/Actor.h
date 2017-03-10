@@ -23,6 +23,7 @@
 
 class CActorAnimations;
 class CActor;
+class CAIEnemy;
 class CSpawnPoint;
 
 enum class EWeaponType { NoWeapon, Magic, Sword, Knife };
@@ -115,6 +116,14 @@ public:
 	virtual void PlayFragment(char * fragmentName, EActionPriority priority, TagState tagState = TAG_STATE_EMPTY);
 
 	virtual void ForceFinishLastAction();
+
+	// This function defined to add enemy to AI fighting system.
+	// Initially should be only used by Player.
+	virtual void AddEnemyFighter(CAIEnemy * pEnemy) {}
+
+	// This function defined to remove enemy from AI fighting system.
+	// Initially should be only used by Player.
+	virtual void RemoveEnemyFighter(CAIEnemy * pEnemy) {}
 
 protected:
 	void ActivateMannequinContext(const char *contextName, ICharacterInstance &character, const SControllerDef &controllerDefinition, const IAnimationDatabase &animationDatabase);
