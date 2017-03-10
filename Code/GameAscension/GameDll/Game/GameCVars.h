@@ -34,6 +34,7 @@ struct SCVars
 	float ai_attackDistance;
 	float ai_tauntDistance;
 	float ai_distanceThreshold;
+	int   ai_maxAttackerCount;
 	float ai_maxAttackTime;
 	float ai_minAttackTime;
 
