@@ -75,6 +75,14 @@ public:
 
 	const virtual SActorMannequinInfo &GetActorMannequinInfo() const { return m_actorMannequinInfo; }
 
+	// This function defined to add enemy to AI fighting system.
+	// Initially should be only used by Player.
+	virtual void AddEnemyFighter(CAIEnemy * pEnemy) {}
+
+	// This function defined to remove enemy from AI fighting system.
+	// Initially should be only used by Player.
+	virtual void RemoveEnemyFighter(CAIEnemy * pEnemy) {}
+
 protected:
 	virtual void SelectSpawnPoint();
 
@@ -117,13 +125,7 @@ public:
 
 	virtual void ForceFinishLastAction();
 
-	// This function defined to add enemy to AI fighting system.
-	// Initially should be only used by Player.
-	virtual void AddEnemyFighter(CAIEnemy * pEnemy) {}
 
-	// This function defined to remove enemy from AI fighting system.
-	// Initially should be only used by Player.
-	virtual void RemoveEnemyFighter(CAIEnemy * pEnemy) {}
 
 protected:
 	void ActivateMannequinContext(const char *contextName, ICharacterInstance &character, const SControllerDef &controllerDefinition, const IAnimationDatabase &animationDatabase);
