@@ -22,7 +22,7 @@
 void CPlayerStateIdle::Enter()
 {
 	m_pPlayer->ForceFinishLastAction();
-	m_pPlayer->PlayFragment("MotionIdle", PP_Lowest, TAG_STATE_EMPTY);
+	m_pPlayer->PlayIdleAction();
 }
 void CPlayerStateIdle::Update(SEntityUpdateContext& ctx, int updateSlot)
 {
