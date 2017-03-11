@@ -139,6 +139,8 @@ public:
 	virtual void Enslave(CActor * pTarget);
 	virtual void ReleaseSlave();
 
+	virtual IActionController * GetActionController() const { return m_pActionController; }
+	virtual SAnimationContext * GetAnimationContext() const { return m_pAnimationContext; }
 
 protected:
 	void ActivateMannequinContext(const char *contextName, ICharacterInstance &character, const SControllerDef &controllerDefinition, const IAnimationDatabase &animationDatabase);
