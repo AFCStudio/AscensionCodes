@@ -136,6 +136,8 @@ public:
 
 	virtual void ForceFinishLastAction();
 
+	virtual void Enslave(CActor * pTarget);
+	virtual void ReleaseSlave();
 
 
 protected:
@@ -144,6 +146,8 @@ protected:
 	virtual void SetWeaponTag(EWeaponType weaponType);
 
 protected:
+
+	CActor * m_pSlaveActor;
 
 	const IAnimationDatabase * m_pSlaveADB;
 

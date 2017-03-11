@@ -35,6 +35,7 @@ CActor::CActor()
 	, m_actorEyeHeight(0.935f)
 	, m_pActionController(nullptr)
 	, m_pAnimationContext(nullptr)
+	, m_pSlaveActor(nullptr)
 	, m_weaponType(EWeaponType::NoWeapon)
 {
 	m_pCharacterGeometry = "Objects/Characters/TheMagician/TheMagician.cdf";
@@ -241,6 +242,34 @@ void CActor::Physicalize()
 
 // Animations and Mannequin
 // ------------------------------------------------------------------
+void CActor::Enslave(CActor * pTarget)
+{
+	m_pSlaveActor = pTarget;
+
+	IActionController * pTargetAC = pTarget->GetActionController();
+	if (pTargetAC)
+	{
+		uint32 targetScopeId = m_pAnimationContext->controllerDef.m_scopeContexts.Find("SlaveChar");
+
+		m_pActionController->SetSlaveController(*pTargetAC, targetScopeId, true, m_pSlaveADB);
+	}
+}
+void CActor::ReleaseSlave()
+{
+	if (m_pSlaveActor)
+	{
+		IActionController * pTargetAC = m_pSlaveActor->GetActionController();
+		if (pTargetAC)
+		{
+			uint32 targetScopeId = m_pAnimationContext->controllerDef.m_scopeContexts.Find("SlaveChar");
+			m_pActionController->SetSlaveController(*m_pSlaveActor->GetActionController(),
+				targetScopeId, false, m_pSlaveADB);
+		}
+
+		m_pSlaveActor = nullptr;
+	}
+}
+
 void CActor::SetWeaponTag(EWeaponType weaponType)
 {
 	TagGroupID groupId = m_pAnimationContext->controllerDef.m_tags.FindGroup("weaponType");
