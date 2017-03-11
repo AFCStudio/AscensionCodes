@@ -125,11 +125,12 @@ public:
 	virtual void SetTagGroup(TagGroupID groupId, TagID tagId);
 	virtual void ClearTagGroup(TagGroupID groupId);
 
-	virtual void PlayMoveAction(char * fragmentName, bool isRotationForce, EActionPriority priority, TagState fragTags = TAG_STATE_EMPTY);
-	virtual void PlayMovementAction(char * fragmentName, EActionPriority priority, TagState fragTags = TAG_STATE_EMPTY);
 
-	virtual void PlayFragment(FragmentID fragmentID, EActionPriority priority, TagState tagState = TAG_STATE_EMPTY);
-	virtual void PlayFragment(char * fragmentName, EActionPriority priority, TagState tagState = TAG_STATE_EMPTY);
+	virtual void PlayMoveAction(char * fragmentName, bool isRotationForce, EActionPriority priority = PP_Movement, TagState fragTags = TAG_STATE_EMPTY, uint32 flags = 0);
+	virtual void PlayMovementAction(char * fragmentName, EActionPriority priority = PP_Movement, TagState fragTags = TAG_STATE_EMPTY, uint32 flags = 0);
+
+	virtual void PlayFragment(FragmentID fragmentID, EActionPriority priority, TagState tagState = TAG_STATE_EMPTY, uint32 flags = 0);
+	virtual void PlayFragment(char * fragmentName, EActionPriority priority, TagState tagState = TAG_STATE_EMPTY, uint32 flags = 0);
 
 	virtual void ForceFinishLastAction();
 

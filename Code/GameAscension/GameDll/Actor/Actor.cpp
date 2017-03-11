@@ -359,41 +359,40 @@ void CActor::ClearTagGroup(TagGroupID groupId)
 }
 
 //------------------------------------------------------------------------
-void CActor::PlayMoveAction(char * fragmentName, bool isRotationForce, EActionPriority priority, TagState fragTags)
+void CActor::PlayMoveAction(char * fragmentName, bool isRotationForce, EActionPriority priority, TagState fragTags, uint32 flags)
 {
 	if (m_pActionController)
 	{
 		FragmentID fragID = m_pActionController->GetContext().controllerDef.m_fragmentIDs.Find(fragmentName);
-		m_pLastAction = new CMoveAction(this, isRotationForce, priority, fragID, fragTags);
+		m_pLastAction = new CMoveAction(this, isRotationForce, priority, fragID, fragTags, flags);
 		m_pActionController->Queue(*m_pLastAction);
 	}
 }
-void CActor::PlayMovementAction(char * fragmentName, EActionPriority priority, TagState fragTags)
+void CActor::PlayMovementAction(char * fragmentName, EActionPriority priority, TagState fragTags, uint32 flags)
 {
 	if (m_pActionController)
 	{
 		FragmentID fragID = m_pActionController->GetContext().controllerDef.m_fragmentIDs.Find(fragmentName);
-		m_pLastAction = new CMovementAction(this, priority, fragID, fragTags);
+		m_pLastAction = new CMovementAction(this, priority, fragID, fragTags, flags);
 		m_pActionController->Queue(*m_pLastAction);
 	}
 }
 
 //------------------------------------------------------------------------
-void CActor::PlayFragment(FragmentID fragmentID, EActionPriority priority, TagState tagState)
+void CActor::PlayFragment(FragmentID fragmentID, EActionPriority priority, TagState tagState, uint32 flags)
 {
 	if (m_pActionController)
 	{
-		m_pLastAction = new TPlayerAction(priority, fragmentID, tagState);
+		m_pLastAction = new TPlayerAction(priority, fragmentID, tagState, flags);
 		m_pActionController->Queue(*m_pLastAction);
 	}
 }
-void CActor::PlayFragment(char * fragmentName, EActionPriority priority, TagState tagState)
+void CActor::PlayFragment(char * fragmentName, EActionPriority priority, TagState tagState, uint32 flags)
 {
 	if (m_pActionController)
 	{
-		CryLog("Player fragmentttt");
 		FragmentID fragID = m_pActionController->GetContext().controllerDef.m_fragmentIDs.Find(fragmentName);
-		m_pLastAction = new TPlayerAction(priority, fragID, tagState);
+		m_pLastAction = new TPlayerAction(priority, fragID, tagState, flags);
 		m_pActionController->Queue(*m_pLastAction);
 	}
 }
