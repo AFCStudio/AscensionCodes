@@ -358,6 +358,11 @@ void CActor::ClearTagGroup(TagGroupID groupId)
 	}
 }
 
+void CActor::PlayIdleAction(char * fragmentName, EActionPriority priority, TagState fragTags)
+{
+	PlayFragment(fragmentName, priority, fragTags, IAction::Interruptable);
+}
+
 //------------------------------------------------------------------------
 void CActor::PlayMoveAction(char * fragmentName, bool isRotationForce, EActionPriority priority, TagState fragTags, uint32 flags)
 {
