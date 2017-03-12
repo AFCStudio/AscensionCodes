@@ -178,6 +178,7 @@ void CPlayerInput::InitializeActionHandler()
 	m_actionHandler.AddHandler(ActionId("space"), &CPlayerInput::OnActionSpace);
 
 	m_actionHandler.AddHandler(ActionId("mouse_left"), &CPlayerInput::OnActionMouseLeft);
+	m_actionHandler.AddHandler(ActionId("mouse_right"), &CPlayerInput::OnActionMouseRight);
 
 	m_actionHandler.AddHandler(ActionId("select_sword"), &CPlayerInput::OnActionSelectSword);
 }
@@ -234,6 +235,11 @@ bool CPlayerInput::OnActionSpace(EntityId entityId, const ActionId & actionId, i
 bool CPlayerInput::OnActionMouseLeft(EntityId entityId, const ActionId& actionId, int activationMode, float value)
 {
 	m_pPlayer->SwordAttack();
+	return true;
+}
+
+bool CPlayerInput::OnActionMouseRight(EntityId entityId, const ActionId & actionId, int activationMode, float value)
+{
 	return true;
 }
 
