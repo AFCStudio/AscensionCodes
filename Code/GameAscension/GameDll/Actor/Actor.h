@@ -123,6 +123,9 @@ public:
 
 	virtual void UpdateActorTurnAngle();
 
+	// Activate or deactivate a global actor tag its using name
+	virtual void SetTag(char * pTagName, bool enable);
+
 	virtual void SetTagGroup(TagGroupID groupId, TagID tagId);
 	virtual void ClearTagGroup(TagGroupID groupId);
 

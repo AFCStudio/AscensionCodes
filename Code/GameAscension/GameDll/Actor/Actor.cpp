@@ -378,6 +378,19 @@ void CActor::SetActorMannequin()
 }
 
 //------------------------------------------------------------------------
+void CActor::SetTag(char * pTagName, bool enable)
+{
+	if (m_pAnimationContext)
+	{
+		TagID tagId = m_pAnimationContext->controllerDef.m_tags.Find(pTagName);
+
+		if (tagId != TAG_ID_INVALID)
+		{
+			m_pAnimationContext->state.Set(tagId, enable);
+		}
+	}
+}
+
 void CActor::SetTagGroup(TagGroupID groupId, TagID tagId)
 {
 	if (m_pActionController)
