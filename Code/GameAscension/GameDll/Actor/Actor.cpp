@@ -393,20 +393,16 @@ void CActor::SetTag(char * pTagName, bool enable)
 
 void CActor::SetTagGroup(TagGroupID groupId, TagID tagId)
 {
-	if (m_pActionController)
+	if (m_pAnimationContext)
 	{
-		SAnimationContext &animContext = m_pActionController->GetContext();
-
-		animContext.state.SetGroup(groupId, tagId);
+		m_pAnimationContext->state.SetGroup(groupId, tagId);
 	}
 }
 void CActor::ClearTagGroup(TagGroupID groupId)
 {
-	if (m_pActionController)
+	if (m_pAnimationContext)
 	{
-		SAnimationContext &animContext = m_pActionController->GetContext();
-
-		animContext.state.ClearGroup(groupId);
+		m_pAnimationContext->state.ClearGroup(groupId);
 	}
 }
 
