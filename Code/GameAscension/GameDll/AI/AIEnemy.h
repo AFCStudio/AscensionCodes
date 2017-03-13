@@ -45,6 +45,8 @@ public:
 	virtual void                SerializeProperties(Serialization::IArchive& archive) override;
 	// ~IEntityPropertyGroup
 
+	virtual void Attack();
+
 	virtual CAIStateManager * GetStateManager() const { return m_pStateManager; }
 
 	virtual const bool IsAttackGroup() const { return m_fightingGroup == EFightingGroup::Attack; }

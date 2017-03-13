@@ -71,6 +71,15 @@ void CAIEnemy::SerializeProperties(Serialization::IArchive & archive)
 	}
 }
 
+void CAIEnemy::Attack()
+{
+	if (m_pTargetActor)
+	{
+		m_pTargetActor->AddAttackToQueue(this);
+	}
+
+	PlayMoveAction("AI_Attack", true, PP_Attack);
+}
 void CAIEnemy::PostInit(IGameObject *pGameObject)
 {
 	m_pStateManager = static_cast<CAIStateManager *>(GetGameObject()->AcquireExtension("AIStateManager"));

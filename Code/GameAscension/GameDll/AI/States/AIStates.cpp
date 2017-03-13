@@ -109,7 +109,7 @@ void CAIStateAttack::Update(SEntityUpdateContext& ctx, int updateSlot)
 {
 	if (m_pAIEnemy->IsAttackTimeCompleted())
 	{
-		m_pAIEnemy->PlayFragment("AI_Attack", PP_Sword, TAG_STATE_EMPTY);
+		m_pAIEnemy->Attack();
 		m_pAIEnemy->ResetAttackTime();
 	}
 	else
