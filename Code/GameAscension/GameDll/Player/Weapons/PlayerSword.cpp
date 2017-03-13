@@ -131,14 +131,17 @@ void CPlayerSword::RestoreWeapon()
 
 void CPlayerSword::CreateNextSequence()
 {
-	float moveAngle;
+	float moveAngle = 0.0f;
 
-	if (m_pPlayer->GetInput()->GetLocalMoveDirection() == ZERO)
-		moveAngle = 0.0f;
-	else
+	if (m_pPlayer->IdentifyTargetEnemy())
+	{
+		moveAngle = RAD2DEG(m_pPlayer->GetTargetEnemyAngle());
+	}
+	else if (m_pPlayer->GetInput()->GetLocalMoveDirection() != ZERO)
 	{
 		moveAngle = RAD2DEG(m_pPlayer->GetInput()->GetMoveAngle());
 	}
+
 	if (moveAngle >= - 45 && moveAngle <= 45)
 	{
 		m_animationAngle = 0;
