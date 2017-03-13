@@ -72,7 +72,7 @@ public:
 	// Animations and Mannequin
 	virtual void SetActorMannequin() override;
 
-	void PlaySwordAction(EActionPriority priority = PP_Sword);
+	void PlaySwordAction(EActionPriority priority = PP_Attack);
 	// ~Animations and Mannequin
 
 protected:

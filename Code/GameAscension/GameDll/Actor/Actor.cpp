@@ -162,11 +162,11 @@ void CActor::SelectWeapon(EWeaponType weaponType)
 
 		if (weaponType == EWeaponType::Sword)
 		{
-			PlayFragment("SelectSword", PP_Sword);
+			PlayFragment("SelectSword", PP_Attack);
 		}
 		else
 		{
-			PlayFragment("DeSelectSword", PP_Sword);
+			PlayFragment("DeSelectSword", PP_Attack);
 		}
 	}
 }

@@ -24,11 +24,9 @@ enum EActionPriority
 {
 	PP_Lowest,
 	PP_Movement,
-	PP_MovementAction,
-	PP_Move2IdleAction,
-	PP_Sword,
 	PP_PlayerAction,
-	PP_PlayerActionUrgent,
+	PP_Attack,
+	PP_Defend,
 	PP_HitReaction,
 	PP_Death,
 	PP_PostDeath
