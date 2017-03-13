@@ -190,6 +190,21 @@ const float CPlayer::GetMoveAngle() const
 	return GetInput()->GetMoveAngle();
 }
 
+const CAIEnemy * CPlayer::IdentifyTargetEnemy() const
+{
+	return m_pAIFightingSystem ? m_pAIFightingSystem->IdentifyTargetEnemy(this) : nullptr;
+}
+
+const CAIEnemy * CPlayer::GetTargetEnemy() const
+{
+	return m_pAIFightingSystem->GetTargetEnemy();
+}
+
+const float CPlayer::GetTargetEnemyAngle() const
+{
+	return m_pAIFightingSystem->GetTargetAngle();
+}
+
 void CPlayer::SwordAttack()
 {
 	if (m_weaponType == EWeaponType::Sword)

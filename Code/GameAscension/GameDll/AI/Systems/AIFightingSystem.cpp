@@ -19,6 +19,8 @@
 #include "Game/GameCVars.h"
 
 CAIFightingSystem::CAIFightingSystem()
+	: m_pTargetEnemy(nullptr)
+	, m_targetAngle(0.0f)
 {
 }
 
@@ -28,6 +30,46 @@ void CAIFightingSystem::PostInit(IGameObject * pGameObject)
 
 void CAIFightingSystem::Update(SEntityUpdateContext & ctx, int updateSlot)
 {
+}
+
+CAIEnemy * CAIFightingSystem::IdentifyTargetEnemy(const CActor * pActor)
+{
+	Vec3 intendedDir = pActor->GetMoveDirection();
+
+	m_pTargetEnemy = nullptr;
+	float minAngle = g_pGameCVars->pl_maxAttackAngle;
+
+	for (auto pEnemy : m_attackGroup)
+	{
+		Vec3 targetDir = pEnemy->GetEntity()->GetPos() - pActor->GetEntity()->GetPos();
+		targetDir.z = 0.0f;
+		targetDir.Normalize();
+
+		float targetAngle = acos(intendedDir.dot(targetDir));
+
+		if (targetAngle < minAngle)
+		{
+			m_pTargetEnemy = pEnemy;
+			minAngle = targetAngle;
+		}
+	}
+
+	for (auto pEnemy : m_tauntGroup)
+	{
+		Vec3 targetDir = pEnemy->GetEntity()->GetPos() - pActor->GetEntity()->GetPos();
+		targetDir.z = 0.0f;
+		targetDir.Normalize();
+
+		float targetAngle = acos(intendedDir.dot(targetDir));
+
+		if (targetAngle < minAngle)
+		{
+			m_pTargetEnemy = pEnemy;
+			minAngle = targetAngle;
+		}
+	}
+
+	return m_pTargetEnemy;
 }
 
 void CAIFightingSystem::AddFighter(CAIEnemy * pFighter)

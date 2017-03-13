@@ -54,6 +54,11 @@ public:
 	void PushAttacking(CAIEnemy * pEnemy);
 	void RemoveAttacking(CAIEnemy * pEnemy);
 
+	CAIEnemy * IdentifyTargetEnemy(const CActor * pActor);
+
+	const CAIEnemy * GetTargetEnemy() const { return m_pTargetEnemy; }
+	const float GetTargetAngle() const { return m_targetAngle; }
+
 private:
 
 	void FindBestAttackGroupCandidate();
@@ -64,6 +69,9 @@ private:
 	EnemyVector m_tauntGroup;
 
 	EnemyQueue	m_attacks;
+
+	CAIEnemy * m_pTargetEnemy;
+	float      m_targetAngle;
 };
 
 #endif // !__AI_FIGHTING_SYSTEM_H__

@@ -67,6 +67,12 @@ public:
 
 	const SPlayerViewParams &GetPlayerViewParams() const { return m_playerViewParams; }
 
+	// Called when creating next sequence from PlayerSword
+	// to identify whether there is a AI enemy target or not.
+	const CAIEnemy * IdentifyTargetEnemy() const;
+	const CAIEnemy * GetTargetEnemy() const;
+	const float GetTargetEnemyAngle() const;
+
 	void SwordAttack();
 
 	void DefendAttack();
