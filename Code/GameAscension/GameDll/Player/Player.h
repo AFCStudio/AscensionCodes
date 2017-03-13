@@ -69,6 +69,8 @@ public:
 
 	void SwordAttack();
 
+	void DefendAttack();
+
 	// Animations and Mannequin
 	virtual void SetActorMannequin() override;
 

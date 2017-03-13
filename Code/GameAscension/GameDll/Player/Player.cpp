@@ -196,6 +196,25 @@ void CPlayer::SwordAttack()
 		m_pSword->SwordAttack();
 }
 
+void CPlayer::DefendAttack()
+{
+	if (m_pAIFightingSystem)
+	{
+		CActor * pEnemy = (CActor*)m_pAIFightingSystem->PopAttacking();
+
+		if (pEnemy)
+		{
+			Enslave(pEnemy);
+
+			SetTag("slaveHuman", true);
+
+			ForceFinishLastAction();
+			pEnemy->ForceFinishLastAction();
+			PlayMoveAction("Defend", true, PP_Defend);
+		}
+	}
+}
+
 // Animation and Mannequin
 // ------------------------------------------------------------------------
 

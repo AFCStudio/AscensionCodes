@@ -240,6 +240,7 @@ bool CPlayerInput::OnActionMouseLeft(EntityId entityId, const ActionId& actionId
 
 bool CPlayerInput::OnActionMouseRight(EntityId entityId, const ActionId & actionId, int activationMode, float value)
 {
+	m_pPlayer->DefendAttack();
 	return true;
 }
 
