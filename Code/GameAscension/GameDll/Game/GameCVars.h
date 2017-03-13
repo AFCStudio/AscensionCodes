@@ -21,6 +21,7 @@
 struct SCVars
 {
 	// Player Attack Settings
+	float pl_attackDuration;
 	float pl_maxAttackAngle;
 
 	// Player Camera Settings

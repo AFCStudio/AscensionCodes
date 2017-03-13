@@ -18,6 +18,7 @@ SCVars * g_pGameCVars = 0;
 void SCVars::InitCVars()
 {
 	// Player Attack Settings
+	REGISTER_CVAR(pl_attackDuration, 4.0f, VF_CHEAT, "Total attack duration of player for sequence tag.");
 	REGISTER_CVAR(pl_maxAttackAngle, 1.2f, VF_CHEAT, "Maximum angle which player identify a target actor.");
 
 	// Camera Settings
@@ -44,6 +45,7 @@ void SCVars::ReleaseCVars()
 	if (pConsole)
 	{
 		// Player Attack Settings
+		pConsole->UnregisterVariable("pl_attackDuration", true);
 		pConsole->UnregisterVariable("pl_maxAttackAngle", true);
 
 		// Camera Settings

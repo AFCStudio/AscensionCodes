@@ -21,6 +21,8 @@
 #include "Player/Player.h"
 #include "Player/Input/PlayerInput.h"
 
+#include "Game/GameCVars.h"
+
 CPlayerSword::CPlayerSword()
 	: m_bIsAttacking(false)
 	, m_bIsInSequence(false)
@@ -61,7 +63,7 @@ void CPlayerSword::Update(SEntityUpdateContext& ctx, int slot)
 
 		m_fTimeSinceAction += ctx.fFrameTime;
 
-		if (m_fTimeSinceAction >= 4)
+		if (m_fTimeSinceAction >= g_pGameCVars->pl_attackDuration)
 			StopAttack();
 	}
 }
