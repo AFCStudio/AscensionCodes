@@ -20,6 +20,9 @@
 
 struct SCVars
 {
+	// Player Attack Settings
+	float pl_maxAttackAngle;
+
 	// Player Camera Settings
 	float cam_viewOffsetX;
 	float cam_viewOffsetY;

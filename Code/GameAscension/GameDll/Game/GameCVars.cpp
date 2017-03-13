@@ -17,6 +17,9 @@ SCVars * g_pGameCVars = 0;
 
 void SCVars::InitCVars()
 {
+	// Player Attack Settings
+	REGISTER_CVAR(pl_maxAttackAngle, 1.2f, VF_CHEAT, "Maximum angle which player identify a target actor.");
+
 	// Camera Settings
 	REGISTER_CVAR(cam_viewOffsetX, 0.35f, VF_CHEAT, "View offset along the right axis from the player entity");
 	REGISTER_CVAR(cam_viewOffsetY, -1.5f, VF_CHEAT, "View offset along the forward axis from the player entity");
@@ -40,6 +43,9 @@ void SCVars::ReleaseCVars()
 	IConsole* pConsole = gEnv->pConsole;
 	if (pConsole)
 	{
+		// Player Attack Settings
+		pConsole->UnregisterVariable("pl_maxAttackAngle", true);
+
 		// Camera Settings
 		pConsole->UnregisterVariable("cam_viewOffsetX", true);
 		pConsole->UnregisterVariable("cam_viewOffsetY", true);
