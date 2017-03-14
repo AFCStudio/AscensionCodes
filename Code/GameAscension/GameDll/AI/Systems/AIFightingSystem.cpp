@@ -35,13 +35,14 @@ void CAIFightingSystem::Update(SEntityUpdateContext & ctx, int updateSlot)
 CAIEnemy * CAIFightingSystem::IdentifyTargetEnemy(const CActor * pActor)
 {
 	Vec3 intendedDir = pActor->GetMoveDirection();
+	Vec3 targetDir;
 
 	m_pTargetEnemy = nullptr;
 	float minAngle = g_pGameCVars->pl_maxAttackAngle;
 
 	for (auto pEnemy : m_attackGroup)
 	{
-		Vec3 targetDir = pEnemy->GetEntity()->GetPos() - pActor->GetEntity()->GetPos();
+		targetDir = pEnemy->GetEntity()->GetPos() - pActor->GetEntity()->GetPos();
 		targetDir.z = 0.0f;
 		targetDir.Normalize();
 
@@ -56,7 +57,7 @@ CAIEnemy * CAIFightingSystem::IdentifyTargetEnemy(const CActor * pActor)
 
 	for (auto pEnemy : m_tauntGroup)
 	{
-		Vec3 targetDir = pEnemy->GetEntity()->GetPos() - pActor->GetEntity()->GetPos();
+		targetDir = pEnemy->GetEntity()->GetPos() - pActor->GetEntity()->GetPos();
 		targetDir.z = 0.0f;
 		targetDir.Normalize();
 
@@ -67,6 +68,17 @@ CAIEnemy * CAIFightingSystem::IdentifyTargetEnemy(const CActor * pActor)
 			m_pTargetEnemy = pEnemy;
 			minAngle = targetAngle;
 		}
+	}
+
+	if (m_pTargetEnemy)
+	{
+		Vec3 actorDir = pActor->GetEntity()->GetForwardDir();
+		m_targetAngle = acos(actorDir.dot(targetDir));
+		m_targetAngle *= actorDir.cross(targetDir).z >= 0 ? 1.0f : -1.0f;
+	}
+	else
+	{
+		m_targetAngle = 0.0f;
 	}
 
 	return m_pTargetEnemy;
