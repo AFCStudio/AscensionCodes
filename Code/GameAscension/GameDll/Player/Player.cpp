@@ -9,7 +9,7 @@
 #include "GamePlugin.h"
 #include "Game/GameRules.h"
 
-#include "Actions/MoveAction.h"
+#include "Actions/AttackAction.h"
 
 #include "AI/Systems/AIFightingSystem.h"
 
@@ -272,7 +272,7 @@ void CPlayer::PlaySwordAction(EActionPriority priority)
 			CryLog("Player sword sequence tag ID could not be founded by sword PlaySwordAction!");
 		}
 
-		m_pLastAction = new CMoveAction(this, true, priority, fragID, tagState);
+		m_pLastAction = new CAttackAction(this, priority, fragID, tagState);
 		m_pActionController->Queue(*m_pLastAction);
 	}
 }
