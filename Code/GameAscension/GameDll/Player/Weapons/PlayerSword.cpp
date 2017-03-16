@@ -79,6 +79,7 @@ void CPlayerSword::SwordAttack()
 		m_fTimeSinceAction = 0.0f;
 		m_fBlockMoveTime = GetSwordAnimationBlockTime();
 
+		m_pPlayer->ForceFinishLastAction();
 		m_pPlayer->PlaySwordAction();
 
 		m_bIsAttacking = true;
