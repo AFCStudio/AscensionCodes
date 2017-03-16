@@ -23,6 +23,9 @@ struct SCVars
 	// Player Attack Settings
 	float pl_attackDuration;
 	float pl_maxAttackAngle;
+	float pl_alignDistance;
+	float pl_alignSpeed;
+	float pl_alignThreshold;
 
 	// Player Camera Settings
 	float cam_viewOffsetX;

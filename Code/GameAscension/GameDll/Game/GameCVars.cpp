@@ -20,6 +20,9 @@ void SCVars::InitCVars()
 	// Player Attack Settings
 	REGISTER_CVAR(pl_attackDuration, 4.0f, VF_CHEAT, "Total attack duration of player for sequence tag.");
 	REGISTER_CVAR(pl_maxAttackAngle, 1.2f, VF_CHEAT, "Maximum angle which player identify a target actor.");
+	REGISTER_CVAR(pl_alignDistance, 1.75f, VF_CHEAT, "Alignment distance while player attacking to a enemy.");
+	REGISTER_CVAR(pl_alignSpeed, 2.0f, VF_CHEAT, "Alignment speed while player attacking to a enemy.");
+	REGISTER_CVAR(pl_alignThreshold, 0.1f, VF_CHEAT, "Alignment threshold while player attack to a enemy.");
 
 	// Camera Settings
 	REGISTER_CVAR(cam_viewOffsetX, 0.35f, VF_CHEAT, "View offset along the right axis from the player entity");
@@ -47,6 +50,9 @@ void SCVars::ReleaseCVars()
 		// Player Attack Settings
 		pConsole->UnregisterVariable("pl_attackDuration", true);
 		pConsole->UnregisterVariable("pl_maxAttackAngle", true);
+		pConsole->UnregisterVariable("pl_alignDistance", true);
+		pConsole->UnregisterVariable("pl_alignSpeed", true);
+		pConsole->UnregisterVariable("pl_alignThreshold", true);
 
 		// Camera Settings
 		pConsole->UnregisterVariable("cam_viewOffsetX", true);
