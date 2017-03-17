@@ -18,6 +18,8 @@
 #include "AI/AIEnemy.h"
 #include "Game/GameCVars.h"
 
+#include "HitReaction/HitReaction.h"
+
 CAttackAction::CAttackAction(
 	CPlayer * pPlayer,
 	int priority, FragmentID fragmentID, const TagState &fragTags,
@@ -28,6 +30,8 @@ CAttackAction::CAttackAction(
 	, m_initialRot(ZERO)
 	, m_totalRot(0.0f)
 	, m_targetAngle(0.0f)
+	, m_hitReactionTimer(0.0f)
+	, m_isReactionDone(false)
 {
 	if (!m_pPlayer)
 		CryLog("Error: Actor is NULL!");
@@ -47,6 +51,20 @@ IAction::EStatus CAttackAction::Update(float timePassed)
 
 				if (pEnemy)
 				{
+
+					if (!m_isReactionDone)
+					{
+						m_hitReactionTimer -= timePassed;
+
+						if (m_hitReactionTimer <= 0.0)
+						{
+							m_isReactionDone = true;
+
+							if (TargetIsInRange(pEnemy->GetEntity()))
+								pEnemy->HitReaction(pEntity, EHitTypes::Sword);
+						}
+					}
+
 					Vec3 direction = pEnemy->GetEntity()->GetPos() - pEntity->GetPos();
 					float distance2D = direction.GetLength2D() - g_pGameCVars->pl_alignDistance;
 
@@ -116,4 +134,13 @@ void CAttackAction::Enter()
 
 	m_initialRot = m_pPlayer->GetEntity()->GetRotation();
 	m_targetAngle = m_pPlayer->GetTargetEnemyAngle();
+
+	m_hitReactionTimer = g_pGameCVars->pl_hitReactionDelay;
+	m_isReactionDone = false;
+}
+
+bool CAttackAction::TargetIsInRange(IEntity * pEnemy)
+{
+	return m_pPlayer->GetEntity()->GetPos().GetSquaredDistance2D(pEnemy->GetPos()) <=
+		g_pGameCVars->ai_attackDistance + g_pGameCVars->ai_distanceThreshold;
 }

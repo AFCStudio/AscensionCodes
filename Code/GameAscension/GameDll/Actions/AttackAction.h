@@ -36,11 +36,17 @@ public:
 	virtual void Enter();
 
 protected:
+	virtual bool TargetIsInRange(IEntity * pEnemy);
+
+protected:
 	CPlayer * m_pPlayer;
 
 	Quat  m_initialRot;
 	float m_targetAngle;
 	float m_totalRot;
+
+	float m_hitReactionTimer;
+	bool  m_isReactionDone;
 };
 
 #endif
