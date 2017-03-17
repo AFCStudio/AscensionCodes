@@ -145,6 +145,12 @@ void CAIEnemy::ResetAttackTime()
 	m_attackingTimer = cry_random(g_pGameCVars->ai_minAttackTime, g_pGameCVars->ai_maxAttackTime);
 }
 
+void CAIEnemy::CancelAttack()
+{
+	m_isAttackInQueue = false;
+	ForceFinishLastAction();
+}
+
 const Vec3 CAIEnemy::GetMoveDirection() const
 {
 	if (m_pTargetEntity)

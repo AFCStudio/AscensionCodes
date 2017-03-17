@@ -146,7 +146,10 @@ CAIEnemy * CAIFightingSystem::PopAttacking()
 	CAIEnemy * pEnemy = m_attacks.empty() ? nullptr : m_attacks.front();
 
 	if (pEnemy)
+	{
 		m_attacks.pop_front();
+		pEnemy->CancelAttack();
+	}
 
 	return pEnemy;
 }

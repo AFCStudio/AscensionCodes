@@ -224,7 +224,6 @@ void CPlayer::DefendAttack()
 			SetTag("slaveHuman", true);
 
 			ForceFinishLastAction();
-			pEnemy->ForceFinishLastAction();
 			PlayMoveAction("Defend", true, PP_Defend);
 		}
 	}

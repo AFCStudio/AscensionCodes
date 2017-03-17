@@ -63,6 +63,8 @@ public:
 	virtual const bool IsAttackTimeCompleted() const { return m_attackingTimer <= 0.0f; }
 	virtual void RunOutAttackTime(float frameTime) { m_attackingTimer -= frameTime; }
 
+	virtual void CancelAttack();
+
 	virtual const Vec3 GetMoveDirection() const override;
 
 	bool IsTargetAActor() { return m_pTargetActor != nullptr; }
