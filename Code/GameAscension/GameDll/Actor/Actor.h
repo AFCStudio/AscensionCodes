@@ -79,6 +79,10 @@ public:
 
 	virtual CHitReaction * GetHitReaction() const { return m_pHitReaction; }
 	virtual void HitReaction(IEntity * pAttacker, EHitTypes hitType) const;
+	// That function use actor weapon to decide hit type
+	virtual void HitReaction(IEntity * pAttacker) const;
+	virtual EHitTypes GetHitTypeFromCurrentWeapon() const;
+
 	const virtual SActorMannequinInfo &GetActorMannequinInfo() const { return m_actorMannequinInfo; }
 
 	// This function defined to add enemy to AI fighting system.

@@ -181,6 +181,23 @@ void CActor::HitReaction(IEntity * pAttacker, EHitTypes hitType) const
 	m_pHitReaction->HitReaction(pAttacker, hitType);
 }
 
+void CActor::HitReaction(IEntity * pAttacker) const
+{
+	HitReaction(pAttacker, GetHitTypeFromCurrentWeapon());
+}
+
+EHitTypes CActor::GetHitTypeFromCurrentWeapon() const
+{
+	switch (m_weaponType)
+	{
+	case EWeaponType::Sword:		return EHitTypes::Sword;
+	case EWeaponType::Magic:		return EHitTypes::MagicBall;
+	case EWeaponType::Knife:		return EHitTypes::Dagger;
+	case EWeaponType::NoWeapon:
+	default:						return EHitTypes::Melee;
+	}
+}
+
 void CActor::SelectSpawnPoint()
 {
 	// We only handle default spawning below for the Launcher
