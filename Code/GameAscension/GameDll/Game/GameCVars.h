@@ -45,6 +45,7 @@ struct SCVars
 	int   ai_maxAttackerCount;
 	float ai_maxAttackTime;
 	float ai_minAttackTime;
+	float ai_preAttackTime;
 
 	SCVars()
 	{
