@@ -23,6 +23,8 @@
 
 #include "AI/States/AIStateManager.h"
 
+#include "HitReaction/HitReaction.h"
+
 
 class CAIEnemyRegistrator
 	: public IEntityRegistrator
@@ -45,6 +47,8 @@ CAIEnemy::CAIEnemy()
 	: m_teamId(0)
 	, m_pTargetActor(nullptr)
 	, m_pStateManager(nullptr)
+	, m_isAttackInQueue(false)
+	, m_preAttackTimer(0.0f)
 	, m_fightingGroup(EFightingGroup::NoFighting)
 {
 }
@@ -76,6 +80,9 @@ void CAIEnemy::Attack()
 	if (m_pTargetActor)
 	{
 		m_pTargetActor->AddAttackToQueue(this);
+
+		m_preAttackTimer = g_pGameCVars->ai_preAttackTime;
+		m_isAttackInQueue = true;
 	}
 
 	PlayMoveAction("AI_Attack", true, PP_Attack);
@@ -96,6 +103,28 @@ void CAIEnemy::PostInit(IGameObject *pGameObject)
 	if (m_pTargetEntity && m_pTargetActor)
 	{
 		CryLog("Client Actor has been found!");
+	}
+}
+
+void CAIEnemy::Update(SEntityUpdateContext & ctx, int updateSlot)
+{
+	BaseClass::Update(ctx, updateSlot);
+
+	if (m_isAttackInQueue)
+	{
+		m_preAttackTimer -= ctx.fFrameTime;
+
+		if (m_preAttackTimer <= 0.0f)
+		{
+			m_isAttackInQueue = false;
+
+			if (m_pTargetActor)
+			{
+				float distance = GetEntity()->GetPos().GetDistance(m_pTargetActor->GetEntity()->GetPos());
+				if (distance <= g_pGameCVars->ai_attackDistance + g_pGameCVars->ai_distanceThreshold)
+					m_pTargetActor->HitReaction(this->GetEntity());
+			}
+		}
 	}
 }
 

@@ -37,6 +37,7 @@ public:
 
 	// ISimpleActor
 	virtual void PostInit(IGameObject* pGameObject) override;
+	virtual void Update(SEntityUpdateContext& ctx, int updateSlot) override;
 	// ~ISimpleActor
 
 	// IEntityPropertyGroup
@@ -84,6 +85,8 @@ protected:
 	int m_teamId;
 
 	float m_attackingTimer;
+	float m_preAttackTimer;
+	bool  m_isAttackInQueue;
 };
 
 #endif
