@@ -24,7 +24,10 @@
 class CActorAnimations;
 class CActor;
 class CAIEnemy;
+class CHitReaction;
 class CSpawnPoint;
+
+enum class EHitTypes;
 
 enum class EWeaponType { NoWeapon, Magic, Sword, Knife };
 
@@ -74,6 +77,8 @@ public:
 	virtual const EWeaponType GetWeaponType() const { return m_weaponType; }
 	virtual void SelectWeapon(EWeaponType weaponType);
 
+	virtual CHitReaction * GetHitReaction() const { return m_pHitReaction; }
+	virtual void HitReaction(IEntity * pAttacker, EHitTypes hitType) const;
 	const virtual SActorMannequinInfo &GetActorMannequinInfo() const { return m_actorMannequinInfo; }
 
 	// This function defined to add enemy to AI fighting system.
@@ -111,6 +116,8 @@ protected:
 	float m_turnSpeed;
 
 	float m_actorEyeHeight;
+
+	CHitReaction * m_pHitReaction;
 
 	string m_pCharacterGeometry;
 

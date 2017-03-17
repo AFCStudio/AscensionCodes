@@ -22,6 +22,8 @@
 #include "Actions/MoveAction.h"
 #include "Actions/MovementAction.h"
 
+#include "HitReaction/HitReaction.h"
+
 #include "Entities/Gameplay/SpawnPoint.h"
 
 CActor::CActor()
@@ -38,6 +40,8 @@ CActor::CActor()
 	, m_pSlaveActor(nullptr)
 	, m_weaponType(EWeaponType::NoWeapon)
 {
+	m_pHitReaction = new CHitReaction(this);
+
 	m_pCharacterGeometry = "Objects/Characters/TheMagician/TheMagician.cdf";
 
 	m_actorMannequinInfo.m_pActorMannequinContext = "Char3P";
@@ -50,6 +54,7 @@ CActor::~CActor()
 {
 	SAFE_RELEASE(m_pActionController);
 	SAFE_DELETE(m_pAnimationContext);
+	SAFE_DELETE(m_pHitReaction);
 }
 
 bool CActor::Init(IGameObject *pGameObject)
@@ -169,6 +174,11 @@ void CActor::SelectWeapon(EWeaponType weaponType)
 			PlayFragment("DeSelectSword", PP_Attack);
 		}
 	}
+}
+
+void CActor::HitReaction(IEntity * pAttacker, EHitTypes hitType) const
+{
+	m_pHitReaction->HitReaction(pAttacker, hitType);
 }
 
 void CActor::SelectSpawnPoint()

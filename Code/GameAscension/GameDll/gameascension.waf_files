@@ -26,7 +26,12 @@
             "Actor/ISimpleActor.h",
             "Actor/Actor.cpp",
             "Actor/Actor.h"
-        ]
+        ],
+		"HitReaction" :
+		[
+			"HitReaction/HitReaction.h",
+			"HitReaction/HitReaction.cpp"
+		]
     },
     "AFCGameAscension_uber_Player.cpp" :
     {
