@@ -23,6 +23,7 @@ void SCVars::InitCVars()
 	REGISTER_CVAR(pl_alignDistance, 1.75f, VF_CHEAT, "Alignment distance while player attacking to a enemy.");
 	REGISTER_CVAR(pl_alignSpeed, 2.0f, VF_CHEAT, "Alignment speed while player attacking to a enemy.");
 	REGISTER_CVAR(pl_alignThreshold, 0.1f, VF_CHEAT, "Alignment threshold while player attack to a enemy.");
+	REGISTER_CVAR(pl_hitReactionDelay, 0.33f, VF_CHEAT, "Global hit reaction delay after attack animation started.");
 
 	// Camera Settings
 	REGISTER_CVAR(cam_viewOffsetX, 0.35f, VF_CHEAT, "View offset along the right axis from the player entity");
@@ -53,6 +54,7 @@ void SCVars::ReleaseCVars()
 		pConsole->UnregisterVariable("pl_alignDistance", true);
 		pConsole->UnregisterVariable("pl_alignSpeed", true);
 		pConsole->UnregisterVariable("pl_alignThreshold", true);
+		pConsole->UnregisterVariable("pl_hitReactionDelay", true);
 
 		// Camera Settings
 		pConsole->UnregisterVariable("cam_viewOffsetX", true);

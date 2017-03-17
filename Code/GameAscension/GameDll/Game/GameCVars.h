@@ -26,6 +26,7 @@ struct SCVars
 	float pl_alignDistance;
 	float pl_alignSpeed;
 	float pl_alignThreshold;
+	float pl_hitReactionDelay;
 
 	// Player Camera Settings
 	float cam_viewOffsetX;
