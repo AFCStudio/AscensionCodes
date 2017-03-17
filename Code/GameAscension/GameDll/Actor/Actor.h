@@ -62,7 +62,8 @@ public:
 	virtual void ProcessEvent(SEntityEvent& event) override;
 
 	virtual void SetHealth(float health) override;
-	virtual float GetHealth() const override { return m_bAlive ? GetMaxHealth() : 0.f; }
+	virtual float GetHealth() const override { return m_health; }
+	virtual bool IsDead() const override { return m_bAlive; }
 	// ~ISimpleActor
 
 	const virtual Vec3 GetMoveDirection() const;
@@ -120,6 +121,8 @@ protected:
 	float m_turnSpeed;
 
 	float m_actorEyeHeight;
+
+	float m_health;
 
 	CHitReaction * m_pHitReaction;
 

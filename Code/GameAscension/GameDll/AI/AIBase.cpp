@@ -59,6 +59,8 @@ CAIBase::~CAIBase()
 
 void CAIBase::SerializeProperties(Serialization::IArchive & archive)
 {
+	archive(m_health, "Health", "Health");
+
 	archive(m_mass, "Mass", "Mass");
 	archive(m_actorEyeHeight, "Eye Height", "Eye Height");
 
