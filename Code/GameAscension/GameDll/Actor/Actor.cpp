@@ -179,6 +179,8 @@ void CActor::SelectWeapon(EWeaponType weaponType)
 
 void CActor::HitReaction(IEntity * pAttacker, EHitTypes hitType) const
 {
+	assert(m_pHitReaction);
+
 	m_pHitReaction->HitReaction(pAttacker, hitType);
 }
 

@@ -30,40 +30,37 @@ CMovementAction::CMovementAction(
 	BaseClass(priority, fragmentID, fragTags, flags, scopeMask, userToken)
 	, m_pActor(pActor)
 {
-	if (!m_pActor)
-		CryLog("Error: Actor is NULL!");
 }
 
 IAction::EStatus CMovementAction::Update(float timePassed)
 {
-	if (m_pActor)
+	assert(m_pActor);
+
+	IEntity * pEntity = m_pActor->GetEntity();
+
+	ICharacterInstance * pCharacter = pEntity->GetCharacter(0);
+
+	if (pCharacter)
 	{
-		IEntity * pEntity = m_pActor->GetEntity();
+		float moveSpeed = m_pActor->GetMoveSpeed();
+		pCharacter->GetISkeletonAnim()->SetDesiredMotionParam(eMotionParamID_TravelSpeed, moveSpeed, 0.f);
 
-		ICharacterInstance * pCharacter = pEntity->GetCharacter(0);
+		Vec3 moveDir = m_pActor->GetMoveDirection();
 
-		if (pCharacter)
-		{
-			float moveSpeed = m_pActor->GetMoveSpeed();
-			pCharacter->GetISkeletonAnim()->SetDesiredMotionParam(eMotionParamID_TravelSpeed, moveSpeed, 0.f);
+		Vec3 currentDir = pEntity->GetForwardDir();
+		Interpolate(currentDir, moveDir, m_pActor->GetTurnSpeed(), timePassed);
+		currentDir.z = 0;
+		currentDir.Normalize();
 
-			Vec3 moveDir = m_pActor->GetMoveDirection();
+		Quat targetOrientation = Quat::CreateRotationVDir(currentDir);
 
-			Vec3 currentDir = pEntity->GetForwardDir();
-			Interpolate(currentDir, moveDir, m_pActor->GetTurnSpeed(), timePassed);
-			currentDir.z = 0;
-			currentDir.Normalize();
+		pEntity->SetRotation(targetOrientation);
 
-			Quat targetOrientation = Quat::CreateRotationVDir(currentDir);
+		pe_action_move move;
+		move.dir = currentDir * moveSpeed;
+		move.iJump = 1;
 
-			pEntity->SetRotation(targetOrientation);
-
-			pe_action_move move;
-			move.dir = currentDir * moveSpeed;
-			move.iJump = 1;
-
-			pEntity->GetPhysics()->Action(&move);
-		}
+		pEntity->GetPhysics()->Action(&move);
 	}
 
 	return BaseClass::Update(timePassed);

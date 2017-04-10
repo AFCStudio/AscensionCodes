@@ -29,12 +29,12 @@ CMoveAction::CMoveAction(
 	, m_bIsRotateForce(isRotateForce)
 	, m_fTotalRot(0.0f)
 {
-	if (!m_pActor)
-		CryLog("Error: Actor is NULL!");
 }
 
 IAction::EStatus CMoveAction::Update(float timePassed)
 {
+	assert(m_pActor);
+
 	IEntity * m_pEntity = m_pActor->GetEntity();
 
 	if (m_pEntity)
@@ -76,6 +76,8 @@ IAction::EStatus CMoveAction::Update(float timePassed)
 
 void CMoveAction::Enter()
 {
+	assert(m_pActor);
+
 	m_fTotalRot = 0.0f;
 
 	m_initialRot = m_pActor->GetEntity()->GetRotation();

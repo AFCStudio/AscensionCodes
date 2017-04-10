@@ -156,28 +156,30 @@ void CPlayer::SetHealth(float health)
 
 void CPlayer::AddEnemyFighter(CAIEnemy * pEnemy)
 {
-	if (m_pAIFightingSystem)
-		m_pAIFightingSystem->AddFighter(pEnemy);
-	else
-		CryLog("CPlayer::AIFighter Warning: Player has not a AIFighting system yet!");
+	assert(m_pAIFightingSystem);
+
+	m_pAIFightingSystem->AddFighter(pEnemy);
 }
 
 void CPlayer::RemoveEnemyFighter(CAIEnemy * pEnemy)
 {
-	if (m_pAIFightingSystem)
-		m_pAIFightingSystem->RemoveFighter(pEnemy);
+	assert(m_pAIFightingSystem);
+
+	m_pAIFightingSystem->RemoveFighter(pEnemy);
 }
 
 void CPlayer::AddAttackToQueue(CAIEnemy * pEnemy)
 {
-	if (m_pAIFightingSystem)
-		m_pAIFightingSystem->PushAttacking(pEnemy);
+	assert(m_pAIFightingSystem);
+
+	m_pAIFightingSystem->PushAttacking(pEnemy);
 }
 
 void CPlayer::RemoveAttackFromQueue(CAIEnemy * pEnemy)
 {
-	if (m_pAIFightingSystem)
-		m_pAIFightingSystem->RemoveAttacking(pEnemy);
+	assert(m_pAIFightingSystem);
+
+	m_pAIFightingSystem->RemoveAttacking(pEnemy);
 }
 
 const Vec3 CPlayer::GetMoveDirection() const
@@ -213,19 +215,18 @@ void CPlayer::SwordAttack()
 
 void CPlayer::DefendAttack()
 {
-	if (m_pAIFightingSystem)
+	assert(m_pAIFightingSystem);
+
+	CActor * pEnemy = (CActor*)m_pAIFightingSystem->PopAttacking();
+
+	if (pEnemy)
 	{
-		CActor * pEnemy = (CActor*)m_pAIFightingSystem->PopAttacking();
+		Enslave(pEnemy);
 
-		if (pEnemy)
-		{
-			Enslave(pEnemy);
+		SetTag("slaveHuman", true);
 
-			SetTag("slaveHuman", true);
-
-			ForceFinishLastAction();
-			PlayMoveAction("Defend", true, PP_Defend);
-		}
+		ForceFinishLastAction();
+		PlayMoveAction("Defend", true, PP_Defend);
 	}
 }
 
