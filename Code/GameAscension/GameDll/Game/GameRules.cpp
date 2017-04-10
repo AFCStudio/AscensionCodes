@@ -29,6 +29,9 @@ class CRulesRegistrator
 		gEnv->pGameFramework->GetIGameRulesSystem()->RegisterGameRules(pDefaultGameRulesVar->GetString(), "GameRules");
 		gEnv->pGameFramework->GetIGameRulesSystem()->AddGameRulesAlias(pDefaultGameRulesVar->GetString(), pDefaultGameRulesVar->GetString());
 
+		IProceduralClipFactory& proceduralClipFactory = gEnv->pGameFramework->GetMannequinInterface().GetProceduralClipFactory();
+		mannequin::RegisterProceduralClipsForModule(proceduralClipFactory);
+
 		g_pGameCVars = new SCVars();
 		g_pGameCVars->InitCVars();
 	}
