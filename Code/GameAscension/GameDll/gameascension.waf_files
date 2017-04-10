@@ -90,6 +90,9 @@
   },
   "AFCGameAscension_uber_Clips.cpp": {
     "Procedural Clips": [
+      "ProceduralClips/ProceduralContextRagdoll.cpp",
+      "ProceduralClips/ProceduralContextRagdoll.h",
+      "ProceduralClips/ProceduralClipRagdoll.cpp",
       "ProceduralClips/ProceduralClipHideShowAttachment.cpp"
     ]
   },
