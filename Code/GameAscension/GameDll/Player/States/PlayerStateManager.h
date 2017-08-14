@@ -36,6 +36,8 @@ public:
 	EPlayerStates GetCurrentState() { return m_epsCurrentState; }
 	EPlayerStates GetPreviousState() { return m_epsPreviousState; }
 
+	const char * GetStateName() const;
+
 	void ChangeState(EPlayerStates state);
 
 	// ISimpleExtension

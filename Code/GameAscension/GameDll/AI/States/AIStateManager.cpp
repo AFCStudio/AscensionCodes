@@ -64,6 +64,21 @@ void CAIStateManager::Update(SEntityUpdateContext& ctx, int updateSlot)
 		m_pCurrentAIState->Update(ctx, updateSlot);
 }
 
+const char * CAIStateManager::GetStateName() const
+{
+	switch (m_eaisCurrentState)
+	{
+	case EAIStates::Idle:		return "Idle";
+	case EAIStates::Move:		return "Move";
+	case EAIStates::Chase:		return "Chase";
+	case EAIStates::Taunt:		return "Taunt";
+	case EAIStates::Attack:		return "Attack";
+	case EAIStates::Swoon:		return "Swwon";
+	case EAIStates::Slave:		return "Slave";
+	default:					return "Invalid State";
+	}
+}
+
 void CAIStateManager::ChangeState(EAIStates eps)
 {
 	if (m_eaisCurrentState == eps)

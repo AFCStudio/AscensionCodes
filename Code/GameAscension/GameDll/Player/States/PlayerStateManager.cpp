@@ -61,6 +61,20 @@ void CPlayerStateManager::Update(SEntityUpdateContext& ctx, int updateSlot)
 		m_pCurrentPlayerState->Update(ctx, updateSlot);
 }
 
+const char * CPlayerStateManager::GetStateName() const
+{
+	switch (m_epsCurrentState)
+	{
+	case EPlayerStates::Idle:		return "Idle";
+	case EPlayerStates::Move:		return "Move";
+	case EPlayerStates::Alnitak:	return "Alnitak";
+	case EPlayerStates::Capture:	return "Capture";
+	case EPlayerStates::Fly:		return "Fly";
+	case EPlayerStates::Swim:		return "Swim";
+	default:						return "Invalid State";
+	}
+}
+
 void CPlayerStateManager::ChangeState(EPlayerStates eps)
 {
 	if (m_epsCurrentState == eps)

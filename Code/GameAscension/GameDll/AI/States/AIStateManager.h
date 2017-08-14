@@ -36,6 +36,8 @@ public:
 	EAIStates GetCurrentState() { return m_eaisCurrentState; }
 	EAIStates GetPreviousState() { return m_eaisPreviousState; }
 
+	const char * GetStateName() const;
+
 	void ChangeState(EAIStates state);
 
 	// ISimpleExtension
