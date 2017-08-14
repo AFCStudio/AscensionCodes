@@ -194,6 +194,11 @@ const float CPlayer::GetMoveAngle() const
 	return GetInput()->GetMoveAngle();
 }
 
+void CPlayer::BlockMove(bool block)
+{
+	m_pInput->BlockMove(block);
+}
+
 const CAIEnemy * CPlayer::IdentifyTargetEnemy() const
 {
 	return m_pAIFightingSystem ? m_pAIFightingSystem->IdentifyTargetEnemy(this) : nullptr;

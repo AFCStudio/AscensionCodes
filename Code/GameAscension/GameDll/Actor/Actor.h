@@ -84,6 +84,8 @@ public:
 	virtual void HitReaction(IEntity * pAttacker) const;
 	virtual EHitTypes GetHitTypeFromCurrentWeapon() const;
 
+	virtual void BlockMove(bool block) {};
+
 	const virtual SActorMannequinInfo &GetActorMannequinInfo() const { return m_actorMannequinInfo; }
 
 	// This function defined to add enemy to AI fighting system.

@@ -64,6 +64,8 @@ public:
 	const virtual Vec3 GetMoveDirection() const override;
 	const virtual float GetMoveAngle() const override;
 
+	virtual void BlockMove(bool block) override;
+
 	const SPlayerViewParams &GetPlayerViewParams() const { return m_playerViewParams; }
 
 	// Called when creating next sequence from PlayerSword
