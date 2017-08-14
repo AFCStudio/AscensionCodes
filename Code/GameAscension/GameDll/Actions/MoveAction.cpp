@@ -76,6 +76,8 @@ IAction::EStatus CMoveAction::Update(float timePassed)
 
 void CMoveAction::Enter()
 {
+	BaseClass::Enter();
+
 	assert(m_pActor);
 
 	m_fTotalRot = 0.0f;

@@ -127,6 +127,8 @@ IAction::EStatus CAttackAction::Update(float timePassed)
 
 void CAttackAction::Enter()
 {
+	BaseClass::Enter();
+
 	assert(m_pPlayer);
 
 	m_totalRot = 0.0f;
