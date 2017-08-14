@@ -84,6 +84,7 @@ public:
 	virtual void SetActorMannequin() override;
 
 	void PlaySwordAction(EActionPriority priority = PP_Attack);
+	void PlayDefendAction(CAIEnemy * pEnemy, EActionPriority priority = PP_Defend);
 	// ~Animations and Mannequin
 
 protected:

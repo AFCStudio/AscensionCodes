@@ -10,8 +10,10 @@
 #include "Game/GameRules.h"
 
 #include "Actions/AttackAction.h"
+#include "Actions/DefendAction.h"
 
 #include "AI/Systems/AIFightingSystem.h"
+#include "AI/AIEnemy.h"
 
 #include "Entities/Gameplay/SpawnPoint.h"
 
@@ -224,16 +226,20 @@ void CPlayer::DefendAttack()
 {
 	assert(m_pAIFightingSystem);
 
-	CActor * pEnemy = (CActor*)m_pAIFightingSystem->PopAttacking();
+	CAIEnemy * pEnemy = (CAIEnemy*)m_pAIFightingSystem->PopAttacking();
 
 	if (pEnemy)
 	{
-		Enslave(pEnemy);
+		GetInput()->BlockMove(true);
+
+		pEnemy->CancelAttack();
+
+		Enslave((CActor*)pEnemy);
 
 		SetTag("slaveHuman", true);
 
 		ForceFinishLastAction();
-		PlayMoveAction("Defend", true, PP_Defend);
+		PlayDefendAction(pEnemy);
 	}
 }
 
@@ -301,6 +307,17 @@ void CPlayer::PlaySwordAction(EActionPriority priority)
 		}
 
 		m_pLastAction = new CAttackAction(this, priority, fragID, tagState);
+		m_pActionController->Queue(*m_pLastAction);
+	}
+}
+
+void CPlayer::PlayDefendAction(CAIEnemy * pEnemy, EActionPriority priority)
+{
+	if (m_pActionController)
+	{
+		FragmentID fragID = m_pActionController->GetContext().controllerDef.m_fragmentIDs.Find("Defend");
+
+		m_pLastAction = new CDefendAction(this, pEnemy, true, priority, fragID);
 		m_pActionController->Queue(*m_pLastAction);
 	}
 }
