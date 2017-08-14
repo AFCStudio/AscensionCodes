@@ -17,6 +17,8 @@
 
 #include <CryRenderer/IRenderAuxGeom.h>
 
+#include <sstream>
+
 class CPlayerRegistrator
 	: public IEntityRegistrator
 {
@@ -228,6 +230,27 @@ void CPlayer::DefendAttack()
 		ForceFinishLastAction();
 		PlayMoveAction("Defend", true, PP_Defend);
 	}
+}
+
+void CPlayer::DebugLog()
+{
+	Vec2 screenCoordinate(40, 10);
+	std::ostringstream os;
+
+	os << "State: " << m_pStateManager->GetStateName() << std::endl
+		<< "Health: " << GetHealth() << std::endl;
+
+	if (GetTargetEnemy())
+	{
+		os << "Target Enemy: " << GetTargetEnemy()->GetEntity()->GetName() << std::endl
+		   << "Enemy Distance: " << GetEntity()->GetPos().GetDistance(GetTargetEnemy()->GetEntity()->GetPos()) << std::endl;
+
+		screenCoordinate.x = 90;
+	}
+
+	ColorF textColor(1.0f, 1.0f, 1.0f, 0.7f);
+
+	gEnv->pRenderer->GetIRenderAuxGeom()->Draw2dLabel(40, 10, 1.0f, textColor, true, os.str().c_str());
 }
 
 // Animation and Mannequin

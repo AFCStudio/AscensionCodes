@@ -26,6 +26,8 @@
 
 #include "Entities/Gameplay/SpawnPoint.h"
 
+#include "Game/GameCVars.h"
+
 CActor::CActor()
 	: m_bAlive(false)
 	, m_bIsRun(false)
@@ -79,6 +81,9 @@ void CActor::Update(SEntityUpdateContext& ctx, int updateSlot)
 	{
 		m_pActionController->Update(ctx.fFrameTime);
 	}
+
+	if (g_pGameCVars->ai_debug > 0)
+		DebugLog();
 }
 
 void CActor::ProcessEvent(SEntityEvent& event)

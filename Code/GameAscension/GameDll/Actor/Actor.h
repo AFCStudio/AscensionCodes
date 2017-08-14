@@ -159,6 +159,8 @@ public:
 	virtual IActionController * GetActionController() const { return m_pActionController; }
 	virtual SAnimationContext * GetAnimationContext() const { return m_pAnimationContext; }
 
+	virtual void DebugLog() {};
+
 protected:
 	void ActivateMannequinContext(const char *contextName, ICharacterInstance &character, const SControllerDef &controllerDefinition, const IAnimationDatabase &animationDatabase);
 

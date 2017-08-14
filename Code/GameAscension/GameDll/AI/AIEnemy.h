@@ -72,6 +72,8 @@ public:
 	void AddToAIFightingSystem();
 	void RemoveFromAIFightingSystem();
 
+	virtual void DebugLog() override;
+
 	// Animations and Mannequin
 	virtual void SetActorMannequin() override;
 	// ~Animations and Mannequin

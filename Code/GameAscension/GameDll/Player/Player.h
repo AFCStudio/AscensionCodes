@@ -76,6 +76,8 @@ public:
 
 	void DefendAttack();
 
+	virtual void DebugLog() override;
+
 	// Animations and Mannequin
 	virtual void SetActorMannequin() override;
 

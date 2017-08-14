@@ -42,6 +42,9 @@ void SCVars::InitCVars()
 	REGISTER_CVAR(ai_maxAttackTime, 5.0f, VF_CHEAT, "Maximum time between per attack for each enemy.");
 	REGISTER_CVAR(ai_minAttackTime, 3.0f, VF_CHEAT, "Minimum time between per attack for each enemy.");
 	REGISTER_CVAR(ai_preAttackTime, 1.0f, VF_CHEAT, "Pre attack time to give the player defend chance.");
+
+	// Debug
+	REGISTER_CVAR(ai_debug, 1, VF_CHEAT, "Debug for AI: Writes AI properties onto its.");
 }
 
 void SCVars::ReleaseCVars()
@@ -74,5 +77,8 @@ void SCVars::ReleaseCVars()
 		pConsole->UnregisterVariable("ai_maxAttackTime ", true);
 		pConsole->UnregisterVariable("ai_minAttackTime ", true);
 		pConsole->UnregisterVariable("ai_preAttackTime ", true);
+
+		// Debug
+		pConsole->UnregisterVariable("ai_debug", true);
 	}
 }

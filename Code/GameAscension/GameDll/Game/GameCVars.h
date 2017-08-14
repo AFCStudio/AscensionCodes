@@ -47,6 +47,10 @@ struct SCVars
 	float ai_minAttackTime;
 	float ai_preAttackTime;
 
+	// Debug
+	int	  ai_debug;
+
+
 	SCVars()
 	{
 		memset(this, 0, sizeof(SCVars));

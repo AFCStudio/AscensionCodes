@@ -25,6 +25,8 @@
 
 #include "HitReaction/HitReaction.h"
 
+#include <sstream>
+
 
 class CAIEnemyRegistrator
 	: public IEntityRegistrator
@@ -176,6 +178,32 @@ void CAIEnemy::RemoveFromAIFightingSystem()
 {
 	if (m_pTargetActor)
 		m_pTargetActor->RemoveEnemyFighter(this);
+}
+
+void CAIEnemy::DebugLog()
+{
+	std::ostringstream os;
+
+	os << "State: " << m_pStateManager->GetStateName() << std::endl
+		<< "Health: " << GetHealth() << std::endl
+		<< "Target Actor: " << (m_pTargetActor ? m_pTargetActor->GetEntity()->GetName() : "NULL") << std::endl
+		<< "Attacking Timer: " << m_attackingTimer << std::endl
+		<< "Attack in Queue: " << (m_isAttackInQueue ? "True" : "False") << std::endl
+		<< "Reaction Delay: " << m_reactionDelay << std::endl;
+
+	Vec3 screenPos(ZERO);
+	Vec3 actorPos = GetEntity()->GetPos();
+
+	actorPos.z += 2.0f;
+
+	gEnv->pRenderer->ProjectToScreen(actorPos.x, actorPos.y, actorPos.z, &screenPos.x, &screenPos.y, &screenPos.z);
+
+	screenPos.x *= 0.01f * gEnv->pRenderer->GetWidth();
+	screenPos.y *= 0.01f * gEnv->pRenderer->GetHeight();
+
+	ColorF textColor(1.0f, 1.0f, 1.0f, 0.7f);
+
+	gEnv->pRenderer->GetIRenderAuxGeom()->Draw2dLabel(screenPos.x, screenPos.y, 1.0f, textColor, true, os.str().c_str());
 }
 
 // Animation and Mannequin
