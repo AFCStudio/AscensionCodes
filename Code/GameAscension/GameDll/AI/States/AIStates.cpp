@@ -52,6 +52,8 @@ void CAIStateIdle::Exit()
 void CAIStateMove::Enter()
 {
 	m_pAIEnemy->PlayMovementAction("MotionMovement", PP_Movement, TAG_STATE_EMPTY);
+
+	m_pAIEnemy->ResetAttackTime();
 }
 void CAIStateMove::Update(SEntityUpdateContext& ctx, int updateSlot)
 {
@@ -65,6 +67,8 @@ void CAIStateMove::Exit()
 void CAIStateChase::Enter()
 {
 	m_pAIEnemy->PlayMovementAction("MotionMovement", PP_Movement, TAG_STATE_EMPTY);
+
+	m_pAIEnemy->ResetAttackTime();
 }
 void CAIStateChase::Update(SEntityUpdateContext& ctx, int updateSlot)
 {
@@ -129,7 +133,9 @@ void CAIStateAttack::Exit()
 
 // Swoon State
 void CAIStateSwoon::Enter()
-{}
+{
+	m_pAIEnemy->ResetAttackTime();
+}
 void CAIStateSwoon::Update(SEntityUpdateContext& ctx, int updateSlot)
 {}
 void CAIStateSwoon::Exit()
@@ -138,7 +144,9 @@ void CAIStateSwoon::Exit()
 
 // Slave State
 void CAIStateSlave::Enter()
-{}
+{
+	m_pAIEnemy->ResetAttackTime();
+}
 void CAIStateSlave::Update(SEntityUpdateContext& ctx, int updateSlot)
 {}
 void CAIStateSlave::Exit()
