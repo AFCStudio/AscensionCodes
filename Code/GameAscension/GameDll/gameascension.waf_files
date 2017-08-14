@@ -80,6 +80,8 @@
       "Actions/ActionBase.h",
       "Actions/AttackAction.h",
       "Actions/AttackAction.cpp",
+      "Actions/DefendAction.h",
+      "Actions/DefendAction.cpp",
       "Actions/MoveAction.h",
       "Actions/MoveAction.cpp",
       "Actions/MovementAction.h",
