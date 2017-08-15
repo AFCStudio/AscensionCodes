@@ -145,5 +145,5 @@ bool CAttackAction::TargetIsInRange(IEntity * pEnemy)
 	assert(m_pPlayer);
 
 	return m_pPlayer->GetEntity()->GetPos().GetSquaredDistance2D(pEnemy->GetPos()) <=
-		g_pGameCVars->ai_attackDistance + g_pGameCVars->ai_distanceThreshold;
+		g_pGameCVars->ai_successAttackDistance + g_pGameCVars->ai_distanceThreshold;
 }

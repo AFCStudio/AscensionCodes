@@ -50,7 +50,8 @@ CAIEnemy::CAIEnemy()
 	, m_pTargetActor(nullptr)
 	, m_pStateManager(nullptr)
 	, m_isAttackInQueue(false)
-	, m_preAttackTimer(0.0f)
+	, m_reactionDelay(0.0f)
+	, m_attackingTimer(0.0f)
 	, m_fightingGroup(EFightingGroup::NoFighting)
 {
 }
@@ -83,7 +84,7 @@ void CAIEnemy::Attack()
 	{
 		m_pTargetActor->AddAttackToQueue(this);
 
-		m_preAttackTimer = g_pGameCVars->ai_preAttackTime;
+		m_reactionDelay = g_pGameCVars->ai_hitReactionDelay;
 		m_isAttackInQueue = true;
 	}
 
@@ -114,16 +115,16 @@ void CAIEnemy::Update(SEntityUpdateContext & ctx, int updateSlot)
 
 	if (m_isAttackInQueue)
 	{
-		m_preAttackTimer -= ctx.fFrameTime;
+		m_reactionDelay -= ctx.fFrameTime;
 
-		if (m_preAttackTimer <= 0.0f)
+		if (m_reactionDelay <= 0.0f)
 		{
 			m_isAttackInQueue = false;
 
 			if (m_pTargetActor)
 			{
 				float distance = GetEntity()->GetPos().GetDistance(m_pTargetActor->GetEntity()->GetPos());
-				if (distance <= g_pGameCVars->ai_attackDistance + g_pGameCVars->ai_distanceThreshold)
+				if (distance <= g_pGameCVars->ai_successAttackDistance + g_pGameCVars->ai_distanceThreshold)
 					m_pTargetActor->HitReaction(this->GetEntity());
 			}
 		}
@@ -135,7 +136,7 @@ void CAIEnemy::SetFightingGroup(EFightingGroup fightingGroup)
 	switch (fightingGroup)
 	{
 	case EFightingGroup::Taunt:		m_stopOffset = g_pGameCVars->ai_tauntDistance;	break;
-	case EFightingGroup::Attack:	m_stopOffset = g_pGameCVars->ai_attackDistance;	break;
+	case EFightingGroup::Attack:	m_stopOffset = g_pGameCVars->ai_successAttackDistance;	break;
 	default:	m_stopOffset = 0.0f;	break;
 	}
 

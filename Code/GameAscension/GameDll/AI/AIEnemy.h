@@ -89,7 +89,7 @@ protected:
 	int m_teamId;
 
 	float m_attackingTimer;
-	float m_preAttackTimer;
+	float m_reactionDelay;
 	bool  m_isAttackInQueue;
 };
 

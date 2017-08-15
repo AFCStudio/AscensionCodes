@@ -39,13 +39,13 @@ struct SCVars
 	float cam_colliderTransitionSpeed;
 
 	// Fighting System
-	float ai_attackDistance;
+	float ai_successAttackDistance;
 	float ai_tauntDistance;
 	float ai_distanceThreshold;
 	int   ai_maxAttackerCount;
 	float ai_maxAttackTime;
 	float ai_minAttackTime;
-	float ai_preAttackTime;
+	float ai_hitReactionDelay;
 
 	// Debug
 	int	  ai_debug;
