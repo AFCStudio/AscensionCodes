@@ -120,8 +120,7 @@ void CAIStateAttack::Update(SEntityUpdateContext& ctx, int updateSlot)
 	{
 		m_pAIEnemy->RunOutAttackTime(ctx.fFrameTime);
 
-		if (m_pAIEnemy->GetTargetDistance() >
-			(g_pGameCVars->ai_successAttackDistance + g_pGameCVars->ai_distanceThreshold))
+		if (m_pAIEnemy->GetTargetDistance() > g_pGameCVars->ai_startChaseDistance)
 		{
 			m_pAIEnemy->GetStateManager()->ChangeState(EAIStates::Chase);
 		}

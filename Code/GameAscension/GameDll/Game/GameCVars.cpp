@@ -36,6 +36,7 @@ void SCVars::InitCVars()
 
 	// Fighting System
 	REGISTER_CVAR(ai_successAttackDistance, 2.5f, VF_CHEAT, "AI attack distance to target.");
+	REGISTER_CVAR(ai_startChaseDistance, 3.2f, VF_CHEAT, "AI start to chase after this distance.");
 	REGISTER_CVAR(ai_tauntDistance, 4.0f, VF_CHEAT, "AI taunt distance to target.");
 	REGISTER_CVAR(ai_distanceThreshold, 0.2f, VF_CHEAT, "AI distance threshold to stop location.");
 	REGISTER_CVAR(ai_maxAttackerCount, 3, VF_CHEAT, "Maximum attack count in one time.");
@@ -71,6 +72,7 @@ void SCVars::ReleaseCVars()
 
 		// Fighting System
 		pConsole->UnregisterVariable("ai_successAttackDistance ", true);
+		pConsole->UnregisterVariable("ai_startChaseDistance ", true);
 		pConsole->UnregisterVariable("ai_tauntDistance ", true);
 		pConsole->UnregisterVariable("ai_distanceThreshold ", true);
 		pConsole->UnregisterVariable("ai_maxAttackerCount ", true);

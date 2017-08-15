@@ -40,6 +40,7 @@ struct SCVars
 
 	// Fighting System
 	float ai_successAttackDistance;
+	float ai_startChaseDistance;
 	float ai_tauntDistance;
 	float ai_distanceThreshold;
 	int   ai_maxAttackerCount;
