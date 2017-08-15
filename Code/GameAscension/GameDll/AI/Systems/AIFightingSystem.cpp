@@ -35,6 +35,12 @@ void CAIFightingSystem::Update(SEntityUpdateContext & ctx, int updateSlot)
 CAIEnemy * CAIFightingSystem::IdentifyTargetEnemy(const CActor * pActor)
 {
 	Vec3 intendedDir = pActor->GetMoveDirection();
+
+	if (intendedDir == ZERO)
+	{
+		intendedDir = pActor->GetLookDirection();
+	}
+
 	Vec3 targetDir;
 
 	m_pTargetEnemy = nullptr;
