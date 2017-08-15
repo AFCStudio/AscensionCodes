@@ -191,6 +191,11 @@ const Vec3 CPlayer::GetMoveDirection() const
 	return GetInput()->GetMoveDirection();
 }
 
+const Vec3 CPlayer::GetLookDirection() const
+{
+	return GetInput()->GetLookOrientation().GetColumn1();
+}
+
 const float CPlayer::GetMoveAngle() const
 { 
 	return GetInput()->GetMoveAngle();

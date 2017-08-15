@@ -62,6 +62,7 @@ public:
 	virtual void RemoveAttackFromQueue(CAIEnemy * pEnemy) override;
 
 	const virtual Vec3 GetMoveDirection() const override;
+	const virtual Vec3 GetLookDirection() const override;
 	const virtual float GetMoveAngle() const override;
 
 	virtual void BlockMove(bool block) override;

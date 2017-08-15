@@ -150,7 +150,12 @@ void CActor::SetActorModel()
 
 const Vec3 CActor::GetMoveDirection() const
 {
-	return Vec3();
+	return ZERO;
+}
+
+const Vec3 CActor::GetLookDirection() const
+{
+	return ZERO;
 }
 
 const float CActor::GetMoveAngle() const

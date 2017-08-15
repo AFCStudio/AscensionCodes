@@ -67,6 +67,7 @@ public:
 	// ~ISimpleActor
 
 	const virtual Vec3 GetMoveDirection() const;
+	const virtual Vec3 GetLookDirection() const;
 	const virtual float GetMoveAngle() const;
 	const virtual float &GetMoveSpeed() const;
 	const virtual float &GetTurnSpeed() const { return m_turnSpeed; }
