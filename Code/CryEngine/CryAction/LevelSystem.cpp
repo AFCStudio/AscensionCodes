@@ -1,4 +1,4 @@
-// Copyright 2001-2016 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2017 Crytek GmbH / Crytek Group. All rights reserved. 
 
 #include "StdAfx.h"
 #include "LevelSystem.h"
@@ -650,6 +650,20 @@ const char* CLevelInfo::GetDisplayName() const
 }
 
 //------------------------------------------------------------------------
+size_t CLevelInfo::GetGameRules(const char** pszGameRules, size_t numGameRules) const
+{
+	if (pszGameRules == nullptr)
+		return 0;
+
+	numGameRules = std::min(m_gamerules.size(), numGameRules);
+	for (size_t i = 0; i < numGameRules; ++i)
+	{
+		pszGameRules[i] = m_gamerules[i].c_str();
+	}
+	return numGameRules;
+}
+
+//------------------------------------------------------------------------
 bool CLevelInfo::GetAttribute(const char* name, TFlowInputData& val) const
 {
 	TAttributeList::const_iterator it = m_levelAttributes.find(name);
@@ -913,6 +927,9 @@ CLevelSystem::~CLevelSystem()
 {
 	// register with system to get loading progress events
 	m_pSystem->SetLoadingProgressListener(0);
+
+	// clean up the listeners
+	stl::free_container(m_listeners);
 }
 
 //------------------------------------------------------------------------
@@ -1348,12 +1365,6 @@ ILevelInfo* CLevelSystem::LoadLevel(const char* _levelName)
 			pCustomActionManager->LoadLibraryActions(CUSTOM_ACTIONS_PATH);
 		}
 
-		if (gEnv->pEntitySystem)
-		{
-			gEnv->pEntitySystem->ReserveEntityId(1);
-			gEnv->pEntitySystem->ReserveEntityId(LOCAL_PLAYER_ENTITY_ID);
-		}
-
 		CCryAction::GetCryAction()->GetIGameRulesSystem()->CreateGameRules(CCryAction::GetCryAction()->GetGameContext()->GetRequestedGameRules());
 
 		string missionXml = pLevelInfo->GetDefaultGameType()->xmlFile;
@@ -1721,9 +1732,6 @@ void CLevelSystem::OnLoadingComplete(ILevelInfo* pLevelInfo)
 		{
 			(*it)->OnLoadingComplete(pLevelInfo);
 		}
-
-		SEntityEvent loadingCompleteEvent(ENTITY_EVENT_LEVEL_LOADED);
-		gEnv->pEntitySystem->SendEventToAll(loadingCompleteEvent);
 	}
 }
 
@@ -1782,7 +1790,7 @@ void CLevelSystem::LogLoadingTime()
 		return;
 
 #if CRY_PLATFORM_WINDOWS
-	CDebugAllowFileAccess ignoreInvalidFileAccess;
+	SCOPED_ALLOW_FILE_ACCESS_FROM_THIS_THREAD();
 
 	string filename = gEnv->pSystem->GetRootFolder();
 	filename += "Game_LevelLoadTime.log";
@@ -2108,20 +2116,7 @@ void CLevelSystem::UnLoadLevel()
 	}
 
 	// Unload level specific audio binary data.
-	SAudioManagerRequestData<eAudioManagerRequestType_UnloadAFCMDataByScope> requestData1(eAudioDataScope_LevelSpecific);
-	SAudioRequest request;
-	request.flags = eAudioRequestFlags_PriorityHigh | eAudioRequestFlags_ExecuteBlocking;
-	request.pData = &requestData1;
-	gEnv->pAudioSystem->PushRequest(request);
-
-	// Now unload level specific audio config data.
-	SAudioManagerRequestData<eAudioManagerRequestType_ClearControlsData> requestData2(eAudioDataScope_LevelSpecific);
-	request.pData = &requestData2;
-	gEnv->pAudioSystem->PushRequest(request);
-
-	SAudioManagerRequestData<eAudioManagerRequestType_ClearPreloadsData> requestData3(eAudioDataScope_LevelSpecific);
-	request.pData = &requestData3;
-	gEnv->pAudioSystem->PushRequest(request);
+	gEnv->pAudioSystem->OnUnloadLevel();
 
 	// Delete engine resources
 	if (p3DEngine)
@@ -2182,14 +2177,11 @@ void CLevelSystem::UnLoadLevel()
 		pRenderer->FlushRTCommands(true, true, true);
 
 		CryComment("Deleting Render meshes, render resources and flush texture streaming");
+		
 		// This may also release some of the materials.
-		int flags = FRR_DELETED_MESHES | FRR_FLUSH_TEXTURESTREAMING | FRR_OBJECTS | FRR_RENDERELEMENTS | FRR_RP_BUFFERS | FRR_POST_EFFECTS;
-
-		// Always keep the system resources around in the editor.
-		if (!gEnv->IsEditor())
-			flags |= FRR_SYSTEM_RESOURCES;
-
+		const int flags = gEnv->IsEditor() ? FRR_LEVEL_UNLOAD_SANDBOX : FRR_LEVEL_UNLOAD_LAUNCHER;
 		pRenderer->FreeResources(flags);
+
 		CryComment("done");
 	}
 
